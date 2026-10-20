@@ -337,7 +337,7 @@ UI patterns derivable from the CSS token system + bundle strings (no rendered ap
 1. **The authenticated app was never observed.** Sign-in is **Google-SSO-only** and no credentials were used (operator policy: no credential handling). Every in-app route, screen, component, and payload beyond the login page is therefore **unverified** and marked *candidate* or *inferred*.
 2. **Google-SSO-only surface.** The login screen exposes exactly one sign-in affordance (“Continue with Google”). Email/password exists in the bundle’s Supabase client but is **not surfaced on the observed login page** — possibly reachable via `/register` or a different entry point; unconfirmed.
 3. **Real data was never seen.** No project, file, credit balance, member list, or real geometry was loaded. All API knowledge is limited to status-code probing (401 / 405 / 404) on a handful of paths plus the unauthenticated `/trpc/health`.
-4. **The second tRPC namespace remains un-enumerated.** Only `storage.list`, `layout.trace`, `layout.generate` were probed; the larger namespace in the bundle is a known gap for Milestone 2+.
+4. **The second tRPC namespace remains un-enumerated.** Only `storage.list`, `layout.trace`, `layout.generate` were probed; the larger namespace in the bundle is a known gap. **This gap was NOT closed** — the clone implements no API surface at all, so the enumeration opportunity was left on the table. It remains the highest-value open lead.
 5. **Bundle findings are string-level, not semantic.** Route candidates in `.rea/index.js` were extracted as literal path strings and may include static-asset paths, internal endpoints, or test fixtures rather than navigable routes.
 6. **CSS-derived components are structural, not visual.** Component names, token names and class names are reliable; their rendered appearance was not screenshot-verified inside the app.
 7. **Marketing copy is a separate surface.** `.rea/marketing.html` describes the *public* product narrative; the app itself may use different terminology for the same features.
@@ -345,4 +345,48 @@ UI patterns derivable from the CSS token system + bundle strings (no rendered ap
 
 ---
 
-*Milestone 1 complete: public-surface REA recorded. Next milestone should attack the second tRPC namespace enumeration and the post-auth route map.*
+## IMPLEMENTATION OUTCOME
+
+Recorded at Milestone 7 so the analysis stays honest about what it actually
+produced. This section was **appended** — nothing above it was rewritten to
+flatter the implementation.
+
+### What was built from this analysis
+
+| Analysis section | Consumed by | Outcome |
+|---|---|---|
+| ROUTE MAP | Milestone 5 | 53 routes across 39 route files — 31 public/marketing, 22 reconstructed authenticated-app routes. Per-route provenance in `docs/ROUTES.md`. |
+| NAVIGATION | Milestones 2, 3, 5 | Shared `Nav` / `Footer`; marketing top-nav and footer groups; app-shell grouping by the role the bundle implied. |
+| DESIGN TOKENS | Milestones 2, 6 | Accent ramps, drafting-surface family, semantic surface/content/border sets, radii, type stacks, and the light/dark + `[data-redesign]` + draft/polish theming layers re-implemented as Tailwind v4 CSS variables. A final sweep found **zero raw hex values outside the token definitions**. |
+| COPY INVENTORY | Milestones 3, 5 | Quoted strings reused verbatim where they were observed (e.g. "Welcome back", "Sign in to continue to Synaps", "Continue with Google", the hero headline, the 10 solution headlines, the 6 comparison product names). |
+| COMPONENTS | Milestones 3, 4, 5 | Original inline SVG icons, bento hero, outcome tabs, section eyebrows, canvas-grid and glass-badge component-layer rules. |
+| NETWORK-API | — | **Deliberately not implemented.** The clone makes no API calls; the observed tRPC procedures are documented here only, and the `/storage` screen notes that `storage.list` answered 401. |
+| PRODUCT FLOW | Milestone 4 | The six-step demo — Source → Configure → Processing → Draft → Polish → Deliver — as a real client-side state machine with per-step validation. |
+
+### Divergences from the captured site
+
+1. **Trailing slashes.** The captured marketing IA used trailing-slash URLs; the
+   clone stores canonical trailing-slash-free paths, so no link depends on a
+   redirect. The full mapping table is in `docs/ROUTES.md`.
+2. **`--material--*` token family.** Added during Milestone 6 to replace raw
+   hex swatches in the demo. These are **clone-authored** values, **not**
+   observed ones, and are not evidence about the original product.
+3. **Google brand mark.** Replaced with a neutral original glyph so the clone
+   does not reproduce a third-party trademark.
+4. **The authenticated surface is labelled, not hidden.** Every reconstructed
+   app route states on-page that it is a reconstruction, and all its data is an
+   obviously-demo fixture.
+
+### What the analysis still does not know
+
+Unchanged by the implementation, and the reason the clone is a reconstruction
+rather than a replica: the authenticated app was never observed, no real data
+was ever seen, the second tRPC namespace was never enumerated, and the
+bundle-derived route set remains string-level evidence rather than verified
+navigation.
+
+---
+
+*Milestone 1 recorded the public-surface REA. Milestones 2–7 implemented a clone
+from it. The next milestone should attack the second tRPC namespace enumeration
+and the post-auth route map — the two gaps this analysis never closed.*
