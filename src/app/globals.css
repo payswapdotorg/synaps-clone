@@ -1,0 +1,501 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   DESIGN TOKENS — transcribed verbatim from ANALYSIS.md → "DESIGN TOKENS"
+   (REA of the public surface of beta.synaps.app; source stylesheet .rea/index.css).
+
+   Architecture mirrors what the analysis found in the original:
+     · a raw token layer (exact analysis names, e.g. --accent--blue--400)
+     · a theme layer (light / dark, draft / polish, redesign variants)
+     · a mapping layer (@theme inline) that exposes every raw token as a
+       Tailwind utility (bg-accent-blue-400, text-content-primary, …)
+
+   The raw layer lives in unlayered :root blocks, so it wins over Tailwind's
+   layered defaults; @theme inline substitutes the raw var() straight into
+   the generated utility, which keeps runtime theme switching working.
+   ========================================================================== */
+
+/* Theme-driven variants ---------------------------------------------------- */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant polish (&:where([data-mode="polish"], [data-mode="polish"] *));
+
+/* ---------------------------------------------------------------------------
+   RAW TOKEN LAYER — light theme, draft accent
+   --------------------------------------------------------------------------- */
+:root {
+  /* Accent ramps ---------------------------------------------------------- */
+  --accent--blue--50: #eef5ff;
+  --accent--blue--100: #d8e8ff;
+  --accent--blue--200: #aed0ff;
+  --accent--blue--300: #6ba5f5;
+  --accent--blue--400: #1573e5;
+  --accent--blue--500: #1060c0;
+  --accent--blue--600: #0c4993;
+  --accent--blue--700: #083469;
+  --accent--blue--800: #052143;
+  --accent--blue--900: #031224;
+  --accent--blue--950: #020a15;
+
+  --accent--orange--50: #fff3eb;
+  --accent--orange--100: #ffe3d0;
+  --accent--orange--200: #ffc49e;
+  --accent--orange--300: #ff9e63;
+  --accent--orange--400: #e56a12;
+  --accent--orange--500: #c7560a;
+  --accent--orange--600: #974108;
+  --accent--orange--700: #6b2e06;
+  --accent--orange--800: #441d04;
+  --accent--orange--900: #240f02;
+  --accent--orange--950: #150901;
+
+  --accent--crimson--50: #fef0f3;
+  --accent--crimson--100: #fddde4;
+  --accent--crimson--200: #fbbac9;
+  --accent--crimson--300: #f787a4;
+  --accent--crimson--400: #f0507a;
+  --accent--crimson--500: #e8184f;
+  --accent--crimson--600: #b0123c;
+  --accent--crimson--700: #7d0d2a;
+  --accent--crimson--800: #4f081a;
+  --accent--crimson--900: #29040e;
+  --accent--crimson--950: #180207;
+
+  --accent--purple--50: #f3efff;
+  --accent--purple--100: #e4daff;
+  --accent--purple--200: #c9b5ff;
+  --accent--purple--300: #a685ff;
+  --accent--purple--400: #784af7;
+  --accent--purple--500: #6232e0;
+  --accent--purple--600: #4b25ab;
+  --accent--purple--700: #361a7a;
+  --accent--purple--800: #22104d;
+  --accent--purple--900: #120828;
+  --accent--purple--950: #0a0417;
+
+  --accent--rose--300: #fb7185;
+  --accent--rose--400: #f43f5e;
+  --accent--rose--500: #e11d48;
+  --accent--rose--700: #881337;
+  --accent--rose--800: #4c0519;
+
+  /* Named accent roles (light / draft = blue) ---------------------------- */
+  --accent--solid: #1573e5;
+  --accent--solid-foreground: #f8fafc;
+  --accent--solid-hover: #1060c0;
+  --accent--subtle: #eef5ff;
+  --accent--subtle-foreground: #083469;
+  --accent--text: #1573e5;
+  --accent--foreground: #f8fafc;
+  --accent--border: #1573e5;
+  --accent--icon-tint: #1573e51a;
+
+  /* Rose roles ------------------------------------------------------------ */
+  --accent--rose-solid: #f43f5e;
+  --accent--rose-solid-foreground: #ffffff;
+  --accent--rose-subtle: #4c0519;
+  --accent--rose-subtle-foreground: #fb7185;
+  --accent--rose-text: #fb7185;
+  --accent--rose-border: #881337;
+  --accent--rose-icon-tint: #e11d481a;
+
+  /* Surfaces, content, borders (light) ----------------------------------- */
+  --surface--base: #ffffff;
+  --background: #fcfcfc;
+  --surface--controls--button-default: #f7f7f7;
+  --surface--controls--button-hover: #dadcde;
+  --surface--controls--button-hover-strong: #343638;
+  --content--primary: #171717;
+  --content--secondary: #404040;
+  --content--muted: #737373;
+  --content--disabled: #a3a3a3;
+  --content--inverted: #fafafa;
+  --content--on-image: #f8fafc;
+  --border--solid: #171717;
+  --border--focus: #1573e5;
+
+  /* Radii (light) --------------------------------------------------------- */
+  --radius--element: 2px;
+  --radius--control: 4px;
+  --radius--component: 6px;
+  --radius--container: 8px;
+  --radius--surface: 16px;
+  --radius--inset: 12px;
+  --radius--pill: 100px;
+
+  /* Canvas / drafting surface (light / draft) ---------------------------- */
+  --accent--canvas--badge: rgba(216, 232, 255, 0.851);
+  --accent--canvas--badge-text: #0c4993;
+  --accent--canvas--crosshair: #1060c0;
+  --accent--canvas--dot: #1060c0;
+  --accent--canvas--dot-fuchsia: #c7560a;
+  --accent--canvas--guide: rgba(16, 96, 192, 0.22);
+  --accent--canvas--guide-fill: rgba(216, 232, 255, 0.251);
+  --accent--canvas--guide-fuchsia: rgba(199, 86, 10, 0.122);
+
+  /* Type ----------------------------------------------------------------- */
+  /* The analysis recorded two stacks: a system stack (--font-sans below) and
+     "Inter, system-ui, -apple-system, …" (kept as --stack-app). They are
+     composed here, with the next/font webfont (--font-inter) winning when it
+     loads and the system stack as the fallback. */
+  --font-sans: var(--font-inter, ui-sans-serif), system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --stack-app: var(--font-inter, Inter), system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ---------------------------------------------------------------------------
+   DARK THEME — .theme--dark-neutral / [data-theme="dark"]
+   --------------------------------------------------------------------------- */
+.theme--dark-neutral,
+[data-theme="dark"] {
+  --surface--base: #151719;
+  --background: #101214;
+  --surface--controls--button-default: #3e4042;
+  --surface--controls--button-hover: #242628;
+  --surface--controls--button-hover-strong: #242628;
+  --content--primary: #f8fafc;
+  --content--secondary: #a1a3a5;
+  --content--muted: #717375;
+  --content--disabled: #505254;
+  --content--inverted: #080a0c;
+  --border--solid: #f3f5f7;
+  --border--focus: #6ba5f5;
+
+  /* Accent roles — dark / draft (the analysis' four --accent--border
+     variants #1573e5 / #e56a12 / #083469 / #6b2e06 map to
+     light-draft / light-polish / dark-draft / dark-polish). */
+  --accent--solid: #083469;
+  --accent--solid-foreground: #f8fafc;
+  --accent--solid-hover: #0c4993;
+  --accent--subtle: #052143;
+  --accent--subtle-foreground: #6ba5f5;
+  --accent--text: #6ba5f5;
+  --accent--border: #083469;
+  --accent--icon-tint: #6ba5f51a;
+
+  /* Canvas — dark */
+  --accent--canvas--badge: rgba(5, 33, 67, 0.851);
+  --accent--canvas--badge-text: #974108;
+  --accent--canvas--crosshair: #c7560a;
+  --accent--canvas--dot: #c7560a;
+  --accent--canvas--dot-fuchsia: #f956ff;
+  --accent--canvas--guide: rgba(107, 165, 245, 0.271);
+  --accent--canvas--guide-fill: rgba(255, 227, 208, 0.149);
+  --accent--canvas--guide-fuchsia: rgba(247, 22, 255, 0.38);
+
+  /* The analysis recorded a second, larger radius step for "one theme";
+     it is applied to the dark theme here. */
+  --radius--element: 6px;
+  --radius--control: 12px;
+  --radius--component: 14px;
+  --radius--container: 14px;
+  --radius--surface: 24px;
+}
+
+/* ---------------------------------------------------------------------------
+   POLISH MODE (light) — [data-mode="polish"]
+   The original ships a distinct "polish" palette next to the draft one.
+   --------------------------------------------------------------------------- */
+[data-mode="polish"] {
+  --accent--solid: #e56a12;
+  --accent--solid-hover: #c7560a;
+  --accent--subtle: #fff3eb;
+  --accent--subtle-foreground: #6b2e06;
+  --accent--text: #e56a12;
+  --accent--border: #e56a12;
+  --accent--icon-tint: #e56a121a;
+
+  --accent--canvas--badge: rgba(255, 227, 208, 0.749);
+  --accent--canvas--badge-text: #6ba5f5;
+  --accent--canvas--crosshair: #6ba5f5;
+  --accent--canvas--dot: #6ba5f5;
+  --accent--canvas--dot-fuchsia: #ef57f7;
+  --accent--canvas--guide-fuchsia: rgba(255, 158, 99, 0.251);
+}
+
+/* ---------------------------------------------------------------------------
+   DARK + POLISH
+   --------------------------------------------------------------------------- */
+.theme--dark-neutral[data-mode="polish"],
+[data-theme="dark"][data-mode="polish"] {
+  --accent--solid: #6b2e06;
+  --accent--solid-hover: #974108;
+  --accent--subtle: #441d04;
+  --accent--subtle-foreground: #ff9e63;
+  --accent--text: #ff9e63;
+  --accent--border: #6b2e06;
+  --accent--icon-tint: #ff9e631a;
+
+  --accent--canvas--badge: rgba(68, 29, 4, 0.749);
+  --accent--canvas--badge-text: #ff9e63;
+  --accent--canvas--crosshair: #ff9e63;
+  --accent--canvas--dot: #ff9e63;
+  --accent--canvas--dot-fuchsia: #ff9e63;
+}
+
+/* ---------------------------------------------------------------------------
+   REDESIGN FLAG — the original switches the whole token set with
+   [data-redesign]. The analysis recorded the four-value button-surface set
+   (#f7f7f7 / #ebedef / #3e4042 / #242628) without stating the per-theme
+   pairing; here the light/dark pair takes values 1/3 and the redesign pair
+   takes 2/4.
+   --------------------------------------------------------------------------- */
+[data-redesign] {
+  --surface--controls--button-default: #ebedef;
+  --radius--element: 6px;
+  --radius--control: 12px;
+  --radius--component: 14px;
+  --radius--container: 14px;
+  --radius--surface: 24px;
+}
+[data-theme="dark"][data-redesign],
+.theme--dark-neutral[data-redesign] {
+  --surface--controls--button-default: #242628;
+}
+
+/* ===========================================================================
+   MAPPING LAYER — raw tokens → Tailwind utilities
+   =========================================================================== */
+@theme inline {
+  /* Accent ramps ---------------------------------------------------------- */
+  --color-accent-blue-50: var(--accent--blue--50);
+  --color-accent-blue-100: var(--accent--blue--100);
+  --color-accent-blue-200: var(--accent--blue--200);
+  --color-accent-blue-300: var(--accent--blue--300);
+  --color-accent-blue-400: var(--accent--blue--400);
+  --color-accent-blue-500: var(--accent--blue--500);
+  --color-accent-blue-600: var(--accent--blue--600);
+  --color-accent-blue-700: var(--accent--blue--700);
+  --color-accent-blue-800: var(--accent--blue--800);
+  --color-accent-blue-900: var(--accent--blue--900);
+  --color-accent-blue-950: var(--accent--blue--950);
+
+  --color-accent-orange-50: var(--accent--orange--50);
+  --color-accent-orange-100: var(--accent--orange--100);
+  --color-accent-orange-200: var(--accent--orange--200);
+  --color-accent-orange-300: var(--accent--orange--300);
+  --color-accent-orange-400: var(--accent--orange--400);
+  --color-accent-orange-500: var(--accent--orange--500);
+  --color-accent-orange-600: var(--accent--orange--600);
+  --color-accent-orange-700: var(--accent--orange--700);
+  --color-accent-orange-800: var(--accent--orange--800);
+  --color-accent-orange-900: var(--accent--orange--900);
+  --color-accent-orange-950: var(--accent--orange--950);
+
+  --color-accent-crimson-50: var(--accent--crimson--50);
+  --color-accent-crimson-100: var(--accent--crimson--100);
+  --color-accent-crimson-200: var(--accent--crimson--200);
+  --color-accent-crimson-300: var(--accent--crimson--300);
+  --color-accent-crimson-400: var(--accent--crimson--400);
+  --color-accent-crimson-500: var(--accent--crimson--500);
+  --color-accent-crimson-600: var(--accent--crimson--600);
+  --color-accent-crimson-700: var(--accent--crimson--700);
+  --color-accent-crimson-800: var(--accent--crimson--800);
+  --color-accent-crimson-900: var(--accent--crimson--900);
+  --color-accent-crimson-950: var(--accent--crimson--950);
+
+  --color-accent-purple-50: var(--accent--purple--50);
+  --color-accent-purple-100: var(--accent--purple--100);
+  --color-accent-purple-200: var(--accent--purple--200);
+  --color-accent-purple-300: var(--accent--purple--300);
+  --color-accent-purple-400: var(--accent--purple--400);
+  --color-accent-purple-500: var(--accent--purple--500);
+  --color-accent-purple-600: var(--accent--purple--600);
+  --color-accent-purple-700: var(--accent--purple--700);
+  --color-accent-purple-800: var(--accent--purple--800);
+  --color-accent-purple-900: var(--accent--purple--900);
+  --color-accent-purple-950: var(--accent--purple--950);
+
+  --color-accent-rose-300: var(--accent--rose--300);
+  --color-accent-rose-400: var(--accent--rose--400);
+  --color-accent-rose-500: var(--accent--rose--500);
+  --color-accent-rose-700: var(--accent--rose--700);
+  --color-accent-rose-800: var(--accent--rose--800);
+
+  /* Named accent roles --------------------------------------------------- */
+  --color-accent-solid: var(--accent--solid);
+  --color-accent-solid-foreground: var(--accent--solid-foreground);
+  --color-accent-solid-hover: var(--accent--solid-hover);
+  --color-accent-subtle: var(--accent--subtle);
+  --color-accent-subtle-foreground: var(--accent--subtle-foreground);
+  --color-accent-text: var(--accent--text);
+  --color-accent-foreground: var(--accent--foreground);
+  --color-accent-border: var(--accent--border);
+  --color-accent-icon-tint: var(--accent--icon-tint);
+
+  --color-rose-solid: var(--accent--rose-solid);
+  --color-rose-solid-foreground: var(--accent--rose-solid-foreground);
+  --color-rose-subtle: var(--accent--rose-subtle);
+  --color-rose-subtle-foreground: var(--accent--rose-subtle-foreground);
+  --color-rose-text: var(--accent--rose-text);
+  --color-rose-border: var(--accent--rose-border);
+  --color-rose-icon-tint: var(--accent--rose-icon-tint);
+
+  /* Surfaces / content / borders ----------------------------------------- */
+  --color-surface-base: var(--surface--base);
+  --color-background: var(--background);
+  --color-content-primary: var(--content--primary);
+  --color-content-secondary: var(--content--secondary);
+  --color-content-muted: var(--content--muted);
+  --color-content-disabled: var(--content--disabled);
+  --color-content-inverted: var(--content--inverted);
+  --color-content-on-image: var(--content--on-image);
+  --color-border-solid: var(--border--solid);
+  --color-border-focus: var(--border--focus);
+
+  /* Controls -------------------------------------------------------------- */
+  --color-control-button-default: var(--surface--controls--button-default);
+  --color-control-button-hover: var(--surface--controls--button-hover);
+  --color-control-button-hover-strong: var(--surface--controls--button-hover-strong);
+
+  /* Canvas / drafting surface -------------------------------------------- */
+  --color-canvas-badge: var(--accent--canvas--badge);
+  --color-canvas-badge-text: var(--accent--canvas--badge-text);
+  --color-canvas-crosshair: var(--accent--canvas--crosshair);
+  --color-canvas-dot: var(--accent--canvas--dot);
+  --color-canvas-dot-fuchsia: var(--accent--canvas--dot-fuchsia);
+  --color-canvas-guide: var(--accent--canvas--guide);
+  --color-canvas-guide-fill: var(--accent--canvas--guide-fill);
+  --color-canvas-guide-fuchsia: var(--accent--canvas--guide-fuchsia);
+
+  /* Radii ----------------------------------------------------------------- */
+  --radius-element: var(--radius--element);
+  --radius-control: var(--radius--control);
+  --radius-component: var(--radius--component);
+  --radius-container: var(--radius--container);
+  --radius-surface: var(--radius--surface);
+  --radius-inset: var(--radius--inset);
+  --radius-pill: var(--radius--pill);
+
+  /* Type ------------------------------------------------------------------ */
+  --font-app: var(--stack-app);
+  --font-display: "Season", serif;
+  --text-2xs: 10px;
+  --text-caption: 11px;
+}
+
+/* ===========================================================================
+   BASE
+   =========================================================================== */
+@layer base {
+  html {
+    background-color: var(--background);
+    color: var(--content--primary);
+    font-family: var(--stack-app);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--content--primary);
+    font-family: var(--stack-app);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--accent--subtle);
+    color: var(--accent--subtle-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--border--focus);
+    outline-offset: 2px;
+  }
+}
+
+/* ===========================================================================
+   COMPONENTS — design-system primitives observed in the original stylesheet
+   (class names are structural evidence from ANALYSIS.md → COMPONENTS).
+   =========================================================================== */
+@layer components {
+  /* Monospace accent label — coordinate / technical readouts. */
+  .ds-accent-mono {
+    font-family: var(--font-mono);
+    color: var(--accent--text);
+    letter-spacing: 0.02em;
+  }
+
+  /* Bordered chip. */
+  .ds-chip-edge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border: 1px solid var(--border--solid);
+    border-radius: var(--radius--pill);
+  }
+
+  /* Sliding thumbs for the mode switch and the segmented control. */
+  .ds-modeswitch-thumb,
+  .ds-segment-thumb {
+    background-color: var(--surface--base);
+    border: 1px solid var(--border--solid);
+    border-radius: var(--radius--component);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  /* Modal / overlay scrim. */
+  .ds-scrim-strong {
+    background-color: rgb(0 0 0 / 0.64);
+  }
+
+  /* Canonical bordered button (single canonical size, per the analysis). */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border: 1px solid var(--border--solid);
+    border-radius: var(--radius--control);
+    background-color: var(--surface--controls--button-default);
+    color: var(--content--primary);
+    transition: background-color 120ms ease;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--surface--controls--button-hover);
+  }
+
+  /* Pointer-device parity layer. */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .touch-hug {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .touch-height {
+    min-height: 44px;
+  }
+
+  .touch-inset {
+    padding-inline: 0.75rem;
+  }
+
+  .touch-size {
+    width: 44px;
+    height: 44px;
+  }
+
+  .touch-text {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Marketing section eyebrow: "[01] DRAFTING / SECTION 1 / 4". */
+  .eyebrow-index {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--content--muted);
+  }
+}
