@@ -251,10 +251,10 @@ export const finalCta = {
 
 /** "Alternative to" comparison targets, per the captured nav + footer. */
 export const alternatives = [
-  { label: "ArchiCAD", href: "/news/alternative-to/archicad/" },
-  { label: "AutoCAD", href: "/news/alternative-to/autocad/" },
-  { label: "BricsCAD", href: "/news/alternative-to/bricscad/" },
-  { label: "Revit", href: "/news/alternative-to/revit/" },
-  { label: "SketchUp", href: "/news/alternative-to/sketchup/" },
-  { label: "Vectorworks", href: "/news/alternative-to/vectorworks/" },
+  { label: "ArchiCAD", href: "/news/alternative-to/archicad" },
+  { label: "AutoCAD", href: "/news/alternative-to/autocad" },
+  { label: "BricsCAD", href: "/news/alternative-to/bricscad" },
+  { label: "Revit", href: "/news/alternative-to/revit" },
+  { label: "SketchUp", href: "/news/alternative-to/sketchup" },
+  { label: "Vectorworks", href: "/news/alternative-to/vectorworks" },
 ];
