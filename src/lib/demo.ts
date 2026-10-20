@@ -163,19 +163,19 @@ export const layerOptions: { id: LayerId; label: string; detail: string }[] = [
 
 export const finishOptions: Record<FinishId, { label: string; swatch: string }[]> = {
   floor: [
-    { label: "Polished concrete", swatch: "#c9cdd3" },
-    { label: "Oak boards", swatch: "#c79a63" },
-    { label: "Terrazzo", swatch: "#ded8cf" },
+    { label: "Polished concrete", swatch: "var(--material--concrete)" },
+    { label: "Oak boards", swatch: "var(--material--oak)" },
+    { label: "Terrazzo", swatch: "var(--material--terrazzo)" },
   ],
   wall: [
-    { label: "Lime plaster", swatch: "#e7e5e4" },
-    { label: "Clay render", swatch: "#d9c3a5" },
-    { label: "Board-formed", swatch: "#b9b2a8" },
+    { label: "Lime plaster", swatch: "var(--material--plaster)" },
+    { label: "Clay render", swatch: "var(--material--clay)" },
+    { label: "Board-formed", swatch: "var(--material--boardformed)" },
   ],
   ceiling: [
-    { label: "Flat white", swatch: "#f8fafc" },
-    { label: "Exposed slab", swatch: "#c4c7cb" },
-    { label: "Acoustic panel", swatch: "#aab6c4" },
+    { label: "Flat white", swatch: "var(--material--flatwhite)" },
+    { label: "Exposed slab", swatch: "var(--material--slab)" },
+    { label: "Acoustic panel", swatch: "var(--material--acoustic)" },
   ],
 };
 

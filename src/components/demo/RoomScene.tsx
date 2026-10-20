@@ -122,7 +122,7 @@ export function RoomScene({
         />
 
         {/* Shadow cast through the window */}
-        <polygon points={shadow} fill="#000000" opacity={shadowOpacity} />
+        <polygon points={shadow} fill="var(--material--shadow)" opacity={shadowOpacity} />
 
         {/* Window opening on the back wall */}
         <rect

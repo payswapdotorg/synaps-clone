@@ -53,10 +53,10 @@ export function AssetsLibrary() {
  * metal reads, built without any image asset.
  */
 const swatches = [
-  { name: "HATCH", fill: "repeating-linear-gradient(45deg, #6ba5f5 0 2px, transparent 2px 8px)" },
-  { name: "WOOD", fill: "repeating-linear-gradient(90deg, #c7560a 0 3px, #974108 3px 6px)" },
-  { name: "STONE", fill: "radial-gradient(circle at 30% 30%, #a1a3a5, #505254)" },
-  { name: "METAL", fill: "linear-gradient(135deg, #f3f5f7 0%, #717375 45%, #f3f5f7 70%, #717375 100%)" },
-  { name: "GLASS", fill: "linear-gradient(135deg, #6ba5f5aa, #1573e533)" },
-  { name: "FELT", fill: "radial-gradient(circle at 70% 25%, #fb7185aa, #4c0519)" },
+  { name: "HATCH", fill: "repeating-linear-gradient(45deg, var(--accent--blue--300) 0 2px, transparent 2px 8px)" },
+  { name: "WOOD", fill: "repeating-linear-gradient(90deg, var(--accent--orange--500) 0 3px, var(--accent--orange--600) 3px 6px)" },
+  { name: "STONE", fill: "radial-gradient(circle at 30% 30%, var(--material--stone-1), var(--material--stone-2))" },
+  { name: "METAL", fill: "linear-gradient(135deg, var(--material--metal-1) 0%, var(--material--metal-2) 45%, var(--material--metal-1) 70%, var(--material--metal-2) 100%)" },
+  { name: "GLASS", fill: "linear-gradient(135deg, color-mix(in srgb, var(--accent--blue--300) 67%, transparent), color-mix(in srgb, var(--accent--blue--400) 20%, transparent))" },
+  { name: "FELT", fill: "radial-gradient(circle at 70% 25%, color-mix(in srgb, var(--accent--rose--400) 67%, transparent), var(--accent--rose--800))" },
 ];

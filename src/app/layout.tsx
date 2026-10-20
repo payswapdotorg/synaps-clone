@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { THEME_COLOR } from "@/lib/tokens";
 import "./globals.css";
 
 /**
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fcfcfc",
+  themeColor: THEME_COLOR,
 };
 
 export default function RootLayout({
