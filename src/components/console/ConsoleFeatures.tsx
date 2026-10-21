@@ -234,7 +234,7 @@ export function ImportDialog({
               type="button"
               disabled={!file || step >= 0}
               onClick={run}
-              className="rounded-control bg-content-inverse px-4 py-2 text-sm font-medium text-content-inverse-foreground disabled:opacity-50"
+              className="rounded-control px-4 py-2 text-sm font-medium text-accent-solid-foreground disabled:opacity-50" style={{ background: "var(--accent--solid)" }}
             >
               Import
             </button>
@@ -243,8 +243,8 @@ export function ImportDialog({
             <button
               type="button"
               onClick={() => onImported(format, file ?? "imported plan")}
-              className="rounded-control px-4 py-2 text-sm font-medium text-content-inverse"
-              style={{ background: "var(--accent--canvas--guide, #1a73e8)" }}
+              className="rounded-control px-4 py-2 text-sm font-medium text-accent-solid-foreground"
+              style={{ background: "var(--accent--solid)" }}
             >
               Open in console
             </button>
@@ -355,7 +355,7 @@ export function ExportDialog({
                       setResult("DXF downloaded (simulated content).");
                     }, 500);
                   }}
-                  className="mt-3 w-full rounded-control bg-content-inverse px-4 py-2 text-sm font-medium text-content-inverse-foreground disabled:opacity-60"
+                  className="mt-3 w-full rounded-control px-4 py-2 text-sm font-medium text-accent-solid-foreground disabled:opacity-60" style={{ background: "var(--accent--solid)" }}
                 >
                   {busy ? "Exporting…" : "Export DXF"}
                 </button>
@@ -399,7 +399,7 @@ export function ExportDialog({
             <p className="text-[11px] text-content-secondary">
               {entitlements.watermarked ? "Free plan: exports are watermarked." : "Pro: no watermark."}
             </p>
-            <button type="button" disabled={busy} onClick={runSitePlan} className="w-full rounded-control bg-content-inverse px-4 py-2 text-sm font-medium text-content-inverse-foreground disabled:opacity-60">
+            <button type="button" disabled={busy} onClick={runSitePlan} className="w-full rounded-control px-4 py-2 text-sm font-medium text-accent-solid-foreground disabled:opacity-60" style={{ background: "var(--accent--solid)" }}>
               {busy ? "Exporting…" : "Export Site Plan"}
             </button>
           </div>
@@ -585,8 +585,8 @@ export class EditorErrorFallback extends Component<FallbackProps, { failed: bool
           <button
             type="button"
             onClick={() => this.setState({ failed: false })}
-            className="rounded-control px-4 py-2 text-sm font-medium text-content-inverse"
-            style={{ background: "var(--accent--canvas--guide, #1a73e8)" }}
+            className="rounded-control px-4 py-2 text-sm font-medium text-accent-solid-foreground"
+            style={{ background: "var(--accent--solid)" }}
           >
             Try again
           </button>

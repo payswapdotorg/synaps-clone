@@ -98,12 +98,25 @@
   --accent--rose-border: #881337;
   --accent--rose-icon-tint: #e11d481a;
 
-  /* Surfaces, content, borders (light) ----------------------------------- */
-  --surface--base: #ffffff;
+  /* Surfaces, content, borders (light) — verbatim from the shipped
+     [data-theme=light] block where the token exists there ------------ */
+  --surface--base: #f8fafc;
+  --surface--subtle: #f3f5f7;
+  --surface--raised: #ebedef;
+  --surface--elevated: #e3e5e7;
+  --surface--selected: #dadcde;
+  --surface--overlay: #f8fafc;
+  --surface--inset: #f8fafc;
   --background: #fcfcfc;
-  --surface--controls--button-default: #f7f7f7;
-  --surface--controls--button-hover: #dadcde;
-  --surface--controls--button-hover-strong: #343638;
+  --surface--controls--button-default: #ebedef;
+  --surface--controls--button-hover: #e7e9eb;
+  --surface--controls--button-hover-strong: #dadcde;
+  --surface--controls--input-default: #f3f5f7;
+  --surface--controls--input-raised: #f8fafc;
+  --surface--controls--input-inset: #f3f5f7;
+  --onboarding--wash-base: #e9e5df;
+  --onboarding--wash-warm: #f3efe7;
+  --onboarding--wash-cool: #c3bbb1;
   --content--primary: #171717;
   --content--secondary: #404040;
   --content--muted: #737373;
@@ -164,29 +177,63 @@
 
 /* ---------------------------------------------------------------------------
    DARK THEME — .theme--dark-neutral / [data-theme="dark"]
+   The beta app's DEFAULT theme: its production HTML ships <html class="dark">
+   and the :root token set in the shipped stylesheet IS this dark set.
+   Values below are transcribed verbatim from the harvested production
+   stylesheet (Task 34 bundle, index-DfBMXOyL.css :root + .theme--dark-neutral).
    --------------------------------------------------------------------------- */
 .theme--dark-neutral,
 [data-theme="dark"] {
+  /* Surfaces — verbatim */
   --surface--base: #151719;
+  --surface--subtle: #1c1e20;
+  --surface--raised: #242628;
+  --surface--elevated: #3e4042;
+  --surface--selected: #313335;
+  --surface--overlay: #151719;
+  --surface--inset: #080a0c;
+  --surface--scrim: rgba(8, 10, 12, 0.4);
   --background: #101214;
-  --surface--controls--button-default: #3e4042;
-  --surface--controls--button-hover: #242628;
-  --surface--controls--button-hover-strong: #242628;
+
+  /* Content — verbatim */
   --content--primary: #f8fafc;
   --content--secondary: #a1a3a5;
   --content--muted: #717375;
   --content--disabled: #505254;
   --content--inverted: #080a0c;
-  --border--solid: #f3f5f7;
-  --border--focus: #6ba5f5;
+  --content--on-image: #f8fafc;
 
-  /* Accent roles — dark / draft (the analysis' four --accent--border
-     variants #1573e5 / #e56a12 / #083469 / #6b2e06 map to
-     light-draft / light-polish / dark-draft / dark-polish). */
-  --accent--solid: #083469;
+  /* Controls — verbatim (.theme--dark-neutral class values; the redesign
+     variant is NOT shipped: its feature flags default to false) */
+  --surface--controls--button-default: rgba(255, 255, 255, 0.05);
+  --surface--controls--button-hover: rgba(255, 255, 255, 0.08);
+  --surface--controls--button-hover-strong: rgba(255, 255, 255, 0.08);
+  --surface--controls--button-disabled: rgba(255, 255, 255, 0.1);
+  --surface--controls--input-default: #1c1e20;
+  --surface--controls--input-raised: #151719;
+  --surface--controls--input-inset: #080a0c;
+  --surface--controls--segment-thumb: #3e4042;
+  --surface--controls--toggle-knob: #d2d4d6;
+  --surface--controls--toggle-track-on: #4f545c;
+  --surface--controls--track-filled: rgba(255, 255, 255, 0.22);
+
+  /* Borders — verbatim. --border--solid keeps the utility pattern the
+     components rely on (an opaque ink + Tailwind opacity modifiers). */
+  --border--solid: #f8fafc;
+  --border--subtle: rgba(255, 255, 255, 0.07);
+  --border--default: rgba(255, 255, 255, 0.1);
+  --border--strong: rgba(255, 255, 255, 0.2);
+  --border--divider: rgba(255, 255, 255, 0.1);
+  --border--focus: #6ba5f5;
+  --surface--icon-tint: rgba(255, 255, 255, 0.071);
+
+  /* Accent — verbatim :root dark values */
+  --accent--solid: #1573e5;
+  --accent--solid-lighter: #4196ff;
   --accent--solid-foreground: #f8fafc;
-  --accent--solid-hover: #0c4993;
+  --accent--solid-hover: #1060c0;
   --accent--subtle: #052143;
+  --accent--subtle-light: #d8e8ff;
   --accent--subtle-foreground: #6ba5f5;
   --accent--text: #6ba5f5;
   --accent--border: #083469;
@@ -201,14 +248,42 @@
   --accent--canvas--guide: rgba(107, 165, 245, 0.271);
   --accent--canvas--guide-fill: rgba(255, 227, 208, 0.149);
   --accent--canvas--guide-fuchsia: rgba(247, 22, 255, 0.38);
+  --canvas--background: #101214;
 
-  /* The analysis recorded a second, larger radius step for "one theme";
-     it is applied to the dark theme here. */
-  --radius--element: 6px;
-  --radius--control: 12px;
-  --radius--component: 14px;
-  --radius--container: 14px;
-  --radius--surface: 24px;
+  /* Onboarding washes — verbatim dark values */
+  --onboarding--wash-base: #1b1a18;
+  --onboarding--wash-warm: #292825;
+  --onboarding--wash-cool: #2f2922;
+
+  /* Shadows — verbatim dark values */
+  --shadow--sm: 0px 0.5px 1px -0.25px rgba(0, 0, 0, 0.15),
+    0px 1px 2px -0.25px rgba(0, 0, 0, 0.17),
+    0px 1.5px 3px -0.5px rgba(0, 0, 0, 0.2),
+    0px 2.5px 6px -1px rgba(0, 0, 0, 0.14),
+    0px 3.5px 10px -2px rgba(0, 0, 0, 0.08);
+  --shadow--md: 0px 1px 1.5px -0.15px rgba(0, 0, 0, 0.34),
+    0px 1.5px 3px -0.15px rgba(0, 0, 0, 0.3),
+    0px 3px 10px -0.5px rgba(0, 0, 0, 0.24),
+    0px 5px 18px -1.5px rgba(0, 0, 0, 0.15),
+    0px 8px 28px -3px rgba(0, 0, 0, 0.12),
+    0px 12px 40px -5px rgba(0, 0, 0, 0.095),
+    0px 16px 52px -7px rgba(0, 0, 0, 0.075);
+  --shadow--tooltip: 0px 1px 4px 0px rgba(0, 0, 0, 0.35);
+
+  /* Radii — verbatim (same steps as light; the earlier "second radius
+     step" theory came from the pre-auth REA and is corrected here) */
+  --radius--element: 2px;
+  --radius--control: 4px;
+  --radius--component: 6px;
+  --radius--container: 8px;
+  --radius--inset: 12px;
+  --radius--surface: 16px;
+  --radius--pill: 100px;
+
+  /* Overlay — verbatim */
+  --overlay--scrim: rgba(0, 0, 0, 0.2);
+  --overlay--scrim-strong: rgba(0, 0, 0, 0.3);
+  --overlay--scrim-blur: 4px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -368,6 +443,12 @@
 
   /* Surfaces / content / borders ----------------------------------------- */
   --color-surface-base: var(--surface--base);
+  --color-surface-subtle: var(--surface--subtle);
+  --color-surface-raised: var(--surface--raised);
+  --color-surface-elevated: var(--surface--elevated);
+  --color-surface-selected: var(--surface--selected);
+  --color-surface-overlay: var(--surface--overlay);
+  --color-surface-inset: var(--surface--inset);
   --color-background: var(--background);
   --color-content-primary: var(--content--primary);
   --color-content-secondary: var(--content--secondary);
@@ -382,6 +463,14 @@
   --color-control-button-default: var(--surface--controls--button-default);
   --color-control-button-hover: var(--surface--controls--button-hover);
   --color-control-button-hover-strong: var(--surface--controls--button-hover-strong);
+  --color-control-input-default: var(--surface--controls--input-default);
+  --color-control-input-raised: var(--surface--controls--input-raised);
+  --color-control-input-inset: var(--surface--controls--input-inset);
+
+  /* Onboarding washes ---------------------------------------------------- */
+  --color-wash-base: var(--onboarding--wash-base);
+  --color-wash-warm: var(--onboarding--wash-warm);
+  --color-wash-cool: var(--onboarding--wash-cool);
 
   /* Canvas / drafting surface -------------------------------------------- */
   --color-canvas-badge: var(--accent--canvas--badge);
@@ -437,6 +526,25 @@
     outline: 2px solid var(--border--focus);
     outline-offset: 2px;
   }
+
+  /* App-surface scrollbars — verbatim pattern from the shipped stylesheet:
+     4px hairlines, transparent track, icon-tint thumb, fully rounded. */
+  [data-theme="dark"] * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface--icon-tint) transparent;
+  }
+  [data-theme="dark"] ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background: transparent;
+  }
+  [data-theme="dark"] ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  [data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background-color: var(--surface--icon-tint);
+    border-radius: 9999px;
+  }
 }
 
 /* ===========================================================================
@@ -463,10 +571,13 @@
   /* Sliding thumbs for the mode switch and the segmented control. */
   .ds-modeswitch-thumb,
   .ds-segment-thumb {
-    background-color: var(--surface--base);
-    border: 1px solid var(--border--solid);
+    /* Verbatim from the shipped .ds-segment-thumb: the thumb surface is the
+       segment-thumb control token (#3e4042 dark / #f8fafc light) with a
+       switch-button border and a small cast. */
+    background-color: var(--surface--controls--segment-thumb);
+    border: 1px solid var(--border--switch-button, var(--border--strong));
     border-radius: var(--radius--component);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+    box-shadow: var(--thumb--cast, 0 1px 2px 0 rgba(0, 0, 0, 0.08));
   }
 
   /* Modal / overlay scrim. */

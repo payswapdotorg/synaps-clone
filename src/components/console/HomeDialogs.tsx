@@ -85,8 +85,8 @@ export function GenerateAiDialog({
                 type="button"
                 onClick={generate}
                 disabled={!valid}
-                className="rounded-control px-6 py-2 text-sm font-medium text-content-inverse disabled:opacity-40"
-                style={{ background: "var(--accent--canvas--guide, #1a73e8)" }}
+                className="rounded-control px-6 py-2 text-sm font-medium text-accent-solid-foreground disabled:opacity-40"
+                style={{ background: "var(--accent--solid)" }}
               >
                 Generate floorplan
               </button>

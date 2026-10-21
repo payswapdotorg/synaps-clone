@@ -71,7 +71,7 @@ export function GoogleMockDialog({
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
               autoFocus
-              className="w-full rounded-control border border-border-solid/30 bg-background px-4 py-3 text-sm text-content-primary focus:border-border-solid focus:outline-none"
+              className="w-full rounded-control border border-border-solid/30 bg-control-input-default px-4 py-3 text-sm text-content-primary focus:border-border-focus focus:outline-none"
             />
           </label>
           <label className="block">
@@ -81,12 +81,12 @@ export function GoogleMockDialog({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Name (optional)"
-              className="w-full rounded-control border border-border-solid/30 bg-background px-4 py-3 text-sm text-content-primary focus:border-border-solid focus:outline-none"
+              className="w-full rounded-control border border-border-solid/30 bg-control-input-default px-4 py-3 text-sm text-content-primary focus:border-border-focus focus:outline-none"
             />
           </label>
           {error && <p className="text-xs text-accent-crimson">{error}</p>}
 
-          <div className="rounded-control bg-background p-3 text-[11px] leading-relaxed text-content-secondary">
+          <div className="rounded-control bg-control-input-default p-3 text-[11px] leading-relaxed text-content-secondary">
             <strong>Simulation notice.</strong> This is not a real Google page.
             The original product uses Google SSO; this educational clone stores
             a simulated session in your browser only.

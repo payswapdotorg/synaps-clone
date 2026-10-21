@@ -352,7 +352,7 @@ export function PlanEditor({
                   y={s.y + s.h / 2 - 0.15}
                   textAnchor="middle"
                   fontSize={0.32}
-                  fill="var(--content--secondary, #5b6411)"
+                  fill="#5b6411"
                   style={{ pointerEvents: "none" }}
                 >
                   {s.label}
@@ -362,7 +362,7 @@ export function PlanEditor({
                   y={s.y + s.h / 2 + 0.3}
                   textAnchor="middle"
                   fontSize={0.26}
-                  fill="var(--content--secondary, #5b6411)"
+                  fill="#5b6411"
                   opacity={0.8}
                   style={{ pointerEvents: "none" }}
                 >
@@ -473,7 +473,7 @@ export function PlanEditor({
                 x={s.at.x}
                 y={s.at.y}
                 fontSize={0.34}
-                fill="var(--content--primary, #1c1e21)"
+                fill="#1c1e21"
                 style={{ pointerEvents: "none" }}
               >
                 {s.text}
@@ -633,12 +633,12 @@ function DimLine({
       <circle cx={a.x} cy={a.y} r={0.04} fill="var(--accent--canvas--guide)" />
       <circle cx={b.x} cy={b.y} r={0.04} fill="var(--accent--canvas--guide)" />
       <g transform={`translate(${mx} ${my}) rotate(${angle})`}>
-        <rect x={-0.55} y={-0.22} width={1.1} height={0.2} fill="var(--surface--base, #fff)" opacity={0.85} rx={0.04} />
+        <rect x={-0.55} y={-0.22} width={1.1} height={0.2} fill="#ffffff" opacity={0.85} rx={0.04} />
         <text
           textAnchor="middle"
           y={-0.06}
           fontSize={0.22}
-          fill="var(--content--secondary, #5b6411)"
+          fill="#5b6411"
           style={{ pointerEvents: "none" }}
         >
           {fmtLen(len, units, precision)}

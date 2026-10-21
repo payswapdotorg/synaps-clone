@@ -307,8 +307,8 @@ export function ConsoleChrome({
           <button
             type="button"
             onClick={() => setShareOpen(true)}
-            className="rounded-control px-4 py-1.5 text-sm font-medium text-content-inverse"
-            style={{ background: "var(--accent--canvas--guide, #1a73e8)" }}
+            className="rounded-control px-4 py-1.5 text-sm font-medium text-accent-solid-foreground"
+            style={{ background: "var(--accent--solid)" }}
           >
             Share
           </button>
@@ -386,7 +386,7 @@ export function ConsoleChrome({
                     {layers.map((l) => (
                       <li key={l.name} className="flex items-center justify-between rounded-control px-2 py-1.5 text-sm text-content-primary hover:bg-surface-raised">
                         <span className="flex items-center gap-2">
-                          <span aria-hidden="true" style={{ color: "var(--accent--canvas--guide)" }}>◉</span>
+                          <span aria-hidden="true" style={{ color: "var(--accent--text)" }}>◉</span>
                           {l.name}
                         </span>
                         <span className="text-2xs text-content-secondary">{l.count}</span>
@@ -400,7 +400,7 @@ export function ConsoleChrome({
                 <input
                   type="search"
                   placeholder="Search assets…"
-                  className="mb-3 w-full rounded-control border border-border-solid/20 bg-background px-3 py-1.5 text-xs text-content-primary focus:border-border-solid focus:outline-none"
+                  className="mb-3 w-full rounded-control border border-border-solid/20 bg-background px-3 py-1.5 text-xs text-content-primary focus:border-border-focus focus:outline-none"
                   aria-label="Search assets"
                 />
                 {ASSET_CATEGORIES.map((cat) => (
@@ -461,7 +461,7 @@ export function ConsoleChrome({
           )}
 
           {/* Floating toolbar (observed: bottom center) */}
-          <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border-solid/15 bg-surface-base px-2 py-1.5 shadow-lg" role="toolbar" aria-label="Drawing tools">
+          <div className="absolute bottom-9 left-1/2 z-10 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border-solid/15 bg-surface-base px-2 py-1.5 shadow-lg" role="toolbar" aria-label="Drawing tools">
             <button type="button" onClick={() => undoRef.current?.undo()} title="Undo (Ctrl+Z)" aria-label="Undo" className="rounded-full p-2 text-content-secondary hover:bg-surface-raised hover:text-content-primary">
               <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
                 <path d="M8 5L4 9l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -483,8 +483,8 @@ export function ConsoleChrome({
                 title={`${t.label} (${t.key})`}
                 aria-label={t.label}
                 aria-pressed={tool === t.id}
-                className={`rounded-full p-2 ${tool === t.id ? "text-content-inverse" : "text-content-secondary hover:bg-surface-raised hover:text-content-primary"}`}
-                style={tool === t.id ? { background: "var(--accent--canvas--guide, #1a73e8)" } : undefined}
+                className={`rounded-full p-2 ${tool === t.id ? "text-accent-solid-foreground" : "text-content-secondary hover:bg-surface-raised hover:text-content-primary"}`}
+                style={tool === t.id ? { background: "var(--accent--solid)" } : undefined}
               >
                 <ToolIcon id={t.id} />
               </button>
@@ -527,7 +527,7 @@ export function ConsoleChrome({
             type="text"
             value={settings.background}
             onChange={(e) => setSettings((s) => ({ ...s, background: e.target.value }))}
-            className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2.5 py-1.5 font-mono text-xs text-content-primary focus:border-border-solid focus:outline-none"
+            className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2.5 py-1.5 font-mono text-xs text-content-primary focus:border-border-focus focus:outline-none"
           />
 
           <div className="mt-4 grid grid-cols-2 gap-3">
@@ -539,7 +539,7 @@ export function ConsoleChrome({
                 id="len-units"
                 value={settings.units}
                 onChange={(e) => setSettings((s) => ({ ...s, units: e.target.value as Units }))}
-                className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-solid focus:outline-none"
+                className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-focus focus:outline-none"
               >
                 <option value="m">Meters</option>
                 <option value="ft">Feet</option>
@@ -553,7 +553,7 @@ export function ConsoleChrome({
                 id="precision"
                 value={settings.precision}
                 onChange={(e) => setSettings((s) => ({ ...s, precision: Number(e.target.value) }))}
-                className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-solid focus:outline-none"
+                className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-focus focus:outline-none"
               >
                 <option value={0}>0</option>
                 <option value={1}>1</option>
@@ -569,7 +569,7 @@ export function ConsoleChrome({
             id="area-units"
             value={settings.areaUnits}
             onChange={(e) => setSettings((s) => ({ ...s, areaUnits: e.target.value as AreaUnits }))}
-            className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-solid focus:outline-none"
+            className="mt-1 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-focus focus:outline-none"
           >
             <option value="m2">Square meters</option>
             <option value="ft2">Square feet</option>
@@ -584,7 +584,7 @@ export function ConsoleChrome({
                 aria-checked={settings.gridOn}
                 onClick={() => setSettings((s) => ({ ...s, gridOn: !s.gridOn }))}
                 className={`relative h-5 w-9 rounded-full transition-colors ${settings.gridOn ? "" : "bg-border-solid/30"}`}
-                style={settings.gridOn ? { background: "var(--accent--canvas--guide, #1a73e8)" } : undefined}
+                style={settings.gridOn ? { background: "var(--accent--solid)" } : undefined}
               >
                 <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all ${settings.gridOn ? "left-[18px]" : "left-0.5"}`} />
               </button>
@@ -594,7 +594,7 @@ export function ConsoleChrome({
                 value={settings.grid}
                 onChange={(e) => setSettings((s) => ({ ...s, grid: Number(e.target.value) }))}
                 aria-label="Grid size"
-                className="mt-2 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-solid focus:outline-none"
+                className="mt-2 w-full rounded-control border border-border-solid/20 bg-background px-2 py-1.5 text-xs text-content-primary focus:border-border-focus focus:outline-none"
               >
                 <option value={0.1}>0.1 m</option>
                 <option value={0.25}>0.25 m</option>
@@ -716,8 +716,8 @@ export function ConsoleChrome({
                   setCopied(true);
                   window.setTimeout(() => setCopied(false), 1500);
                 }}
-                className="rounded-control px-3 py-2 text-xs font-medium text-content-inverse"
-                style={{ background: "var(--accent--canvas--guide, #1a73e8)" }}
+                className="rounded-control px-3 py-2 text-xs font-medium text-accent-solid-foreground"
+                style={{ background: "var(--accent--solid)" }}
               >
                 {copied ? "Copied" : "Copy"}
               </button>

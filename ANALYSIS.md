@@ -589,3 +589,50 @@ Out of scope by construction: the real site's scroll-jacked cinematic
 home, Google/PostHog/Meta analytics, cal.com booking, Instagram/LinkedIn
 social links (replaced by clone-disclosure text), and photography (all
 imagery is original vector work).
+
+## App-surface theme ground truth (Task 36 — bundle stylesheet evidence)
+
+The authenticated app's theme was extracted verbatim from the harvested
+production stylesheet (index-DfBMXOyL.css) and the served document
+(home.html):
+
+- **The app is DARK by default.** The served document ships
+  `<html lang="en" class="dark">`, and the `:root` token block in the
+  shipped stylesheet IS the dark set: surface base `#151719`, subtle
+  `#1c1e20`, raised `#242628`, elevated `#3e4042`, selected `#313335`,
+  content primary `#f8fafc` / secondary `#a1a3a5` / muted `#717375`,
+  borders rgba(255,255,255,.07/.1/.2), focus `#6ba5f5`, accent solid
+  `#1573e5` (hover `#1060c0`, text `#6ba5f5`, subtle `#052143`), canvas
+  background `#101214`, radii 2/4/6/8/12/16/100, control buttons
+  rgba(255,255,255,.05→.08), scrollbars 4px hairlines.
+- **A light theme exists** as `[data-theme=light]` / `.theme--light-neutral`
+  (surface base `#f8fafc`, raised `#ebedef`, content primary `#151719`)
+  but it is NOT the default; the `[data-redesign]` variants are dark-launch
+  features whose flags (`iceberg-release`, `redesign-shell`, `redesign-v1-6`)
+  default to false in the shipped bundle, so the base dark set is what
+  production renders.
+- **Onboarding washes**: dark `#1b1a18 / #292825 / #2f2922`
+  (light variants `#e9e5df / #f3efe7 / #c3bbb1`).
+- **Fonts**: Inter (variable, Google Fonts + rsms.me), Fira Mono,
+  Courier Prime, Noto Sans. Typography scale: minimal 8/12/500 ·
+  tiny 10/12/500 · micro 11/16/500 · compact 12/16/500 ·
+  title 14/20/500 · lead 16/24/400 · heading 24/32/600 ·
+  display 28/32/600.
+- **The console's paper is light by design**: the observed Canvas
+  settings panel sets Background `#EBEDEF` — dark chrome around a light
+  drafting paper (the classic CAD paradigm). The clone keeps the paper
+  light inside its dark shell for the same reason.
+
+### What the clone implements (Task 36)
+
+The `(app)` route group (all 17 post-login route trees) now renders in
+the dark theme: the token layer in globals.css is rebased verbatim on
+the values above, the surface/controls/wash/shadow ramps are defined and
+mapped to utilities (this also fixed the previously-undefined
+`--surface--raised` token that silently disabled hover states), on-paper
+editor ink is pinned to paper-safe colors, primary actions use the real
+accent (`#1573e5` + `#f8fafc` foreground), the wizard runs on the dark
+wash tokens, and the root 404 is theme-aware (dark for app paths, light
+for marketing paths). Marketing and docs surfaces are unchanged (light),
+matching the real deployment split (synaps.app light vs beta.synaps.app
+dark).

@@ -76,7 +76,7 @@ function Panel({
   action?: React.ReactNode;
 }) {
   return (
-    <section className="rounded-container border border-border-solid/10 bg-surface-base">
+    <section className="rounded-container border border-border-solid/10 bg-surface-raised">
       <div className="flex items-center justify-between gap-4 border-b border-border-solid/10 px-4 py-3">
         <h2 className="text-sm font-semibold text-content-primary">{title}</h2>
         {action}

@@ -179,7 +179,8 @@ export function TeamSidebar({
                   setName("");
                   window.location.reload();
                 }}
-                className="rounded-control bg-content-inverse px-4 py-2 text-sm font-medium text-content-inverse-foreground disabled:opacity-50"
+                className="rounded-control px-4 py-2 text-sm font-medium text-accent-solid-foreground disabled:opacity-50"
+                style={{ background: "var(--accent--solid)" }}
               >
                 Create
               </button>
