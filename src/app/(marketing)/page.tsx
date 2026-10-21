@@ -60,73 +60,55 @@ export default function HomePage() {
       <AuthRedirect />
 
       {/* ---------------------------------------------------------- Hero */}
-      <section
-        className="ms-container"
-        style={{ paddingTop: "clamp(28px, 3.4vw, 52px)" }}
-      >
-        <div
-          className="ms-page-hero"
-          style={{
-            paddingBottom: "clamp(30px, 4vw, 56px)",
-            alignItems: "center",
-          }}
-        >
-          <div className="ms-stack-16">
-            <span
-              style={{
-                fontSize: 13,
-                fontWeight: 520,
-                color: "var(--ms-ink-soft)",
-              }}
-            >
+      <section className="home-hero">
+        <div className="home-hero-inner">
+          <div>
+            <p className="home-hero-audience">
               For architects and developers
-            </span>
-            <h1 className="ms-h1" style={{ maxWidth: "13ch" }}>
-              From idea to client-ready design.
-              <span className="dim" style={{ display: "block" }}>
-                Within minutes.
-              </span>
+            </p>
+            <h1>
+              <span>From idea to</span> <span>client-ready design.</span>{" "}
+              <span className="light">Within minutes.</span>
             </h1>
           </div>
-          <div className="ms-stack-16" style={{ alignSelf: "center" }}>
-            <p className="ms-lead">
+          <aside className="home-hero-aside" aria-label="Get started">
+            <p className="home-hero-sub">
               Create precise floor plans, explore design options, and turn the
               same drawing into presentation-ready visuals.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="home-hero-cta">
               <Link href="/register" className="ms-btn">
                 Start designing free
               </Link>
-              <Link href="/faq" className="ms-btn ms-btn--outline">
+              <a
+                href="https://cal.com/kevin-cobaj/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ms-btn ms-btn--outline"
+              >
                 Book a call
-              </Link>
+              </a>
             </div>
-            <p style={{ fontSize: 13, color: "var(--ms-muted)" }}>
+            <p className="home-hero-trust">
               Trusted by 80,000 architects worldwide.
             </p>
-          </div>
+          </aside>
         </div>
       </section>
 
       {/* ------------------------------------------------- Feature cards */}
-      <section className="ms-container" style={{ paddingBottom: "clamp(64px, 8vw, 110px)" }}>
-        <div className="ms-grid-3">
+      <section className="home-features" aria-label="Product features">
+        <div className="home-features-inner">
           {CARDS.map((card) => (
-            <article key={card.idx} className="ms-stack-16">
-              {card.art}
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="ms-h3">{card.title}</h3>
-                <span
-                  style={{
-                    fontFamily: "ui-monospace, monospace",
-                    fontSize: 11,
-                    color: "var(--ms-muted)",
-                  }}
-                >
-                  {card.idx}
-                </span>
+            <article key={card.idx} className="home-feature">
+              <div className="home-feature-visual">{card.art}</div>
+              <div className="home-feature-body">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="ms-h3">{card.title}</h3>
+                  <span className="home-feature-index">{card.idx}</span>
+                </div>
+                <p className="ms-body">{card.body}</p>
               </div>
-              <p className="ms-body">{card.body}</p>
             </article>
           ))}
         </div>

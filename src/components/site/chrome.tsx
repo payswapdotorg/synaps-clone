@@ -8,8 +8,9 @@
  * scroll (HeaderActions); dark footer with the CTA block and
  * Product / Company / Legal link columns.
  *
- * The logo mark is an original six-spoke drafting asterisk in the
- * spirit of the analysed wordmark; no served asset is copied.
+ * The logo mark is an original S-curve glyph (mirroring the analysed
+ * lockup: curvy leading mark + lowercase wordmark) — drawn for this
+ * clone; no served asset or brand path is copied.
  */
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -22,21 +23,22 @@ import { HeaderActions } from "./HeaderActions";
 export function SiteMark({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 22 22"
-      width="19"
-      height="19"
+      viewBox="0 0 20 22"
+      width="18"
+      height="20"
       aria-hidden="true"
       className={className}
       fill="none"
     >
-      {/* Original six-spoke drafting asterisk — three crossing strokes
-          at 0°/60°/120° with round caps, drawn for this clone in the
-          spirit of the analysed wordmark's leading glyph. */}
-      <g stroke="currentColor" strokeWidth="2.15" strokeLinecap="round">
-        <path d="M11 1.6v18.8" />
-        <path d="M3.05 6.2l15.9 9.6" />
-        <path d="M3.05 15.8l15.9-9.6" />
-      </g>
+      {/* Original S-curve glyph — a single fluid double-arc stroke with
+          round caps, drawn for this clone in the spirit of the analysed
+          lockup's leading mark (which is a filled ribbon S). */}
+      <path
+        d="M15.5 2.5C10 2.5 4.5 4 4.5 8c0 3.4 4.2 3.9 7.5 4.6 3.1.7 6.5 1.5 6.5 4.6 0 3.6-5.1 5.3-11 4.9"
+        stroke="currentColor"
+        strokeWidth="2.1"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -45,19 +47,21 @@ export function SiteLogo({ dark = false }: { dark?: boolean }) {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2.5 no-underline"
+      className="flex items-center gap-1.5 no-underline"
       style={{ color: dark ? "#fff" : "var(--ms-ink)" }}
       aria-label="Synaps home"
     >
       <SiteMark />
       <span
         style={{
-          fontSize: 17,
-          fontWeight: 560,
-          letterSpacing: "-0.02em",
+          fontSize: 16,
+          fontWeight: 520,
+          letterSpacing: "-0.025em",
+          lineHeight: 1,
+          transform: "translateY(0.5px)",
         }}
       >
-        Synaps
+        synaps
       </span>
     </Link>
   );

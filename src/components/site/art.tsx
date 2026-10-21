@@ -14,20 +14,24 @@ function CardFrame({
   children,
   dark = false,
   ratio = "4 / 3",
+  flush = false,
 }: {
   children: React.ReactNode;
   dark?: boolean;
   ratio?: string;
+  flush?: boolean;
 }) {
   return (
     <div
       style={{
         aspectRatio: ratio,
         background: dark ? "#101318" : "#f3f0ec",
-        borderRadius: 10,
-        border: "1px solid rgba(8,9,11,0.10)",
+        borderRadius: flush ? 0 : 10,
+        border: flush ? "none" : "1px solid rgba(8,9,11,0.10)",
         overflow: "hidden",
         position: "relative",
+        width: "100%",
+        height: "100%",
       }}
     >
       {children}
@@ -38,7 +42,7 @@ function CardFrame({
 /** 01 — Import your CAD files: format chips flowing into a plan. */
 export function ImportCardArt() {
   return (
-    <CardFrame dark>
+    <CardFrame dark flush>
       <svg viewBox="0 0 400 300" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         <defs>
           <pattern id="impx-grid" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -99,7 +103,7 @@ export function ImportCardArt() {
 /** 02 — Draft with precision: protractor arcs, crosshair, sheet labels. */
 export function PrecisionCardArt() {
   return (
-    <CardFrame>
+    <CardFrame flush>
       <svg viewBox="0 0 400 300" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         {/* paper texture lines */}
         <rect width="400" height="300" fill="#f3f0ec" />
@@ -173,7 +177,7 @@ export function PrecisionCardArt() {
 /** 03 — Design with AI: sparkles on warm textured paper. */
 export function AICardArt() {
   return (
-    <CardFrame>
+    <CardFrame flush>
       <svg viewBox="0 0 400 300" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         <defs>
           <linearGradient id="ai-paper" x1="0" y1="0" x2="1" y2="1">

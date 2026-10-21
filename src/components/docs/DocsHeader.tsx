@@ -98,7 +98,7 @@ export function DocsHeader() {
         <Link href="/docs" className="docs-brand" aria-label="Synaps documentation">
           <SiteMark />
           <span className="docs-brand-text">
-            Synaps <span className="docs-brand-dim">documentation</span>
+            synaps <span className="docs-brand-dim">documentation</span>
           </span>
         </Link>
 

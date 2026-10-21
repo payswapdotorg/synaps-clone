@@ -140,38 +140,37 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-height: 44px;
   padding: 12px 22px;
-  border-radius: 2px;
-  font-size: 14.5px;
+  border-radius: 4px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.005em;
+  line-height: 1;
   border: 1px solid var(--ms-ink);
   background: var(--ms-ink);
-  color: #fff;
+  color: var(--ms-bg);
   cursor: pointer;
-  transition:
-    transform 0.35s var(--ms-ease),
-    box-shadow 0.35s var(--ms-ease),
-    background 0.2s;
+  transition: all 0.18s ease;
   text-decoration: none;
 }
 
 .ms-btn:hover {
   background: #232529;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(8, 9, 11, 0.14);
+  border-color: #232529;
 }
 
 .ms-btn--outline {
   background: transparent;
   color: var(--ms-ink);
-  border-color: var(--ms-ink);
+  border-color: rgba(8, 9, 11, 0.28);
+  padding-inline: 21px;
 }
 
 .ms-btn--outline:hover {
-  background: var(--ms-ink);
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(8, 9, 11, 0.12);
+  background: transparent;
+  border-color: var(--ms-ink);
+  box-shadow: none;
 }
 
 .ms-btn--light {
@@ -786,6 +785,214 @@
    (universal inner-page pattern from the harvest: the eyebrow is the
    two-line "Architectural practice / without the compromise." with the
    middle words dimmed; the h1 is set solid). */
+
+/* Home hero — transcribed from the harvest CSS + live-measured
+   (2026-10-22): wireframe page frame, 1.7fr : minmax(300px, 1fr)
+   columns at ≥1050px, aside pushed 42px down, canonical 44px buttons,
+   11px trust line, three fixed nowrap headline lines with the grey
+   .light third line. The home hero does NOT use the centered
+   ms-container: it snaps to the page-wide wireframe edges
+   (88px gutter + 32px content pad at desktop). Type scale
+   live-measured: ≤576 8.4vw · 577–1049 clamp(40,6vw,60) ·
+   ≥1050 clamp(44,4.4vw,68) (63.36px at 1440). */
+
+.home-hero {
+  /* The real hero padding (clamp 132–176) includes its fixed header;
+   * this clone's header is sticky/in-flow (~65px at desktop), so the
+   * hero subtracts it to land the eyebrow at the measured 158px. */
+  padding: 60px 0 44px;
+  position: relative;
+}
+
+.home-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: start;
+  padding-inline: 31px;
+}
+
+.home-hero-audience {
+  margin: 0 0 20px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ms-ink-soft);
+}
+
+.home-hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 8.4vw, 44px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+/* Each headline line is a fixed block (harvest: [data-home-hero-line]
+ * { display: block; white-space: nowrap }) — the three spans are the
+ * three rendered lines. */
+.home-hero h1 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.home-hero h1 .light {
+  color: #8a8f99;
+  margin-top: 0.1em;
+}
+
+.home-hero-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 0;
+}
+
+.home-hero-sub {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ms-ink-soft);
+  max-width: 34ch;
+  text-wrap: pretty;
+}
+
+.home-hero-cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.home-hero-cta .ms-btn,
+.home-hero-cta .ms-btn--outline {
+  justify-content: center;
+  min-height: 46px;
+  padding-inline: 12px;
+}
+
+.home-hero-trust {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ms-muted);
+  max-width: 34ch;
+}
+
+@media (max-width: 520px) {
+  .home-hero-cta .ms-btn,
+  .home-hero-cta .ms-btn--outline {
+    font-size: 13px;
+    padding-inline: 8px;
+  }
+}
+
+@media (min-width: 577px) {
+  .home-hero h1 {
+    font-size: clamp(40px, 6vw, 60px);
+    line-height: 1.08;
+    letter-spacing: -0.018em;
+  }
+  .home-hero-inner {
+    gap: 32px;
+    padding-inline: 42px;
+  }
+  .home-hero-audience {
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1050px) {
+  .home-hero {
+    padding: max(28px, calc(clamp(132px, 11vw, 176px) - 65px)) 0
+      clamp(72px, 7vw, 112px);
+  }
+  .home-hero-inner {
+    grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr);
+    gap: clamp(40px, 5vw, 80px);
+    padding-inline: calc(88px + 32px);
+  }
+  .home-hero h1 {
+    font-size: clamp(44px, 4.4vw, 68px);
+  }
+  .home-hero-aside {
+    padding-top: 42px;
+    gap: 22px;
+  }
+  .home-hero-sub {
+    font-size: 16px;
+    max-width: 36ch;
+  }
+  .home-hero-cta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: none;
+  }
+}
+
+/* Home features — the wireframe table: full-bleed section, 3 columns
+   with shared hairline borders (no gaps), 4/3 visuals (harvest +
+   live-measured: cards 423px wide at 1440, 86px inline padding). */
+
+.home-features-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding-inline: clamp(36px, 6vw, 86px);
+}
+
+@media (min-width: 900px) {
+  .home-features-inner {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.home-feature {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--ms-bg);
+  border-left: 1px solid rgba(8, 9, 11, 0.135);
+  overflow: hidden;
+}
+
+@media (max-width: 899px) {
+  .home-feature {
+    border-left: 0;
+    border-top: 1px solid rgba(8, 9, 11, 0.135);
+  }
+  .home-feature:first-child {
+    border-top: 0;
+  }
+}
+
+.home-feature-visual {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(8, 9, 11, 0.135);
+  display: flex;
+  align-items: stretch;
+}
+
+.home-feature-visual > * {
+  width: 100%;
+}
+
+.home-feature-body {
+  padding: 18px 32px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-feature-index {
+  font-family: ui-monospace, "Fira Mono", monospace;
+  font-size: 11px;
+  color: var(--ms-muted);
+}
 
 .ms-page-hero {
   display: grid;
