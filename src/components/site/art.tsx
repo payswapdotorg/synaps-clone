@@ -43,59 +43,41 @@ function CardFrame({
 export function ImportCardArt() {
   return (
     <CardFrame dark flush>
-      <svg viewBox="0 0 400 300" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        <defs>
-          <pattern id="impx-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M20 0H0V20" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
-          </pattern>
-        </defs>
-        <rect width="400" height="300" fill="url(#impx-grid)" />
-        {/* destination plan card */}
-        <g transform="translate(228 78)">
-          <rect width="130" height="150" rx="6" fill="#181d24" stroke="rgba(255,255,255,0.16)" />
-          <path d="M18 20h60v40h-60z M92 20v40h20 M18 78h34v52 M64 78h48v24" fill="none" stroke="#7fb2e8" strokeWidth="2" />
-          <path d="M52 60a14 14 0 0 1 14 14" fill="none" stroke="#7fb2e8" strokeWidth="1.4" />
-          <circle cx="52" cy="60" r="2" fill="#7fb2e8" />
-        </g>
-        {/* source chips: tool monograms (original marks, not logos) */}
-        {[
-          { x: 34, y: 40, label: "R", sub: "Revit", w: 78 },
-          { x: 18, y: 124, label: "A", sub: "AutoCAD", w: 86 },
-          { x: 52, y: 206, label: "G", sub: "Archicad", w: 84 },
-        ].map((chip) => (
-          <g key={chip.sub} transform={`translate(${chip.x} ${chip.y})`}>
-            <rect width={chip.w} height="46" rx="5" fill="#f6f7f9" />
-            <text
-              x="20"
-              y="30"
-              fontSize="17"
-              fontWeight="700"
-              fill="#101318"
-              fontFamily="ui-monospace, monospace"
-            >
-              {chip.label}
-            </text>
-            <text
-              x={chip.w - 10}
-              y="30"
-              textAnchor="end"
-              fontSize="9.5"
-              fill="rgba(8,9,11,0.55)"
-              fontFamily="ui-monospace, monospace"
-            >
-              {chip.sub}
-            </text>
-          </g>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/site/cad-textured-grid.jpg"
+        alt="Textured CAD grid canvas"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.92)" }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "flex-start",
+          gap: 10,
+          padding: 18,
+        }}
+      >
+        {["DXF", "PDF", "Revit", "AutoCAD", "ArchiCAD"].map((fmt) => (
+          <span
+            key={fmt}
+            style={{
+              fontSize: 11,
+              fontWeight: 500,
+              letterSpacing: "0.02em",
+              color: "#f4f6f8",
+              background: "rgba(16,19,24,0.72)",
+              border: "1px solid rgba(255,255,255,0.22)",
+              borderRadius: 4,
+              padding: "5px 9px",
+            }}
+          >
+            {fmt}
+          </span>
         ))}
-        {/* flow arrows */}
-        <path
-          d="M118 63c40 6 70 22 104 44M92 145c34 0 74 10 130 32M122 225c30-8 62-24 100-46"
-          fill="none"
-          stroke="rgba(255,255,255,0.34)"
-          strokeWidth="1.5"
-          strokeDasharray="5 6"
-        />
-      </svg>
+      </div>
     </CardFrame>
   );
 }
@@ -104,72 +86,12 @@ export function ImportCardArt() {
 export function PrecisionCardArt() {
   return (
     <CardFrame flush>
-      <svg viewBox="0 0 400 300" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        {/* paper texture lines */}
-        <rect width="400" height="300" fill="#f3f0ec" />
-        <path d="M0 40h400M0 90h400M0 260h400" stroke="rgba(8,9,11,0.05)" />
-        {/* protractor quarter arcs */}
-        <g transform="translate(52 252)" stroke="#101318" fill="none">
-          <path d="M0 0A190 190 0 0 1 190 0" strokeWidth="1.2" opacity="0.75" />
-          <path d="M0 0A150 150 0 0 1 150 0" strokeWidth="1" opacity="0.5" />
-          <path d="M0 0A110 110 0 0 1 110 0" strokeWidth="1" opacity="0.35" />
-          {Array.from({ length: 10 }).map((_, i) => {
-            const a = (Math.PI / 2) * (i / 9);
-            return (
-              <line
-                key={i}
-                x1={Math.cos(a) * 190}
-                y1={-Math.sin(a) * 190}
-                x2={Math.cos(a) * 178}
-                y2={-Math.sin(a) * 178}
-                strokeWidth="1.4"
-              />
-            );
-          })}
-          <line x1="0" y1="0" x2="188" y2="0" strokeWidth="1.4" />
-          <line x1="0" y1="0" x2="0" y2="-188" strokeWidth="1.4" />
-        </g>
-        {/* faint plan behind */}
-        <g stroke="rgba(16,96,192,0.5)" fill="none" strokeWidth="1.6" transform="translate(150 60)">
-          <path d="M0 0h150v100H0z" />
-          <path d="M60 0v44M110 44H60v56M0 60h40" />
-        </g>
-        {/* crosshair */}
-        <g stroke="#101318" strokeWidth="1.2">
-          <line x1="222" y1="96" x2="222" y2="126" />
-          <line x1="207" y1="111" x2="237" y2="111" />
-          <circle cx="222" cy="111" r="9" fill="none" />
-        </g>
-        {/* sheet labels */}
-        {[
-          { x: 316, y: 52, t: "X01" },
-          { x: 344, y: 84, t: "X02" },
-          { x: 316, y: 116, t: "X03" },
-        ].map((l) => (
-          <g key={l.t} transform={`translate(${l.x} ${l.y})`}>
-            <rect x="-14" y="-11" width="28" height="22" fill="none" stroke="#101318" strokeWidth="1.1" />
-            <text
-              textAnchor="middle"
-              y="4"
-              fontSize="10"
-              fontFamily="ui-monospace, monospace"
-              fill="#101318"
-              letterSpacing="0.5"
-            >
-              {l.t}
-            </text>
-          </g>
-        ))}
-        {/* dimension line */}
-        <g stroke="#101318" strokeWidth="1">
-          <line x1="150" y1="200" x2="300" y2="200" />
-          <line x1="150" y1="193" x2="150" y2="207" />
-          <line x1="300" y1="193" x2="300" y2="207" />
-        </g>
-        <text x="225" y="192" textAnchor="middle" fontSize="10" fontFamily="ui-monospace, monospace" fill="#101318">
-          4 200
-        </text>
-      </svg>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/site/precise-drafting.jpg"
+        alt="Dimensioned floor plan detail being drafted"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      />
     </CardFrame>
   );
 }
@@ -177,31 +99,13 @@ export function PrecisionCardArt() {
 /** 03 — Design with AI: sparkles on warm textured paper. */
 export function AICardArt() {
   return (
-    <CardFrame flush>
-      <svg viewBox="0 0 400 300" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        <defs>
-          <linearGradient id="ai-paper" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#f6ece7" />
-            <stop offset="1" stopColor="#ecd9d0" />
-          </linearGradient>
-          <pattern id="ai-weave" width="6" height="6" patternUnits="userSpaceOnUse">
-            <path d="M0 6L6 0" stroke="rgba(8,9,11,0.035)" strokeWidth="1" />
-          </pattern>
-        </defs>
-        <rect width="400" height="300" fill="url(#ai-paper)" />
-        <rect width="400" height="300" fill="url(#ai-weave)" />
-        {/* single large four-point sparkle, centred */}
-        <path
-          d="M200 86c5 44 17 56 61 61-44 5-56 17-61 61-5-44-17-56-61-61 44-5 56-17 61-61Z"
-          fill="#14151a"
-        />
-        {/* small companion sparkle, low-key */}
-        <path
-          d="M292 176c2.6 22 8.6 28 30 30-21.4 2-27.4 8-30 30-2.6-22-8.6-28-30-30 21.4-2 27.4-8 30-30Z"
-          fill="#14151a"
-          opacity="0.7"
-        />
-      </svg>
+    <CardFrame dark flush>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/site/design-with-ai.jpg"
+        alt="AI generating an architectural floor plan"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      />
     </CardFrame>
   );
 }

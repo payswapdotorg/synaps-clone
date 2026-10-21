@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowCards,
-  CtaBand,
   FaqList,
   PageHero,
   SectionHead,
@@ -158,8 +157,6 @@ export default function CompanyPage() {
           </p>
         </div>
       </section>
-
-      <CtaBand />
     </main>
   );
 }

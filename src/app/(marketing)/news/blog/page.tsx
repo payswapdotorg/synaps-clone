@@ -111,8 +111,6 @@ export default function BlogHubPage() {
           </ul>
         </div>
       </section>
-
-      <CtaBand />
     </main>
   );
 }

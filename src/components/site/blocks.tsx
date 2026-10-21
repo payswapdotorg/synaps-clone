@@ -95,25 +95,9 @@ export function SectionHead({
 
 /* ------------------------------------------------------------------ */
 
-export function FaqList({ items }: { items: { q: string; a: string }[] }) {
-  return (
-    <div className="ms-accordion">
-      {items.map((item) => (
-        <details key={item.q}>
-          <summary>
-            <span>{item.q}</span>
-            <span className="tick" aria-hidden="true">
-              +
-            </span>
-          </summary>
-          <div className="answer">
-            <p style={{ margin: 0 }}>{item.a}</p>
-          </div>
-        </details>
-      ))}
-    </div>
-  );
-}
+/* FaqList moved to its own client module (single-open + scroll-anchor
+   behavior); re-exported here so existing imports keep working. */
+export { FaqList } from "./FaqList";
 
 /* ------------------------------------------------------------------ */
 
@@ -214,10 +198,7 @@ export function CompareTable({
 /* ------------------------------------------------------------------ */
 
 export function PageShell({ children }: { children: ReactNode }) {
-  return (
-    <main id="content">
-      {children}
-      <CtaBand />
-    </main>
-  );
+  /* The closing CTA band moved to the marketing layout (SiteTail) so
+     every page shares the video-stage + CTA tail the real site ships. */
+  return <main id="content">{children}</main>;
 }

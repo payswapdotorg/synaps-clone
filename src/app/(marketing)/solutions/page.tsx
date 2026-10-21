@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import {
   ArrowCards,
-  CtaBand,
   PageHero,
   SectionHead,
 } from "@/components/site/blocks";
@@ -40,7 +39,6 @@ export default function SolutionsHubPage() {
           </div>
         </div>
       </section>
-      <CtaBand />
     </main>
   );
 }

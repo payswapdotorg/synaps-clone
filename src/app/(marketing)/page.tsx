@@ -2,22 +2,21 @@ import Link from "next/link";
 import { AuthRedirect } from "@/components/auth/AuthRedirect";
 import {
   AICardArt,
-  AssetsMarquee,
-  ConfigPanelMockup,
-  GeneratorMockup,
   ImportCardArt,
   PrecisionCardArt,
 } from "@/components/site/art";
-import { CtaBand } from "@/components/site/blocks";
+import { AssetsLibrary } from "@/components/site/AssetsLibrary";
+import { ScrollTiles } from "@/components/site/ScrollTiles";
 
 /**
  * Marketing home — rebuilt against the synaps.app main-domain harvest
  * (docs/SITE-PARITY-PLAN.md): two-column hero with a dimmed second
  * headline line and black primary CTA; the 01/03–03/03 feature cards;
- * the manifesto + testimonial bridge; Drafting / Polishing feature
- * splits with product mockups; the "Everything you need" capability
- * grid; the native assets band. Headlines and micro-copy are the
- * observed strings; artwork and mockups are original.
+ * the manifesto + testimonial bridge; the 600svh Drafting → Polishing
+ * capabilities scrollytelling; the scroll-bound native assets band.
+ * The universal video-stage tail and closing CTA live in the marketing
+ * layout. Headlines and micro-copy are the observed strings; artwork,
+ * mockups and media are original.
  */
 
 const CARDS = [
@@ -38,19 +37,6 @@ const CARDS = [
     title: "Design with AI",
     body: "Generate floor plans and explore different materials, furniture and lighting.",
     art: <AICardArt />,
-  },
-];
-
-const CAPABILITIES: { group: string; accent: "draft" | "polish"; items: string[] }[] = [
-  {
-    group: "Drafting",
-    accent: "draft",
-    items: ["Accurate floor plans", "Configurable elements", "Floor plan tracer", "Floor plan generator"],
-  },
-  {
-    group: "Polishing",
-    accent: "polish",
-    items: ["Shadows", "Spatial visualization", "Angle control", "Relight & resurface", "Replace & restyle"],
   },
 ];
 
@@ -157,141 +143,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --------------------------------------------- Feature splits */}
-      <section className="ms-container ms-section ms-stack-40">
-        {/* Drafting */}
-        <div className="ms-split">
-          <div className="ms-split-text ms-stack-16" style={{ position: "relative" }}>
-            <span
-              className="ms-watermark"
-              style={{ top: "-0.35em", left: "-0.06em" }}
-              aria-hidden
-            >
-              Accurate
-              <br />
-              floor plans
-            </span>
-            <span className="ms-chip" style={{ position: "relative" }}>
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M2 14L14 2M4 2h10v10" />
-              </svg>
-              Drafting
-            </span>
-            <h2 className="ms-h2" style={{ position: "relative" }}>
-              Configurable <span className="dim">elements.</span>
-            </h2>
-            <p className="ms-body" style={{ maxWidth: "46ch", position: "relative" }}>
-              Windows, doors and stairs are editable, dimension-driven objects —
-              change the type, the width or the frame and every dependent opening
-              updates. Styles are saved and reused across the plan.
-            </p>
-            <p
-              style={{
-                fontSize: 12.5,
-                color: "var(--ms-muted)",
-                position: "relative",
-              }}
-            >
-              Windows, doors, stairs, editable and connected.
-            </p>
-          </div>
-          <div style={{ position: "relative" }}>
-            <ConfigPanelMockup />
-          </div>
-        </div>
+      {/* --------------------------- Capabilities scrollytelling (600svh) */}
+      <ScrollTiles />
 
-        {/* Polishing */}
-        <div className="ms-split ms-split--flip">
-          <div className="ms-split-text ms-stack-16" style={{ position: "relative" }}>
-            <span
-              className="ms-watermark"
-              style={{ bottom: "-0.3em", left: "-0.06em" }}
-              aria-hidden
-            >
-              Floor plan
-              <br />
-              generator
-            </span>
-            <span className="ms-chip ms-chip--polish" style={{ position: "relative" }}>
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M8 1.5c.8 5 2 6.2 7 7-5 .8-6.2 2-7 7-.8-5-2-6.2-7-7 5-.8 6.2-2 7-7Z" />
-              </svg>
-              Polishing
-            </span>
-            <h2 className="ms-h2" style={{ position: "relative" }}>
-              Floor plan <span className="dim">generator.</span>
-            </h2>
-            <p className="ms-body" style={{ maxWidth: "46ch", position: "relative" }}>
-              Describe the space in plain language and get an editable plan back —
-              walls, rooms and openings as real drafting objects, ready to adjust.
-              (Simulated in the clone.)
-            </p>
-            <p
-              style={{
-                fontSize: 12.5,
-                color: "var(--ms-muted)",
-                position: "relative",
-              }}
-            >
-              Describe the space. Get an editable plan.
-            </p>
-          </div>
-          <div style={{ position: "relative" }}>
-            <GeneratorMockup />
-          </div>
-        </div>
-      </section>
-
-      {/* --------------------------------------- Everything you need */}
-      <section
-        className="ms-container"
-        style={{ paddingBottom: "clamp(64px, 8vw, 110px)" }}
-      >
-        <div className="ms-stack-32">
-          <h2 className="ms-h2">
-            Everything you <span className="dim">need.</span>
-          </h2>
-          <div className="ms-grid-2" style={{ gap: "clamp(20px, 2.4vw, 36px)" }}>
-            {CAPABILITIES.map((cap) => (
-              <div key={cap.group} className="ms-stack-16">
-                <span
-                  className="ms-label"
-                  style={{
-                    color: cap.accent === "draft" ? "var(--ms-draft)" : "#c7560a",
-                  }}
-                >
-                  {cap.group}
-                </span>
-                <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-                  {cap.items.map((item) => (
-                    <li
-                      key={item}
-                      style={{
-                        borderTop: "1px solid var(--ms-hairline)",
-                        padding: "13px 2px",
-                        fontSize: "clamp(17px, 1.5vw, 20px)",
-                        fontWeight: 520,
-                        letterSpacing: "-0.012em",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        gap: 12,
-                      }}
-                    >
-                      {item}
-                      <span style={{ color: "var(--ms-ink-faint)" }} aria-hidden>
-                        +
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------ Assets band */}
-      <section className="ms-hatch--soft" style={{ borderTop: "1px solid var(--ms-hairline)" }}>
+      {/* --------------------------- Assets band (cinematic dark tail) */}
+      <section className="assets-band" aria-label="Native library">
         <div className="ms-container ms-section ms-stack-32">
           <div className="ms-stack-16">
             <span className="ms-label">Native library</span>
@@ -303,11 +159,9 @@ export default function HomePage() {
               canvas. Drop a sofa, paint a wood grain, snap a window into place.
             </p>
           </div>
-          <AssetsMarquee />
         </div>
+        <AssetsLibrary />
       </section>
-
-      <CtaBand />
     </main>
   );
 }

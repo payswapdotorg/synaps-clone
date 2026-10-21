@@ -92,7 +92,6 @@ export default function ChangelogHubPage() {
           ))}
         </div>
       </section>
-      <CtaBand />
     </main>
   );
 }

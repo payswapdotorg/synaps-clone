@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { FaqList, PageHero, SectionHead } from "@/components/site/blocks";
-import { CtaBand } from "@/components/site/blocks";
 
 /**
  * FAQ — questions transcribed from the harvest; answers condensed and
@@ -68,7 +67,6 @@ export default function FaqPage() {
           <FaqList items={FAQS} />
         </div>
       </section>
-      <CtaBand />
     </main>
   );
 }

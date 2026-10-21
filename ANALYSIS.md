@@ -636,3 +636,27 @@ wash tokens, and the root 404 is theme-aware (dark for app paths, light
 for marketing paths). Marketing and docs surfaces are unchanged (light),
 matching the real deployment split (synaps.app light vs beta.synaps.app
 dark).
+
+## Cinematic tail ground truth (Task 38)
+
+The live site defaults to `html[data-page-theme="cinematic"]`: from the
+scroll-tiles polish flip onward the page is one continuous dark band —
+scroll-tiles (polish) → assets-library (`data-theme="dark"`, #0F0F0E,
+ghosted material swatches via `invert(1) contrast(.95) brightness(1.16)
+opacity(.84)`, white line-art blocks) → video-stage (#0F0F0E) → footer
+(#0F0F0E). The light `data-page-theme` rules are an opt-out mode, not the
+default. The universal tail on every page is: content → video-stage
+("Real work built with Synaps": sticky expanding frame, 2 muted looping
+clips, 8s auto-cycle with rAF progress fill, caption overlays) → footer
+(whose own CTA block carries the closing heading — there is NO separate
+light CTA band). The clone now mirrors this structure.
+
+The homepage capabilities section is a 600svh scrollytelling
+(`.scroll-tiles`): sticky two-panel stage (draft words left / draft
+visuals right), scroll-driven phase budget DRAFT 0–0.28 · FLIP 0–0.58
+(mode switch entrance + thumb tension, `--flip-theme` build-up) ·
+POLISH 0.58–0.93 (snap state machine: 540ms thumb spring → 480ms
+dismiss/reveal) · TAIL → 1, with click-to-jump words, 440ms image
+cross-fades, 90ms caption swaps, and a header dark sync
+(`is-section-dark` / `is-tail-dark`). FAQ uses a single-open
+scroll-anchored details accordion (site-enhance.js behavior).

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowCards,
-  CtaBand,
   PageHero,
   SectionHead,
 } from "@/components/site/blocks";
@@ -80,8 +79,6 @@ export default function PartnersPage() {
           </div>
         </div>
       </section>
-
-      <CtaBand />
     </main>
   );
 }

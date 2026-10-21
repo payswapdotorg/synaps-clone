@@ -7,7 +7,6 @@ import {
   SectionHead,
 } from "@/components/site/blocks";
 import { PricingCards } from "@/components/site/PricingCards";
-import { CtaBand } from "@/components/site/blocks";
 
 /**
  * Pricing — content transcribed from the harvest (plan names, prices,
@@ -143,8 +142,6 @@ export default function PricingPage() {
           />
         </div>
       </section>
-
-      <CtaBand />
     </main>
   );
 }
