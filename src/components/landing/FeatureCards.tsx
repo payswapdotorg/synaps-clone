@@ -39,17 +39,21 @@ export function FeatureCards() {
   );
 }
 
-function DotGrid() {
+/**
+ * SVG-native dot grid (pattern + rect). Must NOT render an HTML <div> —
+ * an HTML element inside <svg> gets relocated by the HTML parser during
+ * hydration, causing a React #418 hydration mismatch on the homepage.
+ */
+function DotGrid({ id }: { id: string }) {
   return (
-    <div
-      aria-hidden="true"
-      className="absolute inset-0"
-      style={{
-        backgroundImage:
-          "radial-gradient(circle, color-mix(in srgb, var(--accent--canvas--dot) 22%, transparent) 1px, transparent 1px)",
-        backgroundSize: "18px 18px",
-      }}
-    />
+    <>
+      <defs>
+        <pattern id={id} width="18" height="18" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="1" fill="var(--accent--canvas--dot)" fillOpacity={0.22} />
+        </pattern>
+      </defs>
+      <rect aria-hidden="true" x="0" y="0" width="100%" height="100%" fill={`url(#${id})`} />
+    </>
   );
 }
 
@@ -74,7 +78,7 @@ function CadScene() {
       role="img"
       aria-label="Original line drawing of a CAD file arriving over an architectural grid"
     >
-      <DotGrid />
+      <DotGrid id="feature-cad-dots" />
       <Guide d="M0 40h320M0 160h320M40 0v200M280 0v200" />
       <g
         stroke="var(--accent--canvas--crosshair)"
@@ -118,7 +122,7 @@ function PrecisionScene() {
       role="img"
       aria-label="Original line drawing of angle markings over a drafted plan"
     >
-      <DotGrid />
+      <DotGrid id="feature-precision-dots" />
       <Guide d="M0 60h320M0 140h320" />
       <g
         stroke="var(--accent--canvas--crosshair)"
@@ -151,7 +155,7 @@ function AiScene() {
       role="img"
       aria-label="Original line drawing of a generated floor plan with AI markers"
     >
-      <DotGrid />
+      <DotGrid id="feature-ai-dots" />
       <g
         stroke="var(--accent--canvas--crosshair)"
         strokeWidth={1.3}
