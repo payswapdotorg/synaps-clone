@@ -190,7 +190,7 @@ export function PlanEditor({
       );
       return;
     }
-    if (tool === "room") {
+    if (tool === "room" || tool === "lasso") {
       setDragRect({ a: snapOrFree(p), b: snapOrFree(p) });
       return;
     }
@@ -243,7 +243,13 @@ export function PlanEditor({
       const w = Math.abs(dragRect.a.x - dragRect.b.x);
       const h = Math.abs(dragRect.a.y - dragRect.b.y);
       if (w > 0.4 && h > 0.4) {
-        addShape({ kind: "room", id: nid("r"), x, y, w, h, label: "Room" });
+        if (tool === "lasso") {
+          // Simulated magnetic lasso: the real product traces edges via
+          // magneticLassoWorker; here the drag rect becomes a traced room.
+          addShape({ kind: "room", id: nid("r"), x, y, w, h, label: "Traced area", provenance: "lasso" });
+        } else {
+          addShape({ kind: "room", id: nid("r"), x, y, w, h, label: "Room" });
+        }
       }
       setDragRect(null);
     }

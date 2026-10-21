@@ -3,6 +3,16 @@
 import { useMemo, useRef, useState } from "react";
 import { PlanEditor, AssetSymbol, type EditorSettings } from "./PlanEditor";
 import {
+  ExportDialog,
+  ImportDialog,
+  PageBar,
+  PhoneHandoverDialog,
+  PresentationMode,
+  EditorErrorFallback,
+  type ConsolePage,
+} from "./ConsoleFeatures";
+import { PolishView, SunlightPanel, MATERIALS, DEFAULT_MATERIAL, type MaterialId } from "./PolishView";
+import {
   type Shape,
   type Tool,
   type Units,
@@ -32,6 +42,7 @@ const TOOLS: { id: Tool; label: string; key: string }[] = [
   { id: "door", label: "Door", key: "D" },
   { id: "window", label: "Window", key: "N" },
   { id: "room", label: "Room", key: "R" },
+  { id: "lasso", label: "Magnetic lasso (simulated trace)", key: "L" },
   { id: "dim", label: "Dimension", key: "M" },
   { id: "text", label: "Text", key: "T" },
   { id: "asset", label: "Asset", key: "A" },
@@ -126,7 +137,24 @@ export function ConsoleChrome({
   model?: { id: string; name: string; pages: { id: string; name: string }[] };
   team?: { id: string; name: string; plan: string };
 }) {
-  const [shapes, setShapes] = useState<Shape[]>(() => (initialDemo ? demoPlan() : []));
+  const [pageShapes, setPageShapes] = useState<Record<string, Shape[]>>(() => ({
+    _initial: initialDemo ? demoPlan() : [],
+  }));
+  const [pages, setPages] = useState<ConsolePage[]>(() =>
+    model?.pages?.length ? model.pages.map((p) => ({ id: p.id, name: p.name })) : [{ id: "_initial", name: "Page 1" }],
+  );
+  const [activePageId, setActivePageId] = useState<string>(() => model?.pages?.[0]?.id ?? "_initial");
+  const [mode, setMode] = useState<"draft" | "polish">("draft");
+  const [sunlight, setSunlight] = useState({ azimuth: 135, elevation: 45 });
+  const [materials, setMaterials] = useState<Record<string, MaterialId>>({});
+  const [importOpen, setImportOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [presentOpen, setPresentOpen] = useState(false);
+  const [phoneOpen, setPhoneOpen] = useState(false);
+  const [nameDraft, setNameDraft] = useState<string | null>(null);
+  const shapes = pageShapes[activePageId] ?? [];
+  const setShapes = (updater: (prev: Shape[]) => Shape[]) =>
+    setPageShapes((prev) => ({ ...prev, [activePageId]: updater(prev[activePageId] ?? []) }));
   const [tool, setTool] = useState<Tool>("select");
   const [assetSymbol, setAssetSymbol] = useState("sofa");
   const [dockTab, setDockTab] = useState<"layers" | "assets">("layers");
@@ -168,8 +196,47 @@ export function ConsoleChrome({
           <path d="M9 12h6M12 9v6" stroke="currentColor" strokeWidth="1.2" />
         </svg>
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-content-primary">{modelName}</p>
+          {nameDraft === null ? (
+            <p
+              className="truncate text-sm font-semibold text-content-primary"
+              title="Double-click to rename (resourceRenameOptimistic)"
+              onDoubleClick={() => setNameDraft(modelName)}
+            >
+              {modelName}
+            </p>
+          ) : (
+            <input
+              autoFocus
+              value={nameDraft}
+              onChange={(e) => setNameDraft(e.target.value)}
+              onBlur={() => setNameDraft(null)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setNameDraft(null);
+                if (e.key === "Escape") setNameDraft(null);
+              }}
+              aria-label="Model name"
+              className="w-40 rounded-control border border-border-solid/30 bg-surface-base px-2 py-0.5 text-sm text-content-primary"
+            />
+          )}
           <p className="truncate text-2xs text-content-secondary">{spaceName}</p>
+        </div>
+        <div className="ml-2 flex items-center gap-1" role="group" aria-label="Canvas mode">
+          <button
+            type="button"
+            onClick={() => setMode("draft")}
+            aria-pressed={mode === "draft"}
+            className={`rounded-pill px-2.5 py-1 text-xs ${mode === "draft" ? "bg-surface-raised font-medium text-content-primary" : "text-content-secondary hover:text-content-primary"}`}
+          >
+            Draft
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("polish")}
+            aria-pressed={mode === "polish"}
+            className={`rounded-pill px-2.5 py-1 text-xs ${mode === "polish" ? "bg-surface-raised font-medium text-content-primary" : "text-content-secondary hover:text-content-primary"}`}
+          >
+            Polish
+          </button>
         </div>
         <div className="ml-2 flex items-center gap-1">
           <button
@@ -199,6 +266,22 @@ export function ConsoleChrome({
           </button>
           <button
             type="button"
+            onClick={() => setPresentOpen(true)}
+            title="Presentation mode (reveal artifacts)"
+            className="rounded-control border border-border-solid/20 px-3 py-1.5 text-xs text-content-secondary hover:text-content-primary"
+          >
+            Present
+          </button>
+          <button
+            type="button"
+            onClick={() => setPhoneOpen(true)}
+            title="Open on phone (simulated)"
+            className="rounded-control border border-border-solid/20 px-3 py-1.5 text-xs text-content-secondary hover:text-content-primary"
+          >
+            Phone
+          </button>
+          <button
+            type="button"
             onClick={() => setShareOpen(true)}
             className="rounded-control px-4 py-1.5 text-sm font-medium text-content-inverse"
             style={{ background: "var(--accent--canvas--guide, #1a73e8)" }}
@@ -207,6 +290,31 @@ export function ConsoleChrome({
           </button>
         </div>
       </header>
+
+      <PageBar
+        pages={pages}
+        activePageId={activePageId}
+        maxPages={team?.plan === "Pro" ? Number.POSITIVE_INFINITY : 3}
+        onSelect={(id) => setActivePageId(id)}
+        onAdd={() => {
+          const id = `p-${Math.random().toString(36).slice(2, 8)}`;
+          setPages((prev) => [...prev, { id, name: `Page ${prev.length + 1}` }]);
+          setPageShapes((prev) => ({ ...prev, [id]: [] }));
+          setActivePageId(id);
+        }}
+        onRename={(id, name) => setPages((prev) => prev.map((p) => (p.id === id ? { ...p, name } : p)))}
+        onDuplicate={(id) => {
+          const nid2 = `p-${Math.random().toString(36).slice(2, 8)}`;
+          setPages((prev) => [...prev, { id: nid2, name: `${prev.find((p) => p.id === id)?.name ?? "Page"} copy` }]);
+          setPageShapes((prev) => ({ ...prev, [nid2]: [...(prev[id] ?? [])] }));
+        }}
+        onDelete={(id) => {
+          if (pages.length <= 1) return;
+          const rest = pages.filter((p) => p.id !== id);
+          setPages(rest);
+          if (activePageId === id) setActivePageId(rest[0].id);
+        }}
+      />
 
       <div className="flex min-h-0 flex-1">
         {/* Left dock (observed) */}
@@ -310,15 +418,23 @@ export function ConsoleChrome({
 
         {/* Canvas area */}
         <div className="relative min-w-0 flex-1">
-          <PlanEditor
-            shapes={shapes}
-            setShapes={setShapes}
-            tool={tool}
-            assetSymbol={assetSymbol}
-            settings={settings}
-            onSelectionChange={setSelectedId}
-            undoRef={undoRef}
-          />
+          {mode === "polish" ? (
+            <div className="h-full w-full p-4">
+              <PolishView shapes={shapes} materials={materials} sunlight={sunlight} grid={settings.grid} />
+            </div>
+          ) : (
+            <EditorErrorFallback>
+              <PlanEditor
+                shapes={shapes}
+                setShapes={setShapes}
+                tool={tool}
+                assetSymbol={assetSymbol}
+                settings={settings}
+                onSelectionChange={setSelectedId}
+                undoRef={undoRef}
+              />
+            </EditorErrorFallback>
+          )}
 
           {/* Floating toolbar (observed: bottom center) */}
           <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border-solid/15 bg-surface-base px-2 py-1.5 shadow-lg" role="toolbar" aria-label="Drawing tools">
@@ -350,7 +466,13 @@ export function ConsoleChrome({
               </button>
             ))}
             <span className="mx-1 h-5 w-px bg-border-solid/15" aria-hidden="true" />
-            <button type="button" onClick={exportPng} title="Export" aria-label="Export plan" className="rounded-full p-2 text-content-secondary hover:bg-surface-raised hover:text-content-primary">
+            <button type="button" onClick={() => setImportOpen(true)} title="Import floorplan (image/PDF/SVG/DXF/DWG)" aria-label="Import floorplan" className="rounded-full p-2 text-content-secondary hover:bg-surface-raised hover:text-content-primary">
+              <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
+                <path d="M10 12V4m0 0L7 7m3-3l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 14v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+            <button type="button" onClick={() => setExportOpen(true)} title="Export" aria-label="Export plan" className="rounded-full p-2 text-content-secondary hover:bg-surface-raised hover:text-content-primary">
               <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
                 <path d="M10 4v8m0 0l-3-3m3 3l3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M4 14v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -458,13 +580,88 @@ export function ConsoleChrome({
             )}
           </div>
 
+          {mode === "polish" && (
+            <>
+              <SunlightPanel sunlight={sunlight} onChange={setSunlight} />
+              {selectedShape?.kind === "room" ? (
+                <div className="mt-3 rounded-surface border border-border-solid/15 p-3">
+                  <p className="text-2xs font-semibold uppercase tracking-wide text-content-secondary">
+                    Material · {selectedShape.label}
+                  </p>
+                  <div className="mt-2 grid grid-cols-3 gap-1.5">
+                    {MATERIALS.map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setMaterials((prev) => ({ ...prev, [selectedShape.id]: m.id }))}
+                        aria-label={`Assign ${m.label}`}
+                        className={`flex flex-col items-center gap-1 rounded-control border p-1.5 text-[10px] ${
+                          (materials[selectedShape.id] ?? DEFAULT_MATERIAL) === m.id
+                            ? "border-border-solid bg-surface-raised text-content-primary"
+                            : "border-border-solid/15 text-content-secondary hover:border-border-solid/40"
+                        }`}
+                      >
+                        <span className="size-4 rounded-sm border border-black/10" style={{ background: m.fill }} aria-hidden />
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-3 text-[11px] text-content-secondary">
+                  Select a room in Polish mode to assign a material.
+                </p>
+              )}
+            </>
+          )}
+
           <p className="mt-6 text-[11px] leading-relaxed text-content-secondary">
             Educational clone — the console reconstructs the observed layout
             (Layers / Assets dock, Canvas settings, floating tool palette,
-            status bar). Drawing is fully local; nothing is saved or sent.
+            status bar) plus the bundle-recovered features: pages, import /
+            export suites, presentation, phone handover, polish mode. Drawing
+            is fully local; nothing is saved or sent.
           </p>
         </aside>
       </div>
+
+      {importOpen && (
+        <ImportDialog
+          onClose={() => setImportOpen(false)}
+          entitlements={{ dxfImport: true, dwgImport: team?.plan === "Pro" }}
+          onImported={(format, filename) => {
+            // Simulated import result: a traced room + provenance marker.
+            setShapes((prev) => [
+              ...prev,
+              { kind: "room", id: `imp-${Math.random().toString(36).slice(2, 8)}`, x: 1, y: 1, w: 5, h: 3.5, label: `${format.toUpperCase()} import`, provenance: "import" },
+            ]);
+            setImportOpen(false);
+            void filename;
+          }}
+        />
+      )}
+      {exportOpen && (
+        <ExportDialog
+          onClose={() => setExportOpen(false)}
+          onExportPng={exportPng}
+          onExportSvg={() => {
+            const svg = document.querySelector('svg[role="application"], svg[role="img"]');
+            if (!svg) return;
+            const xml = new XMLSerializer().serializeToString(svg);
+            const blob = new Blob([xml], { type: "image/svg+xml;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${modelName.replace(/\s+/g, "-").toLowerCase()}.svg`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+          entitlements={{ dwgExport: team?.plan === "Pro", watermarked: team?.plan !== "Pro" }}
+          modelName={modelName}
+        />
+      )}
+      {presentOpen && <PresentationMode modelName={modelName} onExit={() => setPresentOpen(false)} />}
+      {phoneOpen && <PhoneHandoverDialog modelName={modelName} onClose={() => setPhoneOpen(false)} />}
 
       {/* Share dialog (simulated) */}
       {shareOpen && (

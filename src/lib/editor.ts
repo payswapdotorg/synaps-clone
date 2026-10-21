@@ -15,7 +15,7 @@ export type Shape =
   | { kind: "wall"; id: string; a: Pt; b: Pt }
   | { kind: "door"; id: string; at: Pt; angle: number; width: number }
   | { kind: "window"; id: string; at: Pt; angle: number; width: number }
-  | { kind: "room"; id: string; x: number; y: number; w: number; h: number; label: string }
+  | { kind: "room"; id: string; x: number; y: number; w: number; h: number; label: string; material?: string; provenance?: "import" | "lasso" }
   | { kind: "text"; id: string; at: Pt; text: string }
   | { kind: "dim"; id: string; a: Pt; b: Pt }
   | { kind: "asset"; id: string; at: Pt; symbol: string; rot: number };
@@ -27,6 +27,7 @@ export type Tool =
   | "door"
   | "window"
   | "room"
+  | "lasso"
   | "text"
   | "dim"
   | "asset"
