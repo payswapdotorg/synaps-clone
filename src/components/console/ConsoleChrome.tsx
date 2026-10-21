@@ -12,6 +12,7 @@ import {
   type ConsolePage,
 } from "./ConsoleFeatures";
 import { PolishView, SunlightPanel, MATERIALS, DEFAULT_MATERIAL, type MaterialId } from "./PolishView";
+import { updateSession } from "@/lib/session";
 import {
   type Shape,
   type Tool,
@@ -137,13 +138,13 @@ export function ConsoleChrome({
   model?: { id: string; name: string; pages: { id: string; name: string }[] };
   team?: { id: string; name: string; plan: string };
 }) {
-  const [pageShapes, setPageShapes] = useState<Record<string, Shape[]>>(() => ({
-    _initial: initialDemo ? demoPlan() : [],
-  }));
   const [pages, setPages] = useState<ConsolePage[]>(() =>
     model?.pages?.length ? model.pages.map((p) => ({ id: p.id, name: p.name })) : [{ id: "_initial", name: "Page 1" }],
   );
   const [activePageId, setActivePageId] = useState<string>(() => model?.pages?.[0]?.id ?? "_initial");
+  const [pageShapes, setPageShapes] = useState<Record<string, Shape[]>>(() => ({
+    [model?.pages?.[0]?.id ?? "_initial"]: initialDemo ? demoPlan() : [],
+  }));
   const [mode, setMode] = useState<"draft" | "polish">("draft");
   const [sunlight, setSunlight] = useState({ azimuth: 135, elevation: 45 });
   const [materials, setMaterials] = useState<Record<string, MaterialId>>({});
@@ -152,9 +153,32 @@ export function ConsoleChrome({
   const [presentOpen, setPresentOpen] = useState(false);
   const [phoneOpen, setPhoneOpen] = useState(false);
   const [nameDraft, setNameDraft] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState(modelName);
   const shapes = pageShapes[activePageId] ?? [];
   const setShapes = (updater: (prev: Shape[]) => Shape[]) =>
     setPageShapes((prev) => ({ ...prev, [activePageId]: updater(prev[activePageId] ?? []) }));
+
+  /** resourceRenameOptimistic: rename commits locally and persists to the session. */
+  function commitRename() {
+    const next = (nameDraft ?? displayName).trim();
+    setNameDraft(null);
+    if (!next || next === displayName) return;
+    setDisplayName(next);
+    if (model) {
+      try {
+        updateSession((s) => ({
+          ...s,
+          teams: s.teams.map((t) =>
+            t.id === team?.id
+              ? { ...t, models: t.models.map((m) => (m.id === model.id ? { ...m, name: next } : m)) }
+              : t,
+          ),
+        }));
+      } catch {
+        /* no session — local-only rename */
+      }
+    }
+  }
   const [tool, setTool] = useState<Tool>("select");
   const [assetSymbol, setAssetSymbol] = useState("sofa");
   const [dockTab, setDockTab] = useState<"layers" | "assets">("layers");
@@ -200,18 +224,18 @@ export function ConsoleChrome({
             <p
               className="truncate text-sm font-semibold text-content-primary"
               title="Double-click to rename (resourceRenameOptimistic)"
-              onDoubleClick={() => setNameDraft(modelName)}
+              onDoubleClick={() => setNameDraft(displayName)}
             >
-              {modelName}
+              {displayName}
             </p>
           ) : (
             <input
               autoFocus
               value={nameDraft}
               onChange={(e) => setNameDraft(e.target.value)}
-              onBlur={() => setNameDraft(null)}
+              onBlur={() => commitRename()}
               onKeyDown={(e) => {
-                if (e.key === "Enter") setNameDraft(null);
+                if (e.key === "Enter") commitRename();
                 if (e.key === "Escape") setNameDraft(null);
               }}
               aria-label="Model name"
