@@ -140,12 +140,43 @@ export default function OnboardingPage() {
     setCompleting(true);
     const s = loadSession();
     if (s) {
-      saveSession({ ...s, onboarding: answers as Record<string, string | string[]> });
+      // journeyProject: the bundle seeds a starter project from the
+      // questionnaire answers (onboarding-generated-floors flag); the clone
+      // creates a matching "journey" model unless the user picked "fresh".
       const start = (answers["start"] as string) || "fresh";
-      // The original routes by the “start” answer (update/template/describe/fresh);
-      // the clone lands on the team home, which offers all four continuations.
-      void start;
-      window.location.href = `/t/${activeTeam(s).id}`;
+      const team = activeTeam(s);
+      const next = { ...s, onboarding: answers as Record<string, string | string[]> };
+      if (start !== "fresh" && team.models.length < team.entitlements.maxModels) {
+        const designing = (answers["designing"] as string) ?? "apartment";
+        const nameMap: Record<string, string> = {
+          apartment: "Apartment starter",
+          house: "House starter",
+          office: "Workspace starter",
+          retail: "Retail starter",
+          public: "Public space starter",
+          exploring: "Exploration starter",
+        };
+        next.teams = next.teams.map((t) =>
+          t.id === team.id
+            ? {
+                ...t,
+                models: [
+                  {
+                    id: `m-${Math.random().toString(36).slice(2, 10)}`,
+                    name: nameMap[designing] ?? "Starter project",
+                    spaceId: t.spaces[0]?.id ?? "sp-residential",
+                    pages: [{ id: `p-${Math.random().toString(36).slice(2, 10)}`, name: "Page 1" }],
+                    edited: new Date().toISOString(),
+                    source: "journey" as const,
+                  },
+                  ...t.models,
+                ],
+              }
+            : t,
+        );
+      }
+      saveSession(next);
+      window.location.href = `/t/${team.id}`;
     } else {
       window.location.href = "/login";
     }

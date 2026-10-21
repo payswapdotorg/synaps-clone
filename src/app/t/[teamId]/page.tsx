@@ -10,7 +10,8 @@ import {
   type SimTeam,
 } from "@/lib/session";
 import { AI_PROMPT_EXAMPLES } from "@/lib/onboarding-steps";
-import { GenerateAiDialog, UploadPlanDialog } from "@/components/console/HomeDialogs";
+import { GenerateAiDialog } from "@/components/console/HomeDialogs";
+import { ImportDialog } from "@/components/console/ConsoleFeatures";
 import { AppTopBar, TeamSidebar } from "@/components/app/TeamSidebar";
 
 export function relTime(iso: string): string {
@@ -178,10 +179,11 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
         />
       )}
       {uploadOpen && (
-        <UploadPlanDialog
+        <ImportDialog
           onClose={() => setUploadOpen(false)}
-          onDone={() => {
-            const m = createModel("upload", undefined, "Uploaded Plan");
+          entitlements={{ dxfImport: true, dwgImport: team.plan === "Pro" }}
+          onImported={(format, filename) => {
+            const m = createModel("upload", undefined, `${filename.replace(/\.[a-z0-9]+$/i, "")} (${format.toUpperCase()})`);
             if (m) window.location.href = `/m/${m.id}?pageId=${m.pages[0].id}&demo=1`;
           }}
         />
