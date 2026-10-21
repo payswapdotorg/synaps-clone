@@ -467,3 +467,63 @@ UI, so they could not be removed by the observer. The operator’s existing
 “Uploaded Plan” model was not modified. The operator’s Google credentials,
 shared in chat for this observation, were used once for this login and are
 not stored anywhere in this repository — rotation is still advised.
+
+## Full functionality inventory (REA static analysis, 2026-10-21)
+
+The complete production bundle of beta.synaps.app was harvested (182 files,
+25.9 MB) and statically analyzed with **REA** (github.com/morluto/rea,
+`rea-agents analyze-javascript-application`): 179 JS files parsed, 2,397,763
+AST nodes, 3,405 findings, a 181-module semantic graph (54,726 nodes,
+52,878 relations). The full inventory and the clone's coverage are tracked
+in `docs/REMAINING-FUNCTIONALITIES.md`. Highlights recovered beyond the
+live observation:
+
+- **Route table** (25 paths incl. /recent, /w/$workspaceId, /members,
+  /billing, /notifications, /invitations/, /invite/$token, /templates,
+  /template/$templateId, /storage, /credits-banners, /admin,
+  /sculpt-studio, /components, /onboarding-lab, /testing/onboarding).
+- **tRPC procedure surface** (ai.operationId/image, layout.generate/trace/
+  layoutBox/source, export.dxf, storage.*, credits.getBalance/mode,
+  gates.getTeamEntitlements/requireDxfImport, teams.* incl.
+  previewMemberEditorCharge, invitations.* incl.
+  previewEditorInviteCharge, resources.*, templates.*, users.*,
+  stripe.* (8 procedures), admin.signOut, assets.*).
+- **Feature flags**: dwg-import, dwg-export, iceberg-release,
+  redesign-shell, redesign-v1-6, native-export, onboarding-generated-floors,
+  renderer-v3-culling, renderer-v3-kernel (fallbacks and the
+  allowLocalOverride:false rules transcribed exactly).
+- **Console internals**: WebGPURenderer + CanvasRenderer + CanvasPool,
+  BuildingScene, sunlightState, 74 procedural texture datasets (Brick,
+  Concrete, Diagrammatic, Earth, Glass, Grass, Insulation, Metal, Pavement,
+  Roofing, Sand, Stone, Tile, Water, Wood), presentation reveal-artifact
+  machine (building 2500 ms; site/section/elevation 5000 ms), phone
+  handover (phone-canvas-loader), import workers (pdf.worker,
+  shapeMapImport.worker, magneticLassoWorker, bim.worker, entry-upload),
+  geometry kernels (occt-wasm OpenCascade, clipper2z), export.dxf,
+  SitePlanExportDialog (papers, delivery single_file|zip, watermark),
+  EditorErrorFallback, pageActions, resourceRenameOptimistic,
+  realtime_store wasm CRDT.
+- **Infrastructure** (documented, not cloned): Sentry, Cloudflare Pages
+  Analytics, Google Analytics G-WYPS14KQRH, Supabase GoTrue/Realtime, the
+  WebGPU renderer and the WASM kernels.
+
+### What the clone implements from this inventory
+
+Implemented for real (original code): every route as a working app page;
+the full journey (login → onboarding → team home → console); multi-page
+models; multi-team with spaces; invitations lifecycle with a working
+accept flow; members with roles; billing with plan flips and invoices;
+notifications; settings incl. the verbatim feature-flag registry with
+honest server-locked rules; templates gallery with instantiation and
+save-as-template hooks; storage manager; credits banners; admin
+inspection; sculpt-studio token playground; import dialogs for all five
+formats with simulated pipelines and provenance; export suite (PNG/SVG/DXF
+placeholder/site-plan options); presentation mode; phone-handover dialog;
+draft/polish mode switch with an original SVG material renderer and
+sunlight state; magnetic-lasso (simulated); editor error boundary; model
+rename; journey-project seeding.
+
+Simulated (honest): the entire tRPC layer (`src/lib/trpc-sim.ts` mirrors
+every procedure name with localStorage backing and console.debug markers),
+Google SSO, stripe, storage bucket, realtime channels, WASM kernels, AI
+generation, upload tracing, phone streaming.

@@ -28,7 +28,9 @@ recorded copy — clearly labelled as such on the page itself.
 
 ## The full product journey (authenticated surface)
 
-The clone reconstructs the complete observed UX, not just the marketing site:
+After a full static REA pass over the production bundle
+(`docs/REMAINING-FUNCTIONALITIES.md`), the clone now covers the complete
+functionality surface, not just the observed UX:
 
 1. **Sign in** (`/login`) — “Continue with Google” opens a clearly labelled
    mock account chooser (no real Google integration; the session is local).
@@ -40,7 +42,22 @@ The clone reconstructs the complete observed UX, not just the marketing site:
    status bar, floating tool palette and an original interactive floor-plan
    editor: draw walls, place doors and windows on them, stamp rooms with
    live area labels, dimensions, text, asset stamps; select/move, delete,
-   undo/redo, zoom/pan, grid snap, m/ft unit switching, plan export.
+   undo/redo, zoom/pan, grid snap, m/ft unit switching, plan export — plus
+   multi-page models, the import suite (image/PDF/SVG/DXF/DWG with
+   simulated worker pipelines), the export suite (DXF placeholder, site
+   plan with papers/delivery modes/watermark), presentation mode, phone
+   handover, a simulated magnetic lasso, and a draft/polish mode switch
+   with material rendering and sunlight control.
+5. **App surface** — /recent, /members (roles, seat-charge preview),
+   /invitations + /invite/{token} accept flow, /billing (plans, simulated
+   checkout, invoices, promo), /notifications, /settings (profile, team,
+   consent, the verbatim feature-flag registry), /storage, /templates +
+   /template/{id} with instantiation, /credits-banners, /admin,
+   /sculpt-studio, /register, /onboarding-lab, /testing/onboarding.
+
+The simulated tRPC layer (`src/lib/trpc-sim.ts`) mirrors every procedure
+name recovered from the production bundle against localStorage — no
+network, no servers, clearly labelled.
 
 See ANALYSIS.md “Authenticated surface” for how each piece was observed and
 what is simulated.
