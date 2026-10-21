@@ -1,26 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { loadSession, type SimSession } from "@/lib/session";
+import { useEffect } from "react";
+import { activeTeam, loadSession } from "@/lib/session";
 
-/** Recent — redirects into the team home (the clone keeps one recents list). */
-export default function RecentPage() {
-  const [session, setSession] = useState<SimSession | null>(null);
+/** /t/recent — legacy path; the recents dashboard now lives at /recent. */
+export default function LegacyRecentRedirect() {
   useEffect(() => {
     const s = loadSession();
-    setSession(s);
-    if (s) window.location.replace(`/t/${s.team.id}`);
+    window.location.replace(s ? `/t/${activeTeam(s).id}` : "/recent");
   }, []);
-  if (!session) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-surface-base">
-        <Link href="/login" className="text-sm underline underline-offset-2">
-          Sign in to see recents
-        </Link>
-      </main>
-    );
-  }
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface-base">
       <p className="text-sm text-content-secondary">Redirecting…</p>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ONBOARDING_STEPS, type OnboardingStep } from "@/lib/onboarding-steps";
-import { loadSession, saveSession } from "@/lib/session";
+import { activeTeam, loadSession, saveSession } from "@/lib/session";
 
 /**
  * Onboarding questionnaire — reconstruction of the OBSERVED wizard.
@@ -145,7 +145,7 @@ export default function OnboardingPage() {
       // The original routes by the “start” answer (update/template/describe/fresh);
       // the clone lands on the team home, which offers all four continuations.
       void start;
-      window.location.href = `/t/${s.team.id}`;
+      window.location.href = `/t/${activeTeam(s).id}`;
     } else {
       window.location.href = "/login";
     }
@@ -155,7 +155,7 @@ export default function OnboardingPage() {
     const s = loadSession();
     if (s) {
       saveSession({ ...s, onboarding: { skipped: "true" } });
-      window.location.href = `/t/${s.team.id}`;
+      window.location.href = `/t/${activeTeam(s).id}`;
     }
   }
 

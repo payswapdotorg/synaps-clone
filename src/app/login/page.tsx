@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { activeTeam, loadSession } from "@/lib/session";
 import { GoogleMockDialog } from "@/components/auth/GoogleMockDialog";
 
 /**
@@ -32,7 +33,7 @@ export default function LoginPage() {
       const raw = window.localStorage.getItem("synaps-clone:session");
       if (raw) {
         const session = JSON.parse(raw);
-        const dest = session.onboarding ? `/t/${session.team.id}` : "/onboarding";
+        const dest = session.onboarding ? `/t/${activeTeam(session).id}` : "/onboarding";
         window.location.replace(redirectTo ?? dest);
       }
     } catch {

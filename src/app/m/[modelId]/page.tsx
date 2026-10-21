@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { loadSession, touchModel } from "@/lib/session";
+import { loadSession, touchModel, type SimModel, type SimTeam } from "@/lib/session";
 import { ConsoleChrome } from "@/components/console/ConsoleChrome";
 
 /**
@@ -22,7 +22,9 @@ export default function ModelerPage({
   const [modelId, setModelId] = useState<string | null>(null);
   const [demo, setDemo] = useState(false);
   const [state, setState] = useState<
-    { status: "loading" } | { status: "ready"; name: string; space: string } | { status: "anon" }
+    | { status: "loading" }
+    | { status: "ready"; name: string; space: string; model: SimModel; team: SimTeam }
+    | { status: "anon" }
   >({ status: "loading" });
 
   useEffect(() => {
@@ -36,10 +38,16 @@ export default function ModelerPage({
         setState({ status: "anon" });
         return;
       }
-      const model = session.models.find((m) => m.id === p.modelId);
-      const space = session.spaces.find((s) => s.id === model?.spaceId)?.name ?? "Residential Projects";
-      touchModel(session, p.modelId);
-      setState({ status: "ready", name: model?.name ?? "Model 1", space });
+      for (const team of session.teams) {
+        const model = team.models.find((m) => m.id === p.modelId);
+        if (model) {
+          const space = team.spaces.find((s) => s.id === model.spaceId)?.name ?? "Residential Projects";
+          touchModel(session, team.id, model.id);
+          setState({ status: "ready", name: model.name, space, model, team });
+          return;
+        }
+      }
+      setState({ status: "ready", name: "Model 1", space: "Residential Projects", model: { id: p.modelId, name: "Model 1", spaceId: "", pages: [{ id: "p-1", name: "Page 1" }], edited: new Date().toISOString(), source: "scratch" }, team: session.teams[0] });
     })();
   }, [params, searchParams]);
 
@@ -70,6 +78,8 @@ export default function ModelerPage({
       spaceName={state.space}
       initialDemo={demo}
       onShareLabel="simulated sharing"
+      model={state.model}
+      team={state.team}
     />
   );
 }

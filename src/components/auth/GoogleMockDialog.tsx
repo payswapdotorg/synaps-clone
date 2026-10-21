@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createSession } from "@/lib/session";
+import { activeTeam, createSession, loadSession } from "@/lib/session";
 
 /**
  * Mock Google account chooser.
@@ -14,9 +14,11 @@ import { createSession } from "@/lib/session";
 export function GoogleMockDialog({
   onClose,
   redirectTo,
+  register,
 }: {
   onClose: () => void;
   redirectTo?: string | null;
+  register?: boolean;
 }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -34,7 +36,7 @@ export function GoogleMockDialog({
     setBusy(true);
     const displayName = name.trim() || trimmed.split("@")[0].replace(/[._-]+/g, " ");
     const session = createSession(trimmed, displayName);
-    const dest = redirectTo ?? (session.onboarding ? `/t/${session.team.id}` : "/onboarding");
+    const dest = redirectTo ?? (session.onboarding ? `/t/${activeTeam(session).id}` : "/onboarding");
     window.setTimeout(() => {
       window.location.href = dest;
     }, 500);
@@ -56,7 +58,7 @@ export function GoogleMockDialog({
             <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z" />
             <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.59A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z" />
           </svg>
-          <h2 className="mt-4 text-lg font-normal text-content-primary">Sign in with Google</h2>
+          <h2 className="mt-4 text-lg font-normal text-content-primary">{register ? "Sign up with Google" : "Sign in with Google"}</h2>
           <p className="mt-1 text-sm text-content-secondary">to continue to Synaps Clone</p>
         </div>
 

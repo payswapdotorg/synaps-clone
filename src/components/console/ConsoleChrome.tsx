@@ -116,11 +116,15 @@ export function ConsoleChrome({
   spaceName,
   initialDemo,
   onShareLabel,
+  model,
+  team,
 }: {
   modelName: string;
   spaceName: string;
   initialDemo: boolean;
   onShareLabel: string;
+  model?: { id: string; name: string; pages: { id: string; name: string }[] };
+  team?: { id: string; name: string; plan: string };
 }) {
   const [shapes, setShapes] = useState<Shape[]>(() => (initialDemo ? demoPlan() : []));
   const [tool, setTool] = useState<Tool>("select");

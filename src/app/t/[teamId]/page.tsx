@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  loadSession,
+  activeTeam,
   addModel,
-  saveSession,
-  FREE_MODEL_LIMIT,
+  loadSession,
   type SimSession,
+  type SimTeam,
 } from "@/lib/session";
 import { AI_PROMPT_EXAMPLES } from "@/lib/onboarding-steps";
 import { GenerateAiDialog, UploadPlanDialog } from "@/components/console/HomeDialogs";
+import { AppTopBar, TeamSidebar } from "@/components/app/TeamSidebar";
 
-function relTime(iso: string): string {
+export function relTime(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const m = Math.round(diff / 60000);
   if (m < 1) return "just now";
@@ -29,19 +30,16 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
   const [limitOpen, setLimitOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     void params.then((p) => setTeamId(p.teamId));
     setSession(loadSession());
   }, [params]);
 
-  const models = useMemo(() => session?.models ?? [], [session]);
-
   useEffect(() => {
-    if (!session) return;
-    if (teamId && teamId !== session.team.id) {
-      window.location.replace(`/t/${session.team.id}`);
+    if (!session || !teamId) return;
+    if (teamId !== activeTeam(session).id && !session.teams.some((t) => t.id === teamId)) {
+      window.location.replace(`/t/${activeTeam(session).id}`);
     }
   }, [session, teamId]);
 
@@ -62,95 +60,26 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
     );
   }
 
+  const team: SimTeam = session.teams.find((t) => t.id === teamId) ?? activeTeam(session);
+  const models = team.models;
   const sess = session;
 
   function createModel(source: "scratch" | "ai" | "upload" | "template", prompt?: string, name?: string) {
-    if (models.length >= FREE_MODEL_LIMIT) {
+    if (models.length >= team.entitlements.maxModels) {
       setLimitOpen(true);
       return null;
     }
-    const { session: s2, model } = addModel(sess, { source, prompt, name });
+    const { session: s2, model } = addModel(sess, { source, prompt, name, teamId: team.id });
     setSession(s2);
     return model;
   }
 
   return (
     <main className="flex min-h-screen bg-surface-base">
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-border-solid/10 bg-surface-base px-4 py-5 md:flex" aria-label="Team navigation">
-        <div className="relative">
-          <button
-            type="button"
-            aria-label="Switch team"
-            aria-haspopup="menu"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
-            className="flex w-full items-center justify-between rounded-control px-2 py-1.5 text-sm font-medium text-content-primary hover:bg-surface-raised"
-          >
-            <span className="truncate">{session.team.name}</span>
-            <span className="text-[10px] text-content-secondary">Free</span>
-          </button>
-          {menuOpen && (
-            <div className="absolute left-0 right-0 top-full z-20 mt-1 rounded-control border border-border-solid/15 bg-surface-base p-1 shadow-lg" role="menu">
-              <div className="px-3 py-2 text-xs text-content-secondary">{session.user.email}</div>
-              <button
-                type="button"
-                role="menuitem"
-                onClick={() => {
-                  saveSession(null);
-                  window.location.href = "/login";
-                }}
-                className="w-full rounded-control px-3 py-2 text-left text-sm text-content-primary hover:bg-surface-raised"
-              >
-                Sign out
-              </button>
-            </div>
-          )}
-        </div>
-
-        <nav className="mt-6 space-y-1 text-sm">
-          <span className="block rounded-control bg-surface-raised px-3 py-1.5 font-medium text-content-primary">
-            Home
-          </span>
-          <Link href="/t/recent" className="block rounded-control px-3 py-1.5 text-content-secondary hover:bg-surface-raised hover:text-content-primary">
-            Recent
-          </Link>
-          <p className="px-3 pt-4 pb-1 text-2xs font-semibold uppercase tracking-wide text-content-secondary">
-            Spaces
-          </p>
-          {session.spaces.map((sp) => (
-            <Link
-              key={sp.id}
-              href={`/t/${teamId}/w/${sp.id}`}
-              className="block rounded-control px-3 py-1.5 text-content-secondary hover:bg-surface-raised hover:text-content-primary"
-            >
-              {sp.name}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="mt-auto rounded-control border border-border-solid/15 px-3 py-2 text-xs text-content-secondary">
-          <span className="font-medium text-content-primary">{session.team.credits} credits</span>
-          <span className="block text-2xs">Free plan · simulated</span>
-        </div>
-      </aside>
+      <TeamSidebar teamId={team.id} active="home" />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-border-solid/10 px-6 py-3">
-          <span className="text-sm font-semibold tracking-tight text-content-primary">Synaps Clone</span>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-xs text-content-secondary sm:block">
-              {session.team.credits} credits
-            </span>
-            <button
-              type="button"
-              aria-label="Account menu"
-              onClick={() => setMenuOpen((v) => !v)}
-              className="flex size-7 items-center justify-center rounded-full bg-surface-raised text-xs font-semibold text-content-primary"
-            >
-              {session.user.name.slice(0, 1).toUpperCase()}
-            </button>
-          </div>
-        </header>
+        <AppTopBar teamId={team.id} />
 
         <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
           <h1 className="text-2xl font-semibold tracking-tight text-content-primary">
@@ -162,7 +91,7 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
               type="button"
               onClick={() => {
                 const m = createModel("scratch");
-                if (m) window.location.href = `/m/${m.id}?pageId=${m.pageId}`;
+                if (m) window.location.href = `/m/${m.id}?pageId=${m.pages[0].id}`;
               }}
               className="group rounded-surface border border-border-solid/15 bg-surface-base p-5 text-left transition-colors hover:border-border-solid/40"
             >
@@ -181,7 +110,7 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
               <span className="ds-accent-mono text-2xs">02</span>
               <span className="mt-2 block text-base font-medium text-content-primary">Upload floorplan</span>
               <span className="mt-1 block text-sm text-content-secondary">
-                Trace an existing plan image into the console.
+                Trace an existing plan (image, PDF, SVG, DXF, DWG) into the console.
               </span>
             </button>
 
@@ -197,20 +126,16 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
               </span>
             </button>
 
-            <button
-              type="button"
-              onClick={() => {
-                const m = createModel("template", AI_PROMPT_EXAMPLES[1].prompt, "Demo project");
-                if (m) window.location.href = `/m/${m.id}?pageId=${m.pageId}&demo=1`;
-              }}
+            <Link
+              href={`/t/${team.id}/templates`}
               className="group rounded-surface border border-border-solid/15 bg-surface-base p-5 text-left transition-colors hover:border-border-solid/40"
             >
               <span className="ds-accent-mono text-2xs">04</span>
-              <span className="mt-2 block text-base font-medium text-content-primary">Try Synaps demo project</span>
+              <span className="mt-2 block text-base font-medium text-content-primary">Start from a template</span>
               <span className="mt-1 block text-sm text-content-secondary">
-                Open a pre-drafted demo model in the console.
+                Instantiate a starter plan (café, townhouse, courtyard…).
               </span>
-            </button>
+            </Link>
           </div>
 
           <section className="mt-14" aria-label="Continue working">
@@ -221,14 +146,14 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
               {models.map((m) => (
                 <Link
                   key={m.id}
-                  href={`/m/${m.id}?pageId=${m.pageId}${m.id === "m-uploaded-plan" || m.source === "ai" || m.source === "template" ? "&demo=1" : ""}`}
+                  href={`/m/${m.id}?pageId=${m.pages[0].id}${m.id === "m-uploaded-plan" || m.source === "ai" || m.source === "template" ? "&demo=1" : ""}`}
                   className="rounded-surface border border-border-solid/15 bg-surface-base p-4 transition-colors hover:border-border-solid/40"
                 >
                   <span className="ds-accent-mono text-2xs">{m.source}</span>
                   <span className="mt-1.5 block text-sm font-medium text-content-primary">{m.name}</span>
                   <span className="mt-0.5 block text-xs text-content-secondary">
-                    {session.spaces.find((s) => s.id === m.spaceId)?.name ?? "Residential Projects"} ·{" "}
-                    Edited {relTime(m.edited)}
+                    {team.spaces.find((s) => s.id === m.spaceId)?.name ?? "Residential Projects"} ·{" "}
+                    {m.pages.length} page{m.pages.length === 1 ? "" : "s"} · Edited {relTime(m.edited)}
                   </span>
                 </Link>
               ))}
@@ -238,7 +163,7 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
           <p className="mt-16 text-[11px] leading-relaxed text-content-secondary">
             Educational clone — this home screen reconstructs the observed
             authenticated surface of the original product. Teams, credits and
-            the Free-plan limit are simulated locally in your browser.
+            the {team.plan}-plan limit are simulated locally in your browser.
           </p>
         </div>
       </div>
@@ -248,7 +173,7 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
           onClose={() => setAiOpen(false)}
           onGenerate={(prompt) => {
             const m = createModel("ai", prompt);
-            if (m) window.location.href = `/m/${m.id}?pageId=${m.pageId}&demo=1`;
+            if (m) window.location.href = `/m/${m.id}?pageId=${m.pages[0].id}&demo=1`;
           }}
         />
       )}
@@ -257,7 +182,7 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
           onClose={() => setUploadOpen(false)}
           onDone={() => {
             const m = createModel("upload", undefined, "Uploaded Plan");
-            if (m) window.location.href = `/m/${m.id}?pageId=${m.pageId}&demo=1`;
+            if (m) window.location.href = `/m/${m.id}?pageId=${m.pages[0].id}&demo=1`;
           }}
         />
       )}

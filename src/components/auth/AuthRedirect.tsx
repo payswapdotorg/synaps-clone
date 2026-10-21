@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { loadSession } from "@/lib/session";
+import { activeTeam, loadSession } from "@/lib/session";
 
 /**
  * Mirrors the observed behaviour of the real product root: an authenticated
@@ -13,7 +13,7 @@ export function AuthRedirect() {
   useEffect(() => {
     const s = loadSession();
     if (s) {
-      window.location.replace(`/t/${s.team.id}`);
+      window.location.replace(`/t/${activeTeam(s).id}`);
     }
   }, []);
   return null;
