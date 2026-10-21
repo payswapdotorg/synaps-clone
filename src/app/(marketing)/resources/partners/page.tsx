@@ -35,10 +35,8 @@ export default function PartnersPage() {
   return (
     <main id="content">
       <PageHero
-        eyebrow="Partners"
-        title="Become a"
-        dim="partner."
-        lead="Three ways to work with Synaps beyond the product itself. (Reconstructed page — the clone has no partner programme; the analysed site links a booking flow.)"
+        title="Become a partner"
+        lead="We work with a small number of partners, by application: technology and materials integrations, studio rollout programs, and the influencers and personalities who help architects find better tools."
       >
         <Link href="/faq" className="ms-btn">
           Book a call

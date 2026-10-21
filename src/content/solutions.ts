@@ -30,7 +30,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "architecture-studio",
     title: "Architecture Studio",
-    lead: "The drafting-to-presentation pipeline for small studios: technical plans, real-time teamwork and client-ready output on one canvas.",
+    lead: "Run the whole job from sketch through DD in one project: draft the plan set, review it live with the team, and pull a hero plan straight into the fee proposal. You pay per active editor, not per seat.",
     features: [
       {
         title: "Draft technical plans",
@@ -101,7 +101,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "automated-floor-plan-tracing",
     title: "Automated floor plan tracing",
-    lead: "Feed it a PDF, a scan or a phone photo taken at an angle — even of a coffee-stained old blueprint — set one known dimension, and the tracer returns clean geometry within 1–2% of the original.",
+    lead: "Drop in a PDF, a scan, or an angled phone photo of a coffee-stained blueprint, set the scale against a known dimension, and trace it into clean, editable geometry, accurate to within 1 to 2% of the source.",
     features: [
       {
         title: "Import the existing floor plan",
@@ -172,7 +172,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "client-collaboration",
     title: "Client collaboration",
-    lead: "A client clicks the spot they mean and types — no account, no install — and the pin stays attached to that element, keeping every request out of the email reply chain.",
+    lead: "Clients point at the spot on the drawing and type, no signup, no install. The pin stays on that element, so “move the bedroom door” never gets lost in an email reply chain.",
     features: [
       {
         title: "Feedback in the drawing, not in email",
@@ -244,7 +244,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "floor-plan-generation",
     title: "Floor plan generation",
-    lead: "Give it the site dimensions, the required rooms and the adjacencies, and it proposes three to twelve options as real, editable geometry. The best one is a starting point to refine, on a par with what a junior would hand you.",
+    lead: "Describe the constraints, site dimensions, required rooms, adjacencies, and get three to twelve plan options as real, editable geometry, not an image. Treat it as the starting point a junior would have handed you.",
     features: [
       {
         title: "From brief to editable floor plan",
@@ -316,7 +316,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "freelancers-and-homeowners",
     title: "Freelancers & Homeowners",
-    lead: "Start from a napkin thought or a photo of the plan you already have, and arrive at a labelled floor plan inside thirty minutes — a single person in a single browser tab, no seat bundles, for client work or for your own four walls.",
+    lead: "Turn a rough idea or a photo of an existing plan into a labeled floor plan in under thirty minutes. One person, one browser tab, no seat bundles, whether you draft for clients or for your own four walls.",
     features: [
       {
         title: "No need to start from scratch",
@@ -388,7 +388,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "interior-designers",
     title: "Interior Designers",
-    lead: "Rooms laid out, your furniture and finishes dropped in as native blocks, every item carrying its vendor, lead time and price — and one swap updates each occurrence across the project.",
+    lead: "Lay out rooms, drop your own furniture and finishes as native blocks, and tag each one with vendor, lead time, and price. Swap a chair once and it updates everywhere it lives in the project.",
     features: [
       {
         title: "Make your existing floor plan editable",
@@ -460,7 +460,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "precise-drafting",
     title: "Precise drafting",
-    lead: "1 mm snapping in metric or imperial, dimensions derived from the geometry so printed plans measure true, and layer names, line weights and hatching inherited from your own studio template rather than the defaults.",
+    lead: "Draw to 1 mm snap in metric or imperial, with dimensions computed from the geometry so a tape measure against the printout reads true. Your layer names, line weights, and hatching come from your own studio template.",
     features: [
       {
         title: "Drawings worth presenting",
@@ -532,7 +532,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "real-estate-professionals",
     title: "Real Estate Professionals",
-    lead: "From a phone photo of a paper plan to a clean, labelled drawing ready for the MLS listing or the buyer packet — with no architect on the payroll.",
+    lead: "Turn a phone photo of a paper plan into a clean, labeled floor plan you can export for an MLS listing or a buyer packet. No architect on staff required.",
     features: [
       {
         title: "Editable floor plans from any image",
@@ -604,7 +604,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "space-visualization",
     title: "Space visualization",
-    lead: "Walk a camera through the plan at eye level, capture the route as a 30-second walkthrough, or set up a daylight study by latitude, date and orientation — all without maintaining a second model.",
+    lead: "Step a camera through the space at eye level straight from the plan, record a 30-second walkthrough, or run a daylight study from latitude, date, and orientation. No separate model to keep in sync.",
     features: [
       {
         title: "Renders that match the floor plan",
@@ -676,7 +676,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "students-and-educators",
     title: "Students & Educators",
-    lead: "A buildable plan within an afternoon. The drawing model borrows from modern design tools rather than CAD dinosaurs — no command line, no layer politics — and with a university email the whole degree is free.",
+    lead: "Get to a buildable plan in an afternoon. The drawing model is closer to Figma than to AutoCAD, no command line, no layer politics, and it is free for the whole degree with a .edu email.",
     features: [
       {
         title: "Never start from a blank page",

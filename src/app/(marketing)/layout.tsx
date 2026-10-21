@@ -1,4 +1,4 @@
-import "./site.css";
+import "../site.css";
 import { CookieBanner } from "@/components/site/CookieBanner";
 import { SiteFooter, SiteHeader } from "@/components/site/chrome";
 

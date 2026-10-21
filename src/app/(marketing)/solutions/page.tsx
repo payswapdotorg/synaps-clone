@@ -22,10 +22,8 @@ export default function SolutionsHubPage() {
   return (
     <main id="content">
       <PageHero
-        eyebrow="Solutions"
-        title="One drawing canvas,"
-        dim="every architectural workflow."
-        lead="Start from the work you actually do this week — the surface follows."
+        title="One drawing canvas, every architectural workflow."
+        lead="Pick the path that matches the work in front of you, by practice type, by output, or by deliverable."
       />
       <section
         className="ms-container"

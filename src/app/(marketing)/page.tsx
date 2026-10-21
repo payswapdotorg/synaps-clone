@@ -62,13 +62,15 @@ export default function HomePage() {
       {/* ---------------------------------------------------------- Hero */}
       <section
         className="ms-container"
-        style={{
-          paddingTop: "clamp(48px, 7vw, 96px)",
-          backgroundImage:
-            "repeating-linear-gradient(-45deg, rgba(8,9,11,0.022) 0 1px, transparent 1px 12px)",
-        }}
+        style={{ paddingTop: "clamp(28px, 3.4vw, 52px)" }}
       >
-        <div className="ms-page-hero" style={{ paddingBottom: "clamp(36px, 5vw, 72px)" }}>
+        <div
+          className="ms-page-hero"
+          style={{
+            paddingBottom: "clamp(30px, 4vw, 56px)",
+            alignItems: "center",
+          }}
+        >
           <div className="ms-stack-16">
             <span
               style={{
@@ -86,7 +88,7 @@ export default function HomePage() {
               </span>
             </h1>
           </div>
-          <div className="ms-stack-16">
+          <div className="ms-stack-16" style={{ alignSelf: "center" }}>
             <p className="ms-lead">
               Create precise floor plans, explore design options, and turn the
               same drawing into presentation-ready visuals.

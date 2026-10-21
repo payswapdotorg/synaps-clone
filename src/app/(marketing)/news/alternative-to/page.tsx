@@ -22,10 +22,8 @@ export default function AltHubPage() {
   return (
     <main id="content">
       <PageHero
-        eyebrow="Alternative to"
-        title="An alternative to Revit, AutoCAD,"
-        dim="and SketchUp."
-        lead="Not a like-for-like swap — a different trade. Here is exactly what you get, what you keep, and how to pilot it on a live job."
+        title="An alternative to Revit, AutoCAD, and SketchUp."
+        lead="Drafting-first software for studios that issue real drawing sets. Not one more model to feed, not a folder of DWGs to reconcile — the issued set is the job."
       />
 
       <section

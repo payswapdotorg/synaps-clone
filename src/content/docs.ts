@@ -150,7 +150,7 @@ export const docsPages: DocsPageData[] = [
   /* ------------------------------- Drafting -------------------------- */
   {
     slug: "drafting",
-    group: "Drafting",
+    group: "Draw and edit",
     title: "Draw and edit",
     lead: "The console's drafting tools — walls, rooms, openings, dimensions, text and assets — and the gestures that edit them.",
     sections: [
@@ -424,7 +424,7 @@ export const docsPages: DocsPageData[] = [
   /* ---------------------------- Import & export ---------------------- */
   {
     slug: "import-and-export",
-    group: "Import & export",
+    group: "Import and export",
     title: "Import and export",
     lead: "Bring reference images and editable drawings in, and send drawing sheets or images out.",
     sections: [
@@ -450,7 +450,7 @@ export const docsPages: DocsPageData[] = [
   },
   {
     slug: "import-and-export/import-a-drawing-or-image",
-    group: "Import & export",
+    group: "Import and export",
     title: "Import a drawing or image",
     lead: "Bring an image, DXF, SVG or PDF onto the canvas and choose what a PDF should become.",
     sections: [
@@ -486,7 +486,7 @@ export const docsPages: DocsPageData[] = [
   },
   {
     slug: "import-and-export/export-your-drawing",
-    group: "Import & export",
+    group: "Import and export",
     title: "Export your drawing",
     lead: "Send a drawing out as an image, DXF or site plan, directly from the console.",
     sections: [
@@ -525,7 +525,7 @@ export const docsPages: DocsPageData[] = [
   /* ------------------------------- Visualize ------------------------- */
   {
     slug: "visualize",
-    group: "Visualize",
+    group: "Visualise and present",
     title: "Visualise and present",
     lead: "Explore a space visually, then compose and present drawing sheets.",
     sections: [
@@ -547,7 +547,7 @@ export const docsPages: DocsPageData[] = [
   /* ------------------------------ Collaborate ------------------------ */
   {
     slug: "collaborate",
-    group: "Collaborate",
+    group: "Teams and projects",
     title: "Teams and projects",
     lead: "Who is in which team, which space holds which model, and how finished work reaches other people.",
     sections: [
@@ -595,7 +595,7 @@ export const docsPages: DocsPageData[] = [
   /* -------------------------------- Assets --------------------------- */
   {
     slug: "assets",
-    group: "Assets",
+    group: "Assets and materials",
     title: "Assets and materials",
     lead: "Browse the library, place symbols on the canvas, and restyle what you have placed.",
     sections: [
@@ -630,7 +630,7 @@ export const docsPages: DocsPageData[] = [
   /* ---------------------------- AI & automation ---------------------- */
   {
     slug: "ai-and-automation",
-    group: "AI & automation",
+    group: "AI tools",
     title: "AI tools",
     lead: "The generation, tracing and image-editing operations, sorted by what they produce.",
     sections: [
@@ -670,7 +670,7 @@ export const docsPages: DocsPageData[] = [
   },
   {
     slug: "ai-and-automation/create-an-interior-render",
-    group: "AI & automation",
+    group: "AI tools",
     title: "Create an interior render",
     lead: "A camera, a style and one Apply click turn the plan into an interior image — on the real product.",
     sections: [
@@ -708,7 +708,7 @@ export const docsPages: DocsPageData[] = [
   /* -------------------------- Workspace & billing -------------------- */
   {
     slug: "workspace-and-billing",
-    group: "Workspace & billing",
+    group: "Account, plans and credits",
     title: "Account, plans and credits",
     lead: "Personal settings, the team subscription and how AI credits are spent.",
     sections: [
@@ -765,7 +765,7 @@ export const docsPages: DocsPageData[] = [
   /* ------------------------------- Reference ------------------------- */
   {
     slug: "reference",
-    group: "Reference",
+    group: "Reference and troubleshooting",
     title: "Reference and troubleshooting",
     lead: "Keyboard shortcuts, quick fixes and where each setting lives — dip in rather than read end to end.",
     sections: [

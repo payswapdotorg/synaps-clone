@@ -38,10 +38,9 @@ export default function ChangelogHubPage() {
   return (
     <main id="content">
       <PageHero
-        eyebrow="Release notes"
-        title="What changed,"
-        dim="week by week."
-        lead="Weekly product changes. (The clone mirrors the analysed site's release-note cadence — content is condensed reconstruction.)"
+        eyebrow={false}
+        title="Release notes"
+        lead="Weekly product updates, with the context behind each improvement and fix."
       />
       <section
         className="ms-container"

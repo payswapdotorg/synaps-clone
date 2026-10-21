@@ -50,9 +50,8 @@ export default function CompanyPage() {
   return (
     <main id="content">
       <PageHero
-        eyebrow="Company"
         title="About Synaps"
-        lead="A study clone's reconstruction of the analysed about page — structure transcribed, prose original."
+        lead="Synaps is architectural design software for architects and property developers. Create precise floor plans, explore designs with AI, and turn the same drawing into presentation-ready visuals."
       />
 
       <section

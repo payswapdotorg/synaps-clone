@@ -11,7 +11,7 @@ import type { LegalDoc } from "./types";
 
 export const privacyDoc: LegalDoc = {
   title: "How we handle your data.",
-  lead: "The short version of a privacy notice, reconstructed for the clone.",
+  lead: "How we use information to run and improve Synaps, and how you can control its use.",
   sections: [
     { h3: "About this notice", paras: ["This page mirrors the section structure of the analysed site's privacy notice. The clone stores no server-side personal data at all — everything lives in your browser's local storage."] },
     { h3: "Information needed to provide Synaps", paras: ["An account in the real product needs an email address and your chosen workspace details. The clone's simulated sign-in stores a name and email locally and never transmits them."] },
@@ -30,7 +30,7 @@ export const privacyDoc: LegalDoc = {
 
 export const termsDoc: LegalDoc = {
   title: "The terms that apply.",
-  lead: "A structural reconstruction of a terms-of-service page. Not a legal document.",
+  lead: "The contractual terms that cover use of Synaps, billing, content ownership, fair use, and liability.",
   sections: [
     { h3: "About these terms", paras: ["These terms would govern use of the service. This clone renders the structure for study; nothing here forms an agreement with anyone."] },
     { h3: "Your account", paras: ["You are responsible for your account's use and for keeping credentials safe. The clone's accounts are simulated and local to your browser."] },
@@ -45,7 +45,7 @@ export const termsDoc: LegalDoc = {
 
 export const cookiesDoc: LegalDoc = {
   title: "Cookies and similar technologies.",
-  lead: "What the analysed site's cookie policy covers, and what the clone actually does.",
+  lead: "How Synaps uses cookies and similar technologies across the website and product.",
   sections: [
     { h3: "Overview", paras: ["The real site uses cookies for necessary functions and, with consent, for analytics and advertising. The clone sets no cookies at all and stores your banner choice in localStorage."] },
     { h3: "What are cookies?", paras: ["Small strings a site asks your browser to keep and re-send. They power sessions and preferences; the clone uses the browser's localStorage for the same jobs without cookies."] },
@@ -64,7 +64,7 @@ export const cookiesDoc: LegalDoc = {
 
 export const imprintDoc: LegalDoc = {
   title: "Imprint.",
-  lead: "Media-owner disclosures, reconstructed.",
+  lead: "Company information and legal disclosures under §5 ECG and the Austrian Media Act (Mediengesetz).",
   sections: [
     { h3: "Media owner and publisher", paras: ["The analysed site publishes under a company registration in the European Union. This clone is an unaffiliated study project and publishes nothing."] },
     { h3: "Company register", paras: ["The real product's register number and court would be listed here. The clone has no company."] },

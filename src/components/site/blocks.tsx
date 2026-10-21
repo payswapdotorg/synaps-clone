@@ -1,10 +1,11 @@
 /**
  * Shared marketing page primitives, following the layout patterns
  * extracted from the synaps.app harvest:
- *   · PageHero — two columns (headline left with a dimmed tail line,
- *     context/lead right), used on every inner page.
+ *   · PageHero — the universal inner-page hero: two-line eyebrow
+ *     ("Architectural practice / without the compromise.", middle words
+ *     dimmed), solid h1 left, context lead right.
  *   · FaqList — hairline accordion with +/− affordance.
- *   · ArrowCards — white rows with a trailing arrow (hubs, "continue").
+ *   · ArrowCards — white tiles with a trailing arrow (hubs, "continue").
  *   · CtaBand — the repeated dark-paper CTA before the footer.
  *   · CompareTable — plan/tool comparison tables.
  */
@@ -14,33 +15,44 @@ import type { ReactNode } from "react";
 /* ------------------------------------------------------------------ */
 
 export function PageHero({
-  eyebrow,
   title,
-  dim,
   lead,
+  eyebrow = true,
+  meta,
+  back,
   children,
 }: {
-  eyebrow?: string;
   title: string;
-  /** Words rendered in the lighter grey tail of the headline. */
-  dim?: string;
   lead?: string;
+  /** Universal two-line eyebrow; pass false for the pages the harvest
+   *  shows without it (changelog hub/entries, careers). */
+  eyebrow?: boolean;
+  /** Meta line under the h1 (dates, coverage, role meta). */
+  meta?: ReactNode;
+  /** Optional back-link above the h1 (changelog entries). */
+  back?: { label: string; href: string };
   children?: ReactNode;
 }) {
   return (
     <div className="ms-container">
       <div className="ms-page-hero">
-        <div className="ms-stack-16">
-          {eyebrow ? <span className="ms-label">{eyebrow}</span> : null}
-          <h1 className="ms-h1">
-            {title}
-            {dim ? (
-              <>
-                {" "}
-                <span className="dim">{dim}</span>
-              </>
-            ) : null}
-          </h1>
+        <div>
+          {eyebrow ? (
+            <p className="ms-eyebrow">
+              Architectural practice
+              <br />
+              <span className="light">without the</span> compromise.
+            </p>
+          ) : null}
+          {back ? (
+            <p className="ms-back-link">
+              <Link href={back.href}>
+                <span aria-hidden="true">←</span> {back.label}
+              </Link>
+            </p>
+          ) : null}
+          <h1 className="ms-h1">{title}</h1>
+          {meta ? <p className="ms-hero-meta">{meta}</p> : null}
         </div>
         <div className="ms-stack-16">
           {lead ? <p className="ms-lead">{lead}</p> : null}
@@ -114,21 +126,7 @@ export function ArrowCards({
     <div className="ms-grid-2">
       {items.map((item) => (
         <Link key={item.href + item.label} href={item.href} className="ms-arrow-card">
-          <span>
-            <span style={{ fontWeight: 550, fontSize: 17 }}>{item.label}</span>
-            {item.note ? (
-              <span
-                style={{
-                  display: "block",
-                  marginTop: 4,
-                  fontSize: 13.5,
-                  color: "var(--ms-muted)",
-                }}
-              >
-                {item.note}
-              </span>
-            ) : null}
-          </span>
+          <span style={{ fontWeight: 480, fontSize: 18 }}>{item.label}</span>
           <span className="arrow" aria-hidden="true">
             →
           </span>

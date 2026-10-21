@@ -54,7 +54,7 @@ function Section({
 export function SolutionView({ data }: { data: SolutionData }) {
   return (
     <>
-      <PageHero eyebrow="Solutions" title={data.title} lead={data.lead} />
+      <PageHero title={data.title} lead={data.lead} />
 
       {data.features.map((feature, i) => (
         <Section
@@ -190,8 +190,14 @@ export function BlogPostView({
   return (
     <>
       <PageHero
-        eyebrow={`${data.date} · ${data.minutes} min read`}
         title={data.title}
+        meta={
+          <>
+            <time dateTime={data.date}>{data.date}</time>
+            <br />
+            {data.minutes} min read
+          </>
+        }
       />
       <div className="ms-container" style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}>
         <div className="ms-grid" style={{ display: "grid", gap: 48 }}>
@@ -280,7 +286,18 @@ export function ChangelogEntryView({
 }) {
   return (
     <>
-      <PageHero eyebrow={data.date} title={data.title} lead={data.summary} />
+      <PageHero
+        eyebrow={false}
+        back={{ label: "Release notes", href: "/news/changelog" }}
+        title={data.title}
+        meta={
+          <>
+            <time dateTime={data.date}>{data.date}</time>
+            <br />
+            {data.summary}
+          </>
+        }
+      />
       <div
         className="ms-container"
         style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}
@@ -340,7 +357,6 @@ export function AltToolView({
   return (
     <>
       <PageHero
-        eyebrow="Alternative to"
         title={`Synaps as an alternative to ${data.tool}`}
         lead={data.lead}
       />
@@ -451,8 +467,9 @@ export function CareerView({
   return (
     <>
       <PageHero
-        eyebrow={`${data.team} · ${data.location} · ${data.type}`}
+        eyebrow={false}
         title={data.title}
+        meta={`${data.team} · ${data.location} · ${data.type}`}
         lead={data.lead}
       >
         <Link href="/company#careers" className="ms-btn">
@@ -502,7 +519,7 @@ export function CareerView({
 export function LegalView({ doc }: { doc: LegalDoc }) {
   return (
     <>
-      <PageHero eyebrow="Legal" title={doc.title} lead={doc.lead} />
+      <PageHero title={doc.title} lead={doc.lead} />
       <div
         className="ms-container"
         style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}

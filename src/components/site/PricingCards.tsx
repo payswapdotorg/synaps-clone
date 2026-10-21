@@ -67,13 +67,14 @@ export function PricingCards() {
 
   return (
     <div className="ms-stack-32">
-      {/* Toggle */}
-      <div className="flex items-center justify-center gap-3">
+      {/* Toggle — segmented control transcribed from the harvest: surface
+          tint container, active segment steps up to card bg with a
+          hairline, 4px radii (no pill). */}
+      <div className="flex items-center justify-center">
         <div
-          className="flex items-center gap-1 rounded-full border p-1"
-          style={{ borderColor: "var(--ms-border-visible)", background: "#fff" }}
-          role="group"
-          aria-label="Billing period"
+          className="ms-pricing-toggle"
+          role="tablist"
+          aria-label="Billing cycle"
         >
           {(["Monthly", "Annual"] as const).map((label) => {
             const active = (label === "Annual") === annual;
@@ -81,32 +82,13 @@ export function PricingCards() {
               <button
                 key={label}
                 onClick={() => setAnnual(label === "Annual")}
-                aria-pressed={active}
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-[14px]"
-                style={{
-                  background: active ? "var(--ms-ink)" : "transparent",
-                  color: active ? "#fff" : "var(--ms-ink-soft)",
-                  border: 0,
-                  cursor: "pointer",
-                  fontWeight: active ? 550 : 450,
-                  transition: "all .3s var(--ms-ease)",
-                }}
+                role="tab"
+                aria-selected={active}
+                className={`ms-pricing-toggle-option${active ? " is-active" : ""}`}
               >
                 {label}
                 {label === "Annual" ? (
-                  <span
-                    style={{
-                      fontSize: 11,
-                      padding: "2px 8px",
-                      borderRadius: 999,
-                      background: active
-                        ? "rgba(255,255,255,0.18)"
-                        : "rgba(16,96,192,0.1)",
-                      color: active ? "#fff" : "var(--ms-draft)",
-                    }}
-                  >
-                    Save 17%
-                  </span>
+                  <span className="ms-pricing-toggle-badge">Save 17%</span>
                 ) : null}
               </button>
             );

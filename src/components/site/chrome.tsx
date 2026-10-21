@@ -4,14 +4,16 @@
  * Design language and information architecture transcribed from the
  * synaps.app main-domain harvest (docs/SITE-PARITY-PLAN.md): logo +
  * Solutions · Documentation ↗ · Blog · Alternative to · Pricing on the
- * left/center, Login on the right; dark footer with the CTA block and
+ * left/center; Login visible at rest with the two CTAs sliding in on
+ * scroll (HeaderActions); dark footer with the CTA block and
  * Product / Company / Legal link columns.
  *
- * The logo mark is an original angular "drafting spark" glyph in the
+ * The logo mark is an original six-spoke drafting asterisk in the
  * spirit of the analysed wordmark; no served asset is copied.
  */
 import Link from "next/link";
-import { HeaderCta } from "./HeaderCta";
+import type { ReactNode } from "react";
+import { HeaderActions } from "./HeaderActions";
 
 /* ------------------------------------------------------------------ */
 /* Logo                                                                */
@@ -20,21 +22,21 @@ import { HeaderCta } from "./HeaderCta";
 export function SiteMark({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 20 22"
+      viewBox="0 0 22 22"
       width="19"
-      height="21"
+      height="19"
       aria-hidden="true"
       className={className}
       fill="none"
     >
-      {/* Original drafting-spark glyph: a thin, single-stroke S-curve
-          with an open terminal — same spirit as the analysed mark. */}
-      <path
-        d="M15.5 2.5C10 2.5 4.5 4 4.5 8c0 3.4 4.2 3.9 7.5 4.6 3.1.7 6.5 1.5 6.5 4.6 0 3.6-5.1 5.3-11 4.9"
-        stroke="currentColor"
-        strokeWidth="2.1"
-        strokeLinecap="round"
-      />
+      {/* Original six-spoke drafting asterisk — three crossing strokes
+          at 0°/60°/120° with round caps, drawn for this clone in the
+          spirit of the analysed wordmark's leading glyph. */}
+      <g stroke="currentColor" strokeWidth="2.15" strokeLinecap="round">
+        <path d="M11 1.6v18.8" />
+        <path d="M3.05 6.2l15.9 9.6" />
+        <path d="M3.05 15.8l15.9-9.6" />
+      </g>
     </svg>
   );
 }
@@ -65,26 +67,86 @@ export function SiteLogo({ dark = false }: { dark?: boolean }) {
 /* Header                                                              */
 /* ------------------------------------------------------------------ */
 
+/* Small original line icons for the Solutions dropdown (14×14 stroke
+   drawings made for this clone — the real panel carries per-item
+   icons, so the structure is transcribed with original artwork). */
+const S = { fill: "none", stroke: "currentColor", strokeWidth: 1.3, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+
+const SOLUTION_ICONS: Record<string, ReactNode> = {
+  "Architecture Studio": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M0.5 2.5v10h8v-10a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1z"/><path d="M4.5 12.5v-2"/><path d="M3 8.5v-1M6 8.5v-1M6 5v1M3 5v1"/><path d="M8.5 12.5h5"/><path d="M12 12.5V10"/><path d="M10.5 7a1.5 1.5 0 0 1 3 0v1.5a1.5 1.5 0 0 1-3 0z"/></g></svg>
+  ),
+  "Interior Designers": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M7 5a5 5 0 0 0-5 5.5h10A5 5 0 0 0 7 5z"/><path d="M7 5V0.5"/><path d="M9.5 11a2.5 2.5 0 0 1-5 0"/></g></svg>
+  ),
+  "Freelancers & Homeowners": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M3.5 1a2.5 2.5 0 0 1-2.5 2.5"/><path d="M5 1h1"/><path d="M1 5v1"/><path d="M4 4l0.75 0.75"/><circle cx="9" cy="5.5" r="2"/><path d="M12 13h1a4 4 0 0 0-4-4"/><path d="M1 8.5 2 13h5.5l-1-4.5z"/><path d="M7.5 13H10"/></g></svg>
+  ),
+  "Real Estate Professionals": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M8.5 3.5h-3l-0.56-1.68a1 1 0 0 1 0.95-1.32h2.22a1 1 0 0 1 0.95 1.32z"/><path d="M8.5 3.5 10 11l-3 2.5L4 11l1.5-7.5"/></g></svg>
+  ),
+  "Students & Educators": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M7 1.5 13.5 4.3 7 7.1 0.5 4.3z"/><path d="M1.7 10.1V4.8"/><circle cx="1.7" cy="11.3" r="1.2"/><path d="M3.7 5.7v3.2s0.8 1.4 3.3 1.4 3.3-1.4 3.3-1.4V5.7"/></g></svg>
+  ),
+  "Precise drafting": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M9 7.46 6 8l0.5-3 4.23-4.18a1.1 1.1 0 0 1 1.55 1.55z"/><path d="M5 3.52A5 5 0 1 0 10.48 9"/><path d="M4 6.5a2.5 2.5 0 0 0 3.5 3.5"/></g></svg>
+  ),
+  "Automated floor plan tracing": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M7 1.5H2.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1H7"/><path d="M9 1.5h2.5a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9"/><path d="M7 0.5v13"/></g></svg>
+  ),
+  "Floor plan generation": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M7 0.5V2.5"/><circle cx="7" cy="4" r="1.5"/><path d="M5.5 4.5 2.5 13.5"/><path d="M8.5 4.5l3 9"/><path d="M3 9h8"/><path d="M7 8v2"/></g></svg>
+  ),
+  "Space visualization": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M11.5 7S10 10 7 10 2.5 7 2.5 7 4 4 7 4s4.5 3 4.5 3z"/><circle cx="7" cy="7" r="0.5"/><path d="M13 10v2a1 1 0 0 1-1 1h-2"/><path d="M10 1h2a1 1 0 0 1 1 1v2"/><path d="M1 4V2a1 1 0 0 1 1-1h2"/><path d="M4 13H2a1 1 0 0 1-1-1v-2"/></g></svg>
+  ),
+  "Client collaboration": (
+    <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><circle cx="7" cy="4.5" r="1.5"/><path d="M7 7.5a3 3 0 0 0-3 3h6a3 3 0 0 0-3-3z"/><path d="M4.14 12.84A6.5 6.5 0 1 0 1.5 7c0 1.33 0.4 2.57 1.09 3.6"/><path d="M4.15 12.84 0.5 13.5l1.09-2.9"/></g></svg>
+  ),
+};
+
+/* Monogram tiles for the Alternative-to panel (the real panel carries
+   the vendors' logo marks; the clone uses original letter tiles in the
+   same slot). */
+function ToolMonogram({ label }: { label: string }) {
+  return (
+    <span className="ms-nav-mono" aria-hidden="true">
+      {label.slice(0, 1)}
+    </span>
+  );
+}
+
 const NAV: {
   label: string;
   href: string;
   ext?: boolean;
+  groups?: { label: string; items: { label: string; href: string }[] }[];
   children?: { label: string; href: string }[];
 }[] = [
   {
     label: "Solutions",
     href: "/solutions",
-    children: [
-      { label: "Architecture Studio", href: "/solutions/architecture-studio" },
-      { label: "Interior Designers", href: "/solutions/interior-designers" },
-      { label: "Freelancers & Homeowners", href: "/solutions/freelancers-and-homeowners" },
-      { label: "Real Estate Professionals", href: "/solutions/real-estate-professionals" },
-      { label: "Students & Educators", href: "/solutions/students-and-educators" },
-      { label: "Precise drafting", href: "/solutions/precise-drafting" },
-      { label: "Automated floor plan tracing", href: "/solutions/automated-floor-plan-tracing" },
-      { label: "Floor plan generation", href: "/solutions/floor-plan-generation" },
-      { label: "Space visualization", href: "/solutions/space-visualization" },
-      { label: "Client collaboration", href: "/solutions/client-collaboration" },
+    groups: [
+      {
+        label: "By type",
+        items: [
+          { label: "Architecture Studio", href: "/solutions/architecture-studio" },
+          { label: "Interior Designers", href: "/solutions/interior-designers" },
+          { label: "Freelancers & Homeowners", href: "/solutions/freelancers-and-homeowners" },
+          { label: "Real Estate Professionals", href: "/solutions/real-estate-professionals" },
+          { label: "Students & Educators", href: "/solutions/students-and-educators" },
+        ],
+      },
+      {
+        label: "By use case",
+        items: [
+          { label: "Precise drafting", href: "/solutions/precise-drafting" },
+          { label: "Automated floor plan tracing", href: "/solutions/automated-floor-plan-tracing" },
+          { label: "Floor plan generation", href: "/solutions/floor-plan-generation" },
+          { label: "Space visualization", href: "/solutions/space-visualization" },
+          { label: "Client collaboration", href: "/solutions/client-collaboration" },
+        ],
+      },
     ],
   },
   { label: "Documentation", href: "/docs", ext: true },
@@ -104,6 +166,27 @@ const NAV: {
   { label: "Pricing", href: "/pricing" },
 ];
 
+function ExternalLinkIcon() {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="ms-nav-ext-icon"
+      aria-hidden="true"
+    >
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  );
+}
+
 export function SiteHeader() {
   return (
     <header className="ms-header">
@@ -111,12 +194,32 @@ export function SiteHeader() {
         <SiteLogo />
         <nav aria-label="Primary" className="ms-nav-links">
           {NAV.map((item) =>
-            item.children ? (
+            item.groups ? (
+              <div key={item.href} className="ms-nav-group">
+                <Link href={item.href}>{item.label}</Link>
+                <div className="ms-nav-panel ms-nav-panel--groups">
+                  {item.groups.map((group) => (
+                    <div key={group.label} className="ms-nav-panel-group">
+                      <span className="ms-nav-group-label">{group.label}</span>
+                      {group.items.map((child) => (
+                        <Link key={child.href} href={child.href}>
+                          <span className="ms-nav-icon-slot" aria-hidden="true">
+                            {SOLUTION_ICONS[child.label]}
+                          </span>
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : item.children ? (
               <div key={item.href} className="ms-nav-group">
                 <Link href={item.href}>{item.label}</Link>
                 <div className="ms-nav-panel">
                   {item.children.map((child) => (
                     <Link key={child.href} href={child.href}>
+                      <ToolMonogram label={child.label} />
                       {child.label}
                     </Link>
                   ))}
@@ -129,20 +232,12 @@ export function SiteHeader() {
                 className={item.ext ? "ext" : undefined}
               >
                 {item.label}
+                {item.ext ? <ExternalLinkIcon /> : null}
               </Link>
             ),
           )}
         </nav>
-        <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className="no-underline text-[14px]"
-            style={{ color: "var(--ms-ink-soft)" }}
-          >
-            Login
-          </Link>
-          <HeaderCta />
-        </div>
+        <HeaderActions />
       </div>
     </header>
   );

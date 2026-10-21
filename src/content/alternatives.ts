@@ -14,7 +14,7 @@ export const altTools: AltToolData[] = [
     slug: "revit",
     tool: "Autodesk Revit",
     heroDim: "",
-    lead: "A drafting-first counterpart to Revit for studios that still issue weekly PDF sets: coordination stays in Revit, documentation moves to Synaps.",
+    lead: "A drafting-first alternative to Revit for studios that still issue weekly PDF sets. Coordination can stay in Revit, documentation moves to Synaps.",
     sections: [
       {
         h2: "See Synaps in context",
@@ -80,7 +80,7 @@ export const altTools: AltToolData[] = [
     slug: "autocad",
     tool: "Autodesk AutoCAD",
     heroDim: "",
-    lead: "A modern counterpart to AutoCAD for studios tired of reconciling fourteen DWGs before a client meeting: CAD-fast drawing inside one live project context.",
+    lead: "A modern alternative to AutoCAD for studios tired of reconciling 14 DWGs before a client meeting. CAD-fast drawing, one project context.",
     sections: [
       {
         h2: "Pilot Synaps next to AutoCAD",
@@ -139,7 +139,7 @@ export const altTools: AltToolData[] = [
     slug: "sketchup",
     tool: "SketchUp Pro & LayOut",
     heroDim: "",
-    lead: "A documentation-grade counterpart to SketchUp for studios that need to issue technical drawing sets, not just persuasive visuals.",
+    lead: "A documentation-grade alternative to SketchUp for studios that need to issue technical drawing sets, not just visuals.",
     sections: [
       {
         h2: "Pilot Synaps next to SketchUp",
@@ -198,7 +198,7 @@ export const altTools: AltToolData[] = [
     slug: "archicad",
     tool: "Graphisoft Archicad",
     heroDim: "",
-    lead: "Where Synaps fits next to Archicad: fast 2D plan production and client-facing presentation, without the BIM overhead — for the projects that never needed full BIM.",
+    lead: "A drafting-first alternative to Archicad for studios that issue weekly sets. Teamwork governance + documentation discipline without owning the whole BIM stack.",
     sections: [
       {
         h2: "See Synaps in context",
@@ -259,7 +259,7 @@ export const altTools: AltToolData[] = [
     slug: "vectorworks",
     tool: "Vectorworks Architect",
     heroDim: "",
-    lead: "A drafting-first counterpart to Vectorworks for studios that issue weekly sets: keep Vectorworks for BIM authoring and site tools, move documentation to Synaps.",
+    lead: "A drafting-first alternative to Vectorworks for studios that issue weekly sets. Keep Vectorworks for BIM authoring; move documentation to Synaps.",
     sections: [
       {
         h2: "See Synaps in context",
@@ -324,7 +324,7 @@ export const altTools: AltToolData[] = [
     slug: "bricscad",
     tool: "BricsCAD Pro",
     heroDim: "",
-    lead: "A modern counterpart to BricsCAD for studios that want one live project context across plans, sections and sheets — not a folder of DWGs.",
+    lead: "A modern alternative to BricsCAD for studios that want one live project context across plans, sections, and sheets, not a folder of DWGs.",
     sections: [
       {
         h2: "Pilot Synaps next to BricsCAD",

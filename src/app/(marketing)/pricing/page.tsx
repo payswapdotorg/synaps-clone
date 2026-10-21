@@ -52,9 +52,7 @@ export default function PricingPage() {
   return (
     <main id="content">
       <PageHero
-        eyebrow="Pricing"
-        title="Pricing, from solo drafter"
-        dim="to studio."
+        title="Pricing, from solo drafter to studio."
         lead="Three plans. Free for individuals, monthly or annual for teams. Switch any time."
       />
 

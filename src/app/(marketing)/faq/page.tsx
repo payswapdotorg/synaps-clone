@@ -52,9 +52,8 @@ export default function FaqPage() {
   return (
     <main id="content">
       <PageHero
-        eyebrow="FAQ"
-        title="Questions we hear"
-        dim="most often."
+        title="Questions we hear most often."
+        lead="Short answers on pricing, file compatibility, collaboration, and what the early studios get for free."
       />
       <section
         className="ms-container"
