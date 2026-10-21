@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { SolutionPage } from "@/components/marketing/pages";
-import { getSolution, solutions } from "@/lib/site-content";
+import { notFound } from "next/navigation";
+import { PageShell } from "@/components/site/blocks";
+import { SolutionView } from "@/components/site/templates";
+import { solutions } from "@/content/solutions";
 
 export function generateStaticParams() {
-  return solutions.map((solution) => ({ slug: solution.slug }));
+  return solutions.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -12,11 +14,24 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const solution = getSolution(slug);
-  return { title: solution?.title ?? "Solution" };
+  const data = solutions.find((s) => s.slug === slug);
+  return {
+    title: data ? data.title : "Solutions",
+    description: data?.lead,
+  };
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function SolutionPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
-  return <SolutionPage slug={slug} />;
+  const data = solutions.find((s) => s.slug === slug);
+  if (!data) notFound();
+  return (
+    <PageShell>
+      <SolutionView data={data} />
+    </PageShell>
+  );
 }

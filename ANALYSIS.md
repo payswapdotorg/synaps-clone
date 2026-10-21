@@ -527,3 +527,65 @@ Simulated (honest): the entire tRPC layer (`src/lib/trpc-sim.ts` mirrors
 every procedure name with localStorage backing and console.debug markers),
 Google SSO, stripe, storage bucket, realtime channels, WASM kernels, AI
 generation, upload tracing, phone streaming.
+
+## Main-domain parity (synaps.app harvest, 2026-10-21)
+
+The operator compared the clone against **synaps.app** — the main
+production domain — and found both missing features and visual
+dissimilarity. Recon showed the main domain is a *different surface*
+from the beta SPA this clone originally targeted: a server-rendered
+marketing website (77 sitemap URLs) plus a GitBook documentation site
+(docs.synaps.app, ~21 pages). The clone's marketing group was
+placeholder-era: one landing page plus ~11-line stub pages rendering
+"reconstruction notice" content.
+
+Harvest: all 77 marketing pages (`/tmp/synaps-site/pages`) + 21 docs
+pages (`/tmp/synaps-site/docs`) + viewport screenshots and VLM design
+analyses. Plan: `docs/SITE-PARITY-PLAN.md`.
+
+What was implemented (original code throughout):
+
+- **Design system** (`src/app/(marketing)/site.css`, scoped `.ms`): light
+  paper background `#F8F9FB`, hairlines `rgba(8,9,11,.1)`, Draft blue
+  `#1060C0` / Polish orange `#ff6a00` accents, 1320px container, the
+  `"Suisse Int'l", -apple-system…` font stack (declared as on the real
+  site; the commercial face falls back to the system stack), uppercase
+  10px micro-labels, near-sharp corners, black primary buttons, drafting
+  hatch/dot/gridline textures, +/− accordions.
+- **Chrome**: sticky header with the real IA (Solutions dropdown ·
+  Documentation↗ · Blog · Alternative-to dropdown · Pricing · Login +
+  Start-designing-free CTA on inner pages only), dark footer with the
+  CTA block and Product/Company/Legal columns, cookie-consent banner
+  (bottom-left, Manage/Accept all — writes to the simulated consent
+  store; the clone sets no real cookies).
+- **Home**: two-column hero (dimmed second headline line), 01/03–03/03
+  feature cards with original SVG artwork, manifesto + testimonial
+  bridge, Drafting/Polishing feature splits with original product
+  mockups (style editor; generator with "Generating floorplan…"
+  overlay), "Everything you need" capability grid, native assets
+  marquee.
+- **All 77 marketing paths**: solutions hub + 10 pages, pricing
+  (Freemium €0 / Pro €59/49 / Studio €119/99 with monthly-annual
+  toggle, compare tables, licensing comparison, FAQs), FAQ, company +
+  5 careers, blog hub + 29 posts, changelog hub + 14 entries
+  (New/Improved/Fixed typed items), alternative-to hub + 6 tools,
+  partners, and the four legal pages.
+- **Docs** (`/docs`): GitBook-style sidebar layout with all 20 content
+  pages (get-started, drafting, ai-workflows, import-and-export,
+  visualize, collaborate, assets, ai-and-automation,
+  workspace-and-billing, reference, video-tutorials).
+- **Login polish** (app side): fixed invisible text (undefined token
+  references), realistic right-panel project-window mockup
+  (Layers/Assets sidebar + furnished plan on a soft gradient), proper
+  Google-blue CTA.
+
+Provenance for this lane: route paths, page titles, section headings,
+plan names/prices and FAQ questions are transcribed from the harvest so
+the information architecture matches; body copy is original condensed
+writing; all artwork is original SVG/CSS; no served asset (fonts,
+images, logo path, photographs) is copied. The logo is an original
+single-stroke S-curve glyph in the same spirit as the analysed mark.
+Out of scope by construction: the real site's scroll-jacked cinematic
+home, Google/PostHog/Meta analytics, cal.com booking, Instagram/LinkedIn
+social links (replaced by clone-disclosure text), and photography (all
+imagery is original vector work).

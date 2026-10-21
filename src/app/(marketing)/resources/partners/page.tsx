@@ -1,11 +1,89 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/marketing/pages";
-import { partnersPage } from "@/lib/site-content";
+import Link from "next/link";
+import {
+  ArrowCards,
+  CtaBand,
+  PageHero,
+  SectionHead,
+} from "@/components/site/blocks";
+
+/**
+ * Partners page — "Become a partner", per the harvest outline.
+ */
 
 export const metadata: Metadata = {
   title: "Partners",
+  description: "Become a partner — refer, integrate, teach.",
 };
 
-export default function Page() {
-  return <ContentPage content={partnersPage} />;
+const TRACKS = [
+  {
+    title: "Referral partners",
+    body: "Practices and consultants who introduce Synaps to clients keep a share of the first year on referred subscriptions.",
+  },
+  {
+    title: "Integration partners",
+    body: "Tools that touch the plan — survey capture, specification, printing — plug into the import/export surface.",
+  },
+  {
+    title: "Education partners",
+    body: "Schools and programmes teach on Freemium and get preferential Pro terms for staff and studios.",
+  },
+];
+
+export default function PartnersPage() {
+  return (
+    <main id="content">
+      <PageHero
+        eyebrow="Partners"
+        title="Become a"
+        dim="partner."
+        lead="Three ways to work with Synaps beyond the product itself. (Reconstructed page — the clone has no partner programme; the analysed site links a booking flow.)"
+      >
+        <Link href="/faq" className="ms-btn">
+          Book a call
+        </Link>
+      </PageHero>
+
+      <section
+        className="ms-container"
+        style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}
+      >
+        <div className="ms-stack-40">
+          <div className="ms-stack-24">
+            <SectionHead title="Partner" dim="tracks." />
+            <div className="ms-grid-3">
+              {TRACKS.map((track) => (
+                <article
+                  key={track.title}
+                  className="ms-card ms-card--hover"
+                  style={{ padding: "24px 26px" }}
+                >
+                  <h3 className="ms-h3" style={{ fontSize: 18.5 }}>
+                    {track.title}
+                  </h3>
+                  <p className="ms-body" style={{ margin: "10px 0 0" }}>
+                    {track.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="ms-stack-24">
+            <SectionHead title="Continue" dim="reading." />
+            <ArrowCards
+              items={[
+                { label: "Pricing", href: "/pricing", note: "Freemium, Pro & Studio" },
+                { label: "Solutions", href: "/solutions", note: "By type and by use case" },
+                { label: "Documentation", href: "/docs", note: "Guides for every workflow" },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <CtaBand />
+    </main>
+  );
 }

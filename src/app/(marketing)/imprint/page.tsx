@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/marketing/pages";
-import { imprintPage } from "@/lib/site-content";
+import { LegalView } from "@/components/site/templates";
+import { imprintDoc } from "@/content/legal";
 
 export const metadata: Metadata = {
   title: "Imprint",
+  description: "Media-owner disclosures, reconstructed.",
 };
 
-export default function Page() {
-  return <ContentPage content={imprintPage} />;
+export default function ImprintPage() {
+  return (
+    <main id="content">
+      <LegalView doc={imprintDoc} />
+    </main>
+  );
 }

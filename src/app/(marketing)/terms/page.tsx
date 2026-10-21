@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/marketing/pages";
-import { termsPage } from "@/lib/site-content";
+import { LegalView } from "@/components/site/templates";
+import { termsDoc } from "@/content/legal";
 
 export const metadata: Metadata = {
   title: "Terms",
+  description: "Terms-of-service structure, reconstructed.",
 };
 
-export default function Page() {
-  return <ContentPage content={termsPage} />;
+export default function TermsPage() {
+  return (
+    <main id="content">
+      <LegalView doc={termsDoc} />
+    </main>
+  );
 }

@@ -1,0 +1,772 @@
+/* ============================================================================
+   MARKETING SITE SCOPE — "ms" classes
+   ----------------------------------------------------------------------------
+   Design language transcribed from the harvested synaps.app main-domain CSS:
+   light paper background, hairline rules, drafting hatches, uppercase micro
+   labels, near-sharp corners, black primary buttons, Suisse-Int'l-first font
+   stack (falls back to the system stack exactly like the original), Draft
+   blue / Polish orange accents, dark footer.
+   Scoped under `.ms` so nothing leaks into the app surface.
+   ========================================================================== */
+
+.ms {
+  /* Tokens (light marketing theme) */
+  --ms-bg: #f8f9fb;
+  --ms-bg-raise: #ffffff;
+  --ms-ink: #08090b;
+  --ms-ink-soft: rgba(8, 9, 11, 0.62);
+  --ms-ink-faint: rgba(8, 9, 11, 0.4);
+  --ms-muted: rgba(8, 9, 11, 0.46);
+  --ms-hairline: rgba(8, 9, 11, 0.1);
+  --ms-hairline-soft: rgba(8, 9, 11, 0.07);
+  --ms-border: #dce0e5;
+  --ms-border-visible: #d2d7dd;
+  --ms-draft: #1060c0;
+  --ms-polish: #ff6a00;
+  --ms-dark: #0f0f0e;
+  --ms-dark-ink: rgba(255, 255, 255, 0.78);
+  --ms-dark-soft: rgba(255, 255, 255, 0.55);
+  --ms-dark-hairline: rgba(255, 255, 255, 0.11);
+  --ms-container: 1320px;
+  --ms-pad: 24px;
+  --ms-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ms-font:
+    "Suisse Int'l", "Suisse Intl", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  background: var(--ms-bg);
+  color: var(--ms-ink);
+  font-family: var(--ms-font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 720px) {
+  .ms {
+    --ms-pad: 32px;
+  }
+}
+
+/* Layout ------------------------------------------------------------------ */
+
+.ms-container {
+  max-width: var(--ms-container);
+  margin-inline: auto;
+  padding-inline: var(--ms-pad);
+}
+
+.ms-section {
+  padding-block: clamp(64px, 9vw, 128px);
+}
+
+.ms-rule {
+  border: 0;
+  border-top: 1px solid var(--ms-hairline);
+}
+
+/* Typography --------------------------------------------------------------- */
+
+.ms-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ms-muted);
+}
+
+.ms-h1 {
+  font-size: clamp(42px, 6.4vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  margin: 0;
+}
+
+.ms-h1 .dim {
+  color: var(--ms-ink-faint);
+}
+
+.ms-h2 {
+  font-size: clamp(30px, 3.6vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  margin: 0;
+}
+
+.ms-h2 .dim {
+  color: var(--ms-ink-faint);
+}
+
+.ms-h3 {
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  font-weight: 550;
+  margin: 0;
+}
+
+.ms-lead {
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.55;
+  color: var(--ms-ink-soft);
+}
+
+.ms-body {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ms-ink-soft);
+}
+
+.ms-watermark {
+  position: absolute;
+  z-index: 0;
+  font-size: clamp(64px, 11vw, 170px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+  color: rgba(8, 9, 11, 0.055);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Buttons -------------------------------------------------------------------
+   Black primary / outlined secondary, near-sharp, per the harvest. */
+
+.ms-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 2px;
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border: 1px solid var(--ms-ink);
+  background: var(--ms-ink);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    transform 0.35s var(--ms-ease),
+    box-shadow 0.35s var(--ms-ease),
+    background 0.2s;
+  text-decoration: none;
+}
+
+.ms-btn:hover {
+  background: #232529;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(8, 9, 11, 0.14);
+}
+
+.ms-btn--outline {
+  background: transparent;
+  color: var(--ms-ink);
+  border-color: var(--ms-ink);
+}
+
+.ms-btn--outline:hover {
+  background: var(--ms-ink);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(8, 9, 11, 0.12);
+}
+
+.ms-btn--light {
+  background: #fff;
+  border-color: #fff;
+  color: var(--ms-dark);
+}
+
+.ms-btn--light:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.ms-btn--ghost-light {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.ms-btn--ghost-light:hover {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.ms-btn--sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* Chips / badges ----------------------------------------------------------- */
+
+.ms-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px 5px 9px;
+  border: 1px solid color-mix(in srgb, var(--ms-draft) 55%, transparent);
+  border-radius: 999px;
+  color: var(--ms-draft);
+  font-size: 12.5px;
+  font-weight: 550;
+  background: color-mix(in srgb, var(--ms-draft) 6%, transparent);
+}
+
+.ms-chip--polish {
+  border-color: color-mix(in srgb, var(--ms-polish) 55%, transparent);
+  color: color-mix(in srgb, var(--ms-polish) 82%, black);
+  background: color-mix(in srgb, var(--ms-polish) 7%, transparent);
+}
+
+/* Cards -------------------------------------------------------------------- */
+
+.ms-card {
+  background: var(--ms-bg-raise);
+  border: 1px solid var(--ms-border);
+  border-radius: 3px;
+  transition:
+    transform 0.45s var(--ms-ease),
+    box-shadow 0.45s var(--ms-ease),
+    border-color 0.3s;
+}
+
+.ms-card--hover:hover {
+  transform: translateY(-3px);
+  border-color: var(--ms-border-visible);
+  box-shadow: 0 18px 40px rgba(8, 9, 11, 0.08);
+}
+
+/* Arrow link row (solutions hub, "continue reading") ----------------------- */
+
+.ms-arrow-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px;
+  background: var(--ms-bg-raise);
+  border: 1px solid var(--ms-border);
+  border-radius: 3px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.4s var(--ms-ease),
+    box-shadow 0.4s var(--ms-ease);
+}
+
+.ms-arrow-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(8, 9, 11, 0.09);
+}
+
+.ms-arrow-card .arrow {
+  font-size: 20px;
+  color: var(--ms-muted);
+  transition: transform 0.4s var(--ms-ease), color 0.3s;
+  flex: none;
+}
+
+.ms-arrow-card:hover .arrow {
+  transform: translateX(4px);
+  color: var(--ms-ink);
+}
+
+/* Textures -------------------------------------------------------------------
+   Drafting hatch + dot grid + survey grid, as background utilities. */
+
+.ms-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(8, 9, 11, 0.045) 0 1px,
+    transparent 1px 8px
+  );
+}
+
+.ms-hatch--soft {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(8, 9, 11, 0.028) 0 1px,
+    transparent 1px 10px
+  );
+}
+
+.ms-dots {
+  background-image: radial-gradient(
+    rgba(8, 9, 11, 0.14) 1px,
+    transparent 1.2px
+  );
+  background-size: 22px 22px;
+}
+
+.ms-gridlines {
+  background-image:
+    linear-gradient(to right, rgba(8, 9, 11, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(8, 9, 11, 0.045) 1px, transparent 1px);
+  background-size: 88px 88px;
+}
+
+/* Frame: hairline-edged content band seen across the harvest ---------------- */
+
+.ms-frame {
+  border: 1px solid var(--ms-hairline);
+  border-radius: 12px;
+  background:
+    linear-gradient(var(--ms-bg-raise), var(--ms-bg-raise)) padding-box,
+    var(--ms-bg);
+}
+
+/* Accordion -------------------------------------------------------------------
+   Hairline-separated rows with +/− affordance (native details). */
+
+.ms-accordion {
+  border-top: 1px solid var(--ms-hairline);
+}
+
+.ms-accordion > details {
+  border-bottom: 1px solid var(--ms-hairline);
+}
+
+.ms-accordion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 2px;
+  cursor: pointer;
+  list-style: none;
+  font-size: clamp(16px, 1.3vw, 19px);
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+.ms-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.ms-accordion summary .tick {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  color: var(--ms-muted);
+  font-size: 18px;
+  font-weight: 400;
+  transition: transform 0.35s var(--ms-ease);
+}
+
+.ms-accordion details[open] summary .tick {
+  transform: rotate(45deg);
+}
+
+.ms-accordion .answer {
+  padding: 0 2px 22px;
+  max-width: 68ch;
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: var(--ms-ink-soft);
+}
+
+/* Tables -------------------------------------------------------------------- */
+
+.ms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.ms-table th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ms-muted);
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--ms-border-visible);
+}
+
+.ms-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--ms-hairline);
+  vertical-align: top;
+  color: var(--ms-ink-soft);
+}
+
+.ms-table td:first-child {
+  color: var(--ms-ink);
+  font-weight: 520;
+}
+
+/* Prose (blog / legal / docs bodies) ------------------------------------------ */
+
+.ms-prose {
+  font-size: 16.5px;
+  line-height: 1.68;
+  color: var(--ms-ink-soft);
+}
+
+.ms-prose h2 {
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.14;
+  letter-spacing: -0.016em;
+  font-weight: 550;
+  color: var(--ms-ink);
+  margin: 2.2em 0 0.6em;
+}
+
+.ms-prose h3 {
+  font-size: 19px;
+  font-weight: 560;
+  color: var(--ms-ink);
+  margin: 1.8em 0 0.5em;
+}
+
+.ms-prose p {
+  margin: 0 0 1.05em;
+}
+
+.ms-prose ul {
+  margin: 0 0 1.1em;
+  padding-left: 1.2em;
+  list-style: none;
+}
+
+.ms-prose li {
+  position: relative;
+  margin-bottom: 0.5em;
+  padding-left: 14px;
+}
+
+.ms-prose li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 1.5px;
+  background: var(--ms-ink-faint);
+}
+
+.ms-prose strong {
+  color: var(--ms-ink);
+  font-weight: 580;
+}
+
+/* Feature split (homepage show-and-tell rows) -------------------------------- */
+
+.ms-split {
+  display: grid;
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+
+@media (min-width: 920px) {
+  .ms-split {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  }
+  .ms-split--flip > .ms-split-text {
+    order: 2;
+  }
+}
+
+/* Header ---------------------------------------------------------------------- */
+
+.ms-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--ms-bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--ms-hairline-soft);
+}
+
+.ms-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  height: 64px;
+}
+
+.ms-nav-links {
+  display: none;
+  align-items: center;
+  gap: 26px;
+}
+
+@media (min-width: 880px) {
+  .ms-nav-links {
+    display: flex;
+  }
+}
+
+.ms-nav-links a {
+  font-size: 14px;
+  color: var(--ms-ink-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ms-nav-links a:hover {
+  color: var(--ms-ink);
+}
+
+.ms-nav-links a.ext::after {
+  content: "↗";
+  font-size: 10px;
+  margin-left: 3px;
+  color: var(--ms-muted);
+}
+
+/* Dropdown groups (Solutions, Alternative to) ------------------------- */
+
+.ms-nav-group {
+  position: relative;
+}
+
+.ms-nav-panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: -14px;
+  z-index: 50;
+  min-width: 264px;
+  padding: 10px;
+  background: var(--ms-bg-raise);
+  border: 1px solid var(--ms-border);
+  border-radius: 10px;
+  box-shadow: 0 22px 54px rgba(8, 9, 11, 0.12);
+  display: grid;
+  gap: 1px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.28s var(--ms-ease),
+    transform 0.28s var(--ms-ease),
+    visibility 0.28s;
+}
+
+.ms-nav-group:hover .ms-nav-panel,
+.ms-nav-group:focus-within .ms-nav-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ms-nav-panel a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  color: var(--ms-ink-soft);
+  transition: background 0.15s, color 0.15s;
+}
+
+.ms-nav-panel a:hover {
+  background: rgba(8, 9, 11, 0.05);
+  color: var(--ms-ink);
+}
+
+/* Footer ------------------------------------------------------------------------ */
+
+.ms-footer {
+  background: var(--ms-dark);
+  color: var(--ms-dark-ink);
+  margin-top: auto;
+}
+
+.ms-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ms-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--ms-dark-hairline);
+  font-size: 14.5px;
+  transition: color 0.2s, padding-left 0.35s var(--ms-ease);
+}
+
+.ms-footer-row:hover {
+  color: #fff;
+  padding-left: 6px;
+}
+
+.ms-footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 22px 0 26px;
+  border-bottom: 1px solid var(--ms-dark-hairline);
+  font-size: 13px;
+  color: var(--ms-dark-soft);
+}
+
+/* Cookie banner ------------------------------------------------------------------- */
+
+.ms-cookie {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 60;
+  max-width: 380px;
+  background: #fff;
+  border: 1px solid var(--ms-border);
+  border-radius: 10px;
+  box-shadow: 0 18px 44px rgba(8, 9, 11, 0.16);
+  padding: 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ms-ink-soft);
+}
+
+@media (max-width: 560px) {
+  .ms-cookie {
+    left: 12px;
+    right: 12px;
+    max-width: none;
+  }
+}
+
+/* Utility -------------------------------------------------------------------------- */
+
+.ms-stack-8 > * + * {
+  margin-top: 8px;
+}
+.ms-stack-16 > * + * {
+  margin-top: 16px;
+}
+.ms-stack-24 > * + * {
+  margin-top: 24px;
+}
+.ms-stack-32 > * + * {
+  margin-top: 32px;
+}
+.ms-stack-40 > * + * {
+  margin-top: 40px;
+}
+
+.ms-grid-2 {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 760px) {
+  .ms-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ms-grid-3 {
+  display: grid;
+  gap: clamp(14px, 1.6vw, 24px);
+}
+
+@media (min-width: 700px) {
+  .ms-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1040px) {
+  .ms-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Page hero — two columns: headline left, context right (site-wide pattern) */
+
+.ms-page-hero {
+  display: grid;
+  gap: 26px;
+  padding-block: clamp(56px, 8vw, 110px) clamp(40px, 5vw, 72px);
+}
+
+@media (min-width: 940px) {
+  .ms-page-hero {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    align-items: end;
+  }
+}
+
+/* Marquee (assets band) ------------------------------------------------------ */
+
+@keyframes ms-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes ms-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ms-ellipsis {
+  0%,
+  100% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+}
+
+.ms-marquee-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: ms-marquee 36s linear infinite;
+}
+
+.ms-marquee-track[data-reverse="true"] {
+  animation-direction: reverse;
+}
+
+.ms-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.ms-ellipsis::after {
+  content: "";
+  animation: ms-ellipsis 1.4s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-marquee-track {
+    animation: none;
+  }
+}
+
+/* Reduced motion ------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ms *,
+  .ms *::before,
+  .ms *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

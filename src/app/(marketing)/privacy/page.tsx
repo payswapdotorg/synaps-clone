@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/marketing/pages";
-import { privacyPage } from "@/lib/site-content";
+import { LegalView } from "@/components/site/templates";
+import { privacyDoc } from "@/content/legal";
 
 export const metadata: Metadata = {
   title: "Privacy",
+  description: "How the analysed product handles data — reconstructed.",
 };
 
-export default function Page() {
-  return <ContentPage content={privacyPage} />;
+export default function PrivacyPage() {
+  return (
+    <main id="content">
+      <LegalView doc={privacyDoc} />
+    </main>
+  );
 }

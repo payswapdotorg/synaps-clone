@@ -91,20 +91,33 @@ Requires Node 18+ (developed on Node 24) and Bun (developed on Bun 1.3.14).
 
 ## What the clone implements
 
-**53 routes** across 39 route files — 31 public/marketing routes and 22
-reconstructed authenticated-app routes. A full per-route manifest with
-provenance markers lives in [`docs/ROUTES.md`](docs/ROUTES.md).
+**100+ routes** across ~60 route files — the full marketing site (all 77
+harvested synaps.app paths + the GitBook-style docs section) and the
+reconstructed authenticated-app surface. A full per-route manifest with
+provenance markers lives in [`docs/ROUTES.md`](docs/ROUTES.md); the
+main-domain parity lane is documented in
+[`docs/SITE-PARITY-PLAN.md`](docs/SITE-PARITY-PLAN.md).
 
-### Public / marketing (31)
+### Public / marketing (mirrors synaps.app)
 
 | Area | Routes |
 |---|---|
-| Landing + demo | `/`, `/demo` |
+| Home + demo | `/` (synaps.app-style rebuild), `/demo` |
 | Auth | `/login`, `/register`, `/recovery`, `/dev-login` |
-| Marketing pages | `/pricing`, `/company`, `/faq`, `/cookies`, `/privacy`, `/terms`, `/imprint` |
+| Pricing | `/pricing` — Freemium €0 · Pro €59/49 · Studio €119/99, monthly/annual toggle, compare tables |
 | Solutions | `/solutions` + 10 detail pages (`/solutions/architecture-studio`, `/solutions/space-visualization`, …) |
-| “Alternative to …” | `/news/alternative-to/{archicad,autocad,bricscad,revit,sketchup,vectorworks}` |
-| News / resources | `/news/blog`, `/news/changelog`, `/resources/partners` |
+| “Alternative to …” | `/news/alternative-to` + `/news/alternative-to/{archicad,autocad,bricscad,revit,sketchup,vectorworks}` |
+| Blog | `/news/blog` + 29 article pages |
+| Release notes | `/news/changelog` + 14 dated entries (typed New/Improved/Fixed items) |
+| Company & careers | `/company` + 5 role pages under `/company/careers/…` |
+| FAQ & partners | `/faq`, `/resources/partners` |
+| Legal | `/cookies`, `/privacy`, `/terms`, `/imprint` |
+| Documentation | `/docs` + 20 GitBook-style guide pages (`/docs/drafting`, `/docs/ai-workflows/brief-to-editable-plan`, …) |
+
+The marketing chrome matches the analysed main domain: sticky light
+header with Solutions/Alternative-to dropdowns and the Documentation↗
+link, dark CTA footer with Product/Company/Legal columns, and the
+bottom-left cookie-consent banner (simulated — no real cookies).
 
 ### Reconstructed authenticated app (22)
 

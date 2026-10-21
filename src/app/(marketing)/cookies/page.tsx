@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/marketing/pages";
-import { cookiesPage } from "@/lib/site-content";
+import { LegalView } from "@/components/site/templates";
+import { cookiesDoc } from "@/content/legal";
 
 export const metadata: Metadata = {
-  title: "Cookie policy",
+  title: "Cookies",
+  description: "Cookies and similar technologies — what the clone actually sets.",
 };
 
-export default function Page() {
-  return <ContentPage content={cookiesPage} />;
+export default function CookiesPage() {
+  return (
+    <main id="content">
+      <LegalView doc={cookiesDoc} />
+    </main>
+  );
 }
