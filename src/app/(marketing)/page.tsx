@@ -5,6 +5,7 @@ import { FinalCta } from "@/components/landing/FinalCta";
 import { Hero } from "@/components/landing/Hero";
 import { ModeSections } from "@/components/landing/ModeSections";
 import { StudioTabs } from "@/components/landing/StudioTabs";
+import { AuthRedirect } from "@/components/auth/AuthRedirect";
 
 /**
  * Marketing landing page.
@@ -21,6 +22,7 @@ import { StudioTabs } from "@/components/landing/StudioTabs";
 export default function HomePage() {
   return (
     <main id="main">
+      <AuthRedirect />
       <Hero />
       <FeatureCards />
       <Capabilities />

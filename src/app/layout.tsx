@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
 import { THEME_COLOR } from "@/lib/tokens";
 import "./globals.css";
 
@@ -55,9 +53,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Nav />
         {children}
-        <Footer />
       </body>
     </html>
   );

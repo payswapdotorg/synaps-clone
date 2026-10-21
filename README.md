@@ -26,6 +26,25 @@ recorded copy — clearly labelled as such on the page itself.
 
 ---
 
+## The full product journey (authenticated surface)
+
+The clone reconstructs the complete observed UX, not just the marketing site:
+
+1. **Sign in** (`/login`) — “Continue with Google” opens a clearly labelled
+   mock account chooser (no real Google integration; the session is local).
+2. **Onboarding** (`/onboarding`) — the eight-question series transcribed
+   verbatim from the original product’s bundle.
+3. **Team home** (`/t/{teamId}`) — “What are we creating today?”, continue
+   working, credits, and the Free-plan model limit.
+4. **CAD console** (`/m/{modelId}`) — Layers/Assets dock, Canvas settings,
+   status bar, floating tool palette and an original interactive floor-plan
+   editor: draw walls, place doors and windows on them, stamp rooms with
+   live area labels, dimensions, text, asset stamps; select/move, delete,
+   undo/redo, zoom/pan, grid snap, m/ft unit switching, plan export.
+
+See ANALYSIS.md “Authenticated surface” for how each piece was observed and
+what is simulated.
+
 ## Quick start
 
 ```bash

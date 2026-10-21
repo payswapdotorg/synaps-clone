@@ -390,3 +390,80 @@ navigation.
 *Milestone 1 recorded the public-surface REA. Milestones 2–7 implemented a clone
 from it. The next milestone should attack the second tRPC namespace enumeration
 and the post-auth route map — the two gaps this analysis never closed.*
+
+---
+
+## Authenticated surface (observed 2026-10-21, operator-authorized session)
+
+The operator authorized a live sign-in with their own Google account to
+observe the previously unobservable authenticated surface. What follows was
+witnessed first-hand (screenshots + DOM + network capture) or transcribed
+from the production bundle.
+
+### Observed flows
+
+- **Sign-in** — `/login` renders “Welcome back” / “Sign in to continue to
+  Synaps” with a single “Continue with Google” button (blue #4285F4, split
+  layout with a product preview on the right). Google SSO via Supabase
+  GoTrue; on return the app lands on the team home `/t/{teamId}` (or the
+  onboarding wizard for fresh accounts).
+- **Onboarding questionnaire** — 8 steps, transcribed VERBATIM from the
+  bundle (`onboarding` steps array): email → name → role (Architect /
+  Designer · Real estate professional · Homeowner / Prosumer · Student ·
+  Other) → tools (multi: AutoCad · Revit · Rhino · ArchiCAD · SketchUp ·
+  Other · None) → designing today (Apartment · House · Office / Workspace ·
+  Retail / Hospitality · Public space · Just exploring) → space size (with
+  m²/sq ft details) → solo or team → “How would you like to start?”
+  (Update existing plan · Start from template · Describe what you want ·
+  Start fresh). Each step has a sheetKicker, rotating artwork, and
+  step-scoped analytics (onboarding_step_viewed / _completed).
+- **Team home** — `/t/{teamId}`: team switcher + Free badge, Home / Recent /
+  Spaces sidebar, credits pill (300), “What are we creating today?” with
+  four cards (Start from scratch / Upload floorplan / Generate with AI /
+  Try Synaps demo project), “Continue working” model cards. Free plan caps
+  models at three (Pro upsell modal: unlimited models/pages, rolling
+  credits).
+- **Console** — `/m/{modelId}?pageId={pageId}`: top bar (model icon, name +
+  space breadcrumb, copy-link, avatar/help/feedback, blue Share), left dock
+  (Layers / Assets tabs; Models section; “No layers yet. Anything you draw
+  appears here.”), right Canvas panel (Background hex EBEDEF, Length units
+  Meters, Precision 2, Area units Square meters, Grid 0.5 m), bottom status
+  bar (grid size, unit, zoom), floating bottom-center tool palette.
+- **Assets library categories** — Activities, Ancient Pompeii, Bathroom,
+  Bedroom, Dining Room, Kitchen, Life & Context, Lighting, Living Room, MEP
+  Symbols, Office, Others, Outdoor.
+- **AI generation** — “Describe your floorplan…” with example prompts
+  (Corner café / Townhouse / Courtyard house, transcribed verbatim in
+  src/lib/onboarding-steps.ts); consumes credits.
+
+### tRPC surface (api.synaps.app, observed + bundle)
+
+credits.getBalance · gates.getTeamEntitlements · invitations.* ·
+resources.create / getById / list · stripe.* · teams.* · templates.* ·
+users.me / onSignup / onboardingStatus / consentStatus · ai.operationId ·
+layout.generate / layout.trace · storage.list (from the M1 401/405 oracle).
+Feature flags observed: dwg-import, dwg-export, iceberg-release.
+
+### What the clone implements vs. simulates
+
+Implemented for real (original code): the full journey UI (login →
+onboarding → home → console), an interactive SVG floor-plan editor (walls,
+doors on walls with swing arcs, windows, rooms with live area labels,
+dimensions, text, asset stamps, select/move, delete, undo/redo, zoom/pan,
+grid snap, unit switching, PNG/SVG export), the Free-limit modal, the AI /
+upload dialogs, and the derived layer list.
+
+Simulated (honest): Google SSO (mock account chooser — no identity
+provider), the tRPC layer (no server), teams/credits/models (localStorage),
+AI generation (deterministic demo plan), upload tracing (no image
+processing), sharing (local placeholder link).
+
+### Account hygiene disclosure
+
+Two test models (“Model 1”) were created on the operator’s Free account
+during observation (hitting the 3-model cap). The production client bundle
+exposes no model-delete procedure and no delete affordance was found in the
+UI, so they could not be removed by the observer. The operator’s existing
+“Uploaded Plan” model was not modified. The operator’s Google credentials,
+shared in chat for this observation, were used once for this login and are
+not stored anywhere in this repository — rotation is still advised.

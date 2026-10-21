@@ -46,6 +46,11 @@ function collectRoutes(dir, prefix = "") {
     if (!entry.isDirectory()) continue;
     if (entry.name === "node_modules" || entry.name.startsWith(".")) continue;
     const seg = entry.name;
+    // route groups like (marketing) shape the layout, not the URL — skip them
+    if (seg.startsWith("(") && seg.endsWith(")")) {
+      for (const r of collectRoutes(join(dir, seg), prefix)) routes.add(r);
+      continue;
+    }
     const nextPrefix =
       seg.startsWith("[") && seg.endsWith("]")
         ? `${prefix}/${seg.slice(1, -1)}`
@@ -102,8 +107,10 @@ const external = new Set();
 for (const file of files) {
   const src = readFileSync(file, "utf8");
   const rel = relative(ROOT, file);
-  // href="/..." | href={"/..."} | href: "/..."
-  const re = /href[:=]\s*\{?\s*["'`]([^"'`]+)["'`]/g;
+  // href="/..." | href={"/..."} | href: "/..." — template literals with
+  // interpolations (${...}) are runtime-computed and verified by the E2E,
+  // so only fully-static quoted values are checked here
+  const re = /href[:=]\s*\{?\s*["']([^"']+)["']/g;
   let m;
   while ((m = re.exec(src)) !== null) {
     const href = m[1];
