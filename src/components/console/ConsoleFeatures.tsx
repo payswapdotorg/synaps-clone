@@ -14,6 +14,7 @@
  */
 
 import { Component, useEffect, useRef, useState, type ReactNode } from "react";
+import { useDialogFocus } from "@/lib/dialog-focus";
 
 /* ------------------------------------------------------------------ */
 /* Page bar — multi-page models                                        */
@@ -138,6 +139,8 @@ export function ImportDialog({
   const [file, setFile] = useState<string | null>(null);
   const [step, setStep] = useState(-1);
   const [done, setDone] = useState(false);
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  const panelRef = useDialogFocus<HTMLDivElement>(true, onClose);
 
   const gated = (format === "dxf" && !entitlements.dxfImport) || (format === "dwg" && !entitlements.dwgImport);
   const steps = IMPORT_STEPS[format];
@@ -165,7 +168,7 @@ export function ImportDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="Import floorplan" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
+      <div ref={panelRef} className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
         <h2 className="text-base font-semibold text-content-primary">Import floorplan</h2>
         <p className="mt-1 text-xs text-content-secondary">
           The real product runs import workers (pdf.worker, shapeMapImport.worker, occt-wasm); this
@@ -280,6 +283,8 @@ export function ExportDialog({
   const [delivery, setDelivery] = useState<"single_file" | "zip">("single_file");
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  const panelRef = useDialogFocus<HTMLDivElement>(true, onClose);
 
   function runSitePlan() {
     setBusy(true);
@@ -295,7 +300,7 @@ export function ExportDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="Export plan" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
+      <div ref={panelRef} className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
         <h2 className="text-base font-semibold text-content-primary">Export</h2>
 
         <div className="mt-4 flex gap-1" role="tablist" aria-label="Export format">
@@ -521,6 +526,8 @@ export function PresentationMode({ onExit, modelName }: { onExit: () => void; mo
 
 export function PhoneHandoverDialog({ onClose, modelName }: { onClose: () => void; modelName: string }) {
   const code = useRef(Math.random().toString(36).slice(2, 8).toUpperCase());
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  const panelRef = useDialogFocus<HTMLDivElement>(true, onClose);
   const [dots] = useState(() => {
     // Deterministic pseudo-QR from the pairing code (visual only).
     let h = 0;
@@ -536,7 +543,7 @@ export function PhoneHandoverDialog({ onClose, modelName }: { onClose: () => voi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="Open on phone" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 text-center shadow-2xl">
+      <div ref={panelRef} className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 text-center shadow-2xl">
         <h2 className="text-base font-semibold text-content-primary">Open on your phone</h2>
         <p className="mt-1 text-xs text-content-secondary">
           Pair “{modelName}” with the phone canvas (phone-canvas-loader in the real product).

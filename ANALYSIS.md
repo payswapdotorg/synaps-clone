@@ -836,3 +836,41 @@ The entire docs surface previously overflowed horizontally at 375px
 small-screen handling) and the nav was simply hidden below 960px with
 no replacement, leaving 20 doc pages unreachable except via prev/next
 pagination.
+
+## Dialog keyboard & focus contract (Task 48 — clone-original, NOT parity)
+
+Every overlay in this clone is hand-rolled markup rather than a
+component-library dialog, and a11y inspection showed they announced
+themselves as dialogs (`role="dialog"` + `aria-modal`) without
+honouring the rest of the dialog contract: focus never moved into the
+overlay on open, Tab could travel behind the scrim into hidden page
+content, Escape was missing from eight overlays (console dock,
+canvas-settings panel, Share, Import, Export, Phone handover, both
+home-page modals, the simulated Google sign-in), and focus was never
+returned to the trigger on close.
+
+Focus/keyboard behaviour is invisible to black-box harvesting (the
+real product's app shell sits behind SSO, and the live docs drawer's
+focus management could not be observed), so `src/lib/dialog-focus.ts`
+implements the **WAI-ARIA dialog convention** as a clone-original
+pattern and discloses it as such:
+
+- focus moves to the first focusable element on open (`[autofocus]`
+  element when a dialog declares one — e.g. the mock Google email
+  field);
+- Tab / Shift+Tab wrap within the overlay while it holds focus;
+- Escape closes the overlay (following each dialog's own scrim rules —
+  the AI-generate and upload dialogs refuse Escape mid-pipeline,
+  matching their scrim);
+- focus returns to the trigger on close;
+- when dialogs nest ("New team" inside the team-nav drawer), the
+  innermost dialog that holds focus owns the keyboard;
+- the console dock / canvas-settings panels carry `role="dialog"` only
+  in their overlay modes (below md / lg), staying plain labelled
+  regions when inline.
+
+Dropdown menus (account menu, team switcher, docs "More" ⋯, docs
+search) are non-modal and get Escape-to-close only — no focus trap —
+which is the conventional treatment.
+
+Presentation mode already had Escape and keeps its own handler.

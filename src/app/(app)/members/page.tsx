@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { activeTeam, loadSession, updateSession, type SimSession, type SimTeam } from "@/lib/session";
+import { useDialogFocus } from "@/lib/dialog-focus";
 import { AppPage, SimNote } from "@/components/app/AppPage";
 import { relTime } from "@/app/(app)/t/[teamId]/page";
 
@@ -14,6 +15,8 @@ import { relTime } from "@/app/(app)/t/[teamId]/page";
 export default function MembersPage() {
   const [session, setSession] = useState<SimSession | null>(null);
   const [inviteOpen, setInviteOpen] = useState(false);
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  const inviteRef = useDialogFocus<HTMLDivElement>(inviteOpen, () => setInviteOpen(false));
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"editor" | "viewer">("editor");
 
@@ -134,7 +137,7 @@ export default function MembersPage() {
 
       {inviteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
+          <div ref={inviteRef} className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
             <h2 className="text-base font-semibold text-content-primary">Add member (simulated)</h2>
             <p className="mt-1 text-xs text-content-secondary">
               The real product sends an invitation via email; here the member joins the local session directly.

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { activeTeam, loadSession, updateSession, uid, type SimSession, type SimTeam } from "@/lib/session";
+import { useDialogFocus } from "@/lib/dialog-focus";
 import { AppPage, SimNote } from "@/components/app/AppPage";
 
 /**
@@ -12,6 +13,8 @@ import { AppPage, SimNote } from "@/components/app/AppPage";
 export default function InvitationsPage() {
   const [session, setSession] = useState<SimSession | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  const createRef = useDialogFocus<HTMLDivElement>(createOpen, () => setCreateOpen(false));
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"editor" | "viewer">("editor");
   const [copied, setCopied] = useState<string | null>(null);
@@ -130,7 +133,7 @@ export default function InvitationsPage() {
 
       {createOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
+          <div ref={createRef} className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
             <h2 className="text-base font-semibold text-content-primary">New invitation</h2>
             <p className="mt-1 text-xs text-content-secondary">
               Editor invites: {team.plan === "Pro" ? "included" : "50 credits/seat"} (simulated charge preview).

@@ -26,6 +26,7 @@ import {
   updateSession,
   type SimSession,
 } from "@/lib/session";
+import { useDialogFocus } from "@/lib/dialog-focus";
 
 export type SidebarSection =
   | "home" | "recent" | "space" | "members" | "invitations" | "notifications"
@@ -100,6 +101,19 @@ function TeamSidebarNav({
   const [teamMenu, setTeamMenu] = useState(false);
   const [newTeam, setNewTeam] = useState(false);
   const [name, setName] = useState("");
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape) for the
+  // "New team" modal; Escape for the team-switcher dropdown.
+  const newTeamRef = useDialogFocus<HTMLDivElement>(newTeam, () => setNewTeam(false));
+  useEffect(() => {
+    if (!teamMenu) return;
+    const onKey = (e: KeyboardEvent) => {
+      // A dialog that already handled this Escape marks it default-prevented.
+      if (e.defaultPrevented) return;
+      if (e.key === "Escape") setTeamMenu(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [teamMenu]);
   if (!s) return null;
   const team = s.teams.find((t) => t.id === teamId) ?? activeTeam(s);
   const unread = s.notifications.filter((n) => !n.read).length;
@@ -165,7 +179,6 @@ function TeamSidebarNav({
               role="menuitem"
               onClick={() => {
                 setNewTeam(true);
-                setTeamMenu(false);
               }}
               className="w-full rounded-control px-3 py-2 text-left text-sm text-content-secondary hover:bg-surface-raised hover:text-content-primary"
             >
@@ -210,7 +223,7 @@ function TeamSidebarNav({
 
       {newTeam && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
+          <div ref={newTeamRef} className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
             <h2 className="text-base font-semibold text-content-primary">New team</h2>
             <p className="mt-1 text-xs text-content-secondary">Simulated — teams are local only.</p>
             <input
@@ -254,19 +267,28 @@ export function AppTopBar({ teamId, right }: { teamId: string; right?: React.Rea
   const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
   const active = sectionFromPath(pathname);
+  // Drawer keyboard contract (focus in/out, Tab wrap, Escape) — see lib/dialog-focus.ts.
+  const drawerRef = useDialogFocus<HTMLDivElement>(drawerOpen, () => setDrawerOpen(false));
+  // Escape closes the account dropdown (focus stays on its trigger).
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      // A dialog that already handled this Escape marks it default-prevented.
+      if (e.defaultPrevented) return;
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
-  // While the mobile drawer is open: lock scrolling and close on Escape.
+  // While the mobile drawer is open: lock scrolling (Escape is handled by
+  // useDialogFocus).
   useEffect(() => {
     if (!drawerOpen) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setDrawerOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKey);
     };
   }, [drawerOpen]);
 
@@ -326,7 +348,7 @@ export function AppTopBar({ teamId, right }: { teamId: string; right?: React.Rea
       </div>
 
       {drawerOpen && (
-        <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Team navigation">
+        <div className="fixed inset-0 z-50 md:hidden">
           <button
             type="button"
             aria-label="Close navigation"
@@ -335,6 +357,10 @@ export function AppTopBar({ teamId, right }: { teamId: string; right?: React.Rea
           />
           <div
             id="team-nav-drawer"
+            ref={drawerRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Team navigation"
             className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col overflow-y-auto border-r border-border-solid/15 bg-surface-base px-4 py-5 shadow-2xl"
           >
             <TeamSidebarNav teamId={teamId} active={active} onNavigate={() => setDrawerOpen(false)} />

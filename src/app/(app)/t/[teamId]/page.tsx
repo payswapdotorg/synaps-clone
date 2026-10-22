@@ -10,6 +10,7 @@ import {
   type SimTeam,
 } from "@/lib/session";
 import { AI_PROMPT_EXAMPLES } from "@/lib/onboarding-steps";
+import { useDialogFocus } from "@/lib/dialog-focus";
 import { GenerateAiDialog } from "@/components/console/HomeDialogs";
 import { ImportDialog } from "@/components/console/ConsoleFeatures";
 import { AppTopBar, TeamSidebar } from "@/components/app/TeamSidebar";
@@ -194,6 +195,8 @@ export default function TeamHome({ params }: { params: Promise<{ teamId: string 
 }
 
 function FreeLimitModal({ onClose }: { onClose: () => void }) {
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  const panelRef = useDialogFocus<HTMLDivElement>(true, onClose);
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
@@ -202,7 +205,7 @@ function FreeLimitModal({ onClose }: { onClose: () => void }) {
       aria-label="Free plan limit"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base p-8 shadow-2xl">
+      <div ref={panelRef} className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base p-8 shadow-2xl">
         <h2 className="text-lg font-semibold tracking-tight text-content-primary">Free plan limit</h2>
         <p className="mt-2 text-sm text-content-secondary">
           You have reached the Free model limit

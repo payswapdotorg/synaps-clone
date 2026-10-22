@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PlanEditor, AssetSymbol, type EditorSettings } from "./PlanEditor";
 import {
   ExportDialog,
@@ -13,6 +13,7 @@ import {
 } from "./ConsoleFeatures";
 import { PolishView, SunlightPanel, MATERIALS, DEFAULT_MATERIAL, type MaterialId } from "./PolishView";
 import { updateSession } from "@/lib/session";
+import { useDialogFocus, useMediaQuery } from "@/lib/dialog-focus";
 import {
   type Shape,
   type Tool,
@@ -196,6 +197,15 @@ export function ConsoleChrome({
     gridOn: true,
   });
   const undoRef = useRef<{ push: () => void; undo: () => void; redo: () => void } | null>(null);
+
+  // Overlay-mode detection: below md the left dock and below lg the settings
+  // panel degrade to overlay drawers; the dialog keyboard contract (focus
+  // in/out, Tab wrap, Escape — see lib/dialog-focus.ts) applies there only.
+  const dockOverlay = useMediaQuery("(max-width: 767px)");
+  const settingsOverlay = useMediaQuery("(max-width: 1023px)");
+  const dockRef = useDialogFocus<HTMLElement>(dockOpen && dockOverlay, () => setDockOpen(false));
+  const settingsRef = useDialogFocus<HTMLElement>(settingsOpen && settingsOverlay, () => setSettingsOpen(false));
+  const shareRef = useDialogFocus<HTMLDivElement>(shareOpen, () => setShareOpen(false));
 
   const layers = useMemo(() => deriveLayers(shapes), [shapes]);
   const selectedShape = shapes.find((s) => s.id === selectedId) ?? null;
@@ -383,6 +393,9 @@ export function ConsoleChrome({
         {/* Left dock (observed) — inline ≥md, overlay drawer on smaller screens */}
         <aside
           id="console-left-dock"
+          ref={dockRef}
+          role={dockOpen && dockOverlay ? "dialog" : undefined}
+          aria-modal={dockOpen && dockOverlay ? "true" : undefined}
           className={`${dockOpen ? "fixed inset-y-0 left-0 z-40 flex" : "hidden"} w-60 shrink-0 flex-col border-r border-border-solid/10 bg-surface-base md:static md:z-auto md:flex`}
           aria-label="Models, layers and assets"
         >
@@ -582,6 +595,9 @@ export function ConsoleChrome({
         )}
         <aside
           id="console-settings-panel"
+          ref={settingsRef}
+          role={settingsOpen && settingsOverlay ? "dialog" : undefined}
+          aria-modal={settingsOpen && settingsOverlay ? "true" : undefined}
           className={`${settingsOpen ? "fixed inset-y-0 right-0 z-40 flex" : "hidden"} w-64 shrink-0 flex-col overflow-y-auto border-l border-border-solid/10 bg-surface-base p-4 lg:static lg:z-auto lg:flex`}
           aria-label="Canvas settings"
         >
@@ -777,7 +793,7 @@ export function ConsoleChrome({
           aria-label="Share"
           onClick={(e) => e.target === e.currentTarget && setShareOpen(false)}
         >
-          <div className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
+          <div ref={shareRef} className="w-full max-w-sm rounded-container border border-border-solid/15 bg-surface-base p-6 shadow-2xl">
             <h2 className="text-base font-semibold tracking-tight text-content-primary">Share</h2>
             <p className="mt-2 text-sm text-content-secondary">
               The original creates share links with viewer roles. This clone

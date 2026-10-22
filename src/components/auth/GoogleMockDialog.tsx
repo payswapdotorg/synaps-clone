@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { activeTeam, createSession, loadSession } from "@/lib/session";
+import { useDialogFocus } from "@/lib/dialog-focus";
 
 /**
  * Mock Google account chooser.
@@ -24,6 +25,9 @@ export function GoogleMockDialog({
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  // The email input carries [autofocus], so focus lands there on open.
+  const panelRef = useDialogFocus<HTMLDivElement>(true, onClose);
 
   function signIn(e: React.FormEvent) {
     e.preventDefault();
@@ -50,7 +54,7 @@ export function GoogleMockDialog({
       aria-label="Simulated Google sign-in"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="w-full max-w-sm overflow-hidden rounded-container border border-border-solid/20 bg-surface-base shadow-2xl">
+      <div ref={panelRef} className="w-full max-w-sm overflow-hidden rounded-container border border-border-solid/20 bg-surface-base shadow-2xl">
         <div className="px-8 pt-8 text-center">
           <svg width="40" height="40" viewBox="0 0 18 18" aria-hidden="true" className="mx-auto">
             <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z" />

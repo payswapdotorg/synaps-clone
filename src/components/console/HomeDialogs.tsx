@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AI_PROMPT_EXAMPLES } from "@/lib/onboarding-steps";
+import { useDialogFocus } from "@/lib/dialog-focus";
 
 /**
  * “Generate with AI” and “Upload floorplan” dialogs.
@@ -25,6 +26,11 @@ export function GenerateAiDialog({
   const [prompt, setPrompt] = useState("");
   const [stage, setStage] = useState<"compose" | "generating">("compose");
   const valid = prompt.trim().length >= 12;
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  // Escape follows the scrim rule: only while composing, not mid-generation.
+  const panelRef = useDialogFocus<HTMLDivElement>(true, () => {
+    if (stage === "compose") onClose();
+  });
 
   function generate() {
     if (!valid) return;
@@ -40,7 +46,7 @@ export function GenerateAiDialog({
       aria-label="Generate with AI"
       onClick={(e) => e.target === e.currentTarget && stage === "compose" && onClose()}
     >
-      <div className="w-full max-w-lg rounded-container border border-border-solid/15 bg-surface-base shadow-2xl">
+      <div ref={panelRef} className="w-full max-w-lg rounded-container border border-border-solid/15 bg-surface-base shadow-2xl">
         <div className="flex items-center justify-between border-b border-border-solid/10 px-6 py-4">
           <h2 className="text-base font-semibold tracking-tight text-content-primary">
             Generate a floorplan
@@ -115,6 +121,11 @@ export function UploadPlanDialog({
 }) {
   const [fileName, setFileName] = useState<string | null>(null);
   const [stage, setStage] = useState<"pick" | "detect" | "trace">("pick");
+  // Dialog keyboard contract (focus in/out, Tab wrap, Escape — lib/dialog-focus.ts).
+  // Escape follows the scrim rule: only while picking, not mid-analysis.
+  const panelRef = useDialogFocus<HTMLDivElement>(true, () => {
+    if (stage === "pick") onClose();
+  });
 
   function pick(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -133,7 +144,7 @@ export function UploadPlanDialog({
       aria-label="Upload floorplan"
       onClick={(e) => e.target === e.currentTarget && stage === "pick" && onClose()}
     >
-      <div className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base shadow-2xl">
+      <div ref={panelRef} className="w-full max-w-md rounded-container border border-border-solid/15 bg-surface-base shadow-2xl">
         <div className="flex items-center justify-between border-b border-border-solid/10 px-6 py-4">
           <h2 className="text-base font-semibold tracking-tight text-content-primary">
             Upload floorplan

@@ -13,6 +13,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { docsPages } from "@/content/docs";
 import { SiteMark } from "@/components/site/chrome";
 import { DocsNavBody } from "@/components/docs/DocsSidebar";
+import { useDialogFocus } from "@/lib/dialog-focus";
 
 function SearchGlyph() {
   return (
@@ -73,6 +74,8 @@ export function DocsHeader() {
   const [moreOpen, setMoreOpen] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const moreRef = useRef<HTMLDivElement>(null);
+  // Drawer keyboard contract (focus in/out, Tab wrap, Escape) — see lib/dialog-focus.ts.
+  const tocRef = useDialogFocus<HTMLDivElement>(tocOpen, () => setTocOpen(false));
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -98,18 +101,34 @@ export function DocsHeader() {
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  // While the table-of-contents drawer is open: lock scrolling, close on Escape.
+  // Escape closes the search panel / the “More” dropdown, handing focus back
+  // to the trigger that opened them.
+  useEffect(() => {
+    if (!open && !moreOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      // A dialog that already handled this Escape marks it default-prevented.
+      if (e.defaultPrevented) return;
+      if (open) {
+        setOpen(false);
+        boxRef.current?.querySelector<HTMLButtonElement>(".docs-search-trigger")?.focus();
+      } else {
+        setMoreOpen(false);
+        moreRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, moreOpen]);
+
+  // While the table-of-contents drawer is open: lock scrolling (Escape is
+  // handled by useDialogFocus).
   useEffect(() => {
     if (!tocOpen) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setTocOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKey);
     };
   }, [tocOpen]);
 
@@ -242,6 +261,7 @@ export function DocsHeader() {
           />
           <div
             id="docs-toc-drawer"
+            ref={tocRef}
             className="docs-drawer"
             role="dialog"
             aria-modal="true"
