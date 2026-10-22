@@ -253,7 +253,7 @@ export function SiteHeader() {
 
 const FOOTER_LINKS: {
   section: string;
-  items: { label: string; href: string }[];
+  items: { label: string; href: string; id?: string }[];
 }[] = [
   {
     section: "Product",
@@ -271,15 +271,20 @@ const FOOTER_LINKS: {
       { label: "Blog", href: "/news/blog" },
       { label: "Release notes", href: "/news/changelog" },
       { label: "Partners", href: "/resources/partners" },
-      { label: "FAQ", href: "/faq" },
     ],
   },
   {
     section: "Legal",
     items: [
+      { label: "FAQ", href: "/faq" },
       { label: "Privacy", href: "/privacy" },
       { label: "Terms", href: "/terms" },
       { label: "Cookies", href: "/cookies" },
+      {
+        label: "Cookie settings",
+        href: "/cookies",
+        id: "consent-settings",
+      },
       { label: "Imprint", href: "/imprint" },
     ],
   },
@@ -302,7 +307,7 @@ export function SiteFooter() {
               <Link href="/register" className="ms-btn ms-btn--light">
                 Start designing free
               </Link>
-              <Link href="/faq" className="ms-btn ms-btn--ghost-light">
+              <Link href="https://cal.com/kevin-cobaj/30min" className="ms-btn ms-btn--ghost-light">
                 Book a call
               </Link>
             </div>
@@ -316,7 +321,12 @@ export function SiteFooter() {
             {FOOTER_LINKS.map((group) => (
               <div key={group.section}>
                 {group.items.map((item, i) => (
-                  <Link key={item.href} href={item.href} className="ms-footer-row">
+                  <Link
+                    key={`${item.href}-${item.label}`}
+                    href={item.href}
+                    className="ms-footer-row"
+                    {...(item.id ? { id: item.id } : {})}
+                  >
                     {i === 0 ? (
                       <span style={{ color: "#fff" }}>{item.label}</span>
                     ) : (

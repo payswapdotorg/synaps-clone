@@ -695,3 +695,80 @@ identity strings substituted for the clone's own):
   + JobPosting (TELECOMMUTE); faq/pricing/solutions/alternatives →
   FAQPage (pricing adds Product + AggregateOffer); blog posts →
   BlogPosting + Organization; changelog → Article + Organization.
+
+## Site-chrome micro-behavior parity (Task 40 — behavior-script harvest, 2026-10-22)
+
+Ground truth: the two live behavior scripts the real site ships alongside
+its styles (`site-enhance.js` — already covered by the FAQ work — and
+`nav-transitions.js`), the `site-analytics-consent.js` consent system,
+the `site-analytics-attribution.js` DEV-825 campaign cookie, and the
+edge behavior of `/go/{handle}` short links (probed live).
+
+- **Cross-page navigation chrome.** The real site is multi-page: every
+  internal link is a full document navigation, which is what powers its
+  transition chrome. Two mechanisms ship together:
+  `@view-transition { navigation: auto }` + `.header#header {
+  view-transition-name: site-header }` (native cross-document view
+  transitions, Chrome 126+: header morphs in place, root cross-fades,
+  320ms cubic-bezier(0.22,0.61,0.36,1)) and a JS fallback
+  (`nav-transitions.js`: sessionStorage flag → `synaps-nav-exit` fades
+  `.page-layer > :not(.header)` out over 280ms → navigate → enter pass
+  adds `synaps-nav-enter`/`-active` for a 320ms fade-in; bails on
+  prefers-reduced-motion or when PageRevealEvent exists; bfcache-aware).
+  Opt-outs mirrored from the real CSS: reduced-motion kills everything;
+  ≤900px subpages (site-subpage/solution-subpage, NOT the homepage)
+  disable both the header morph and the fade.
+- **Clone gap found and closed:** the clone is an SPA, so Link clicks
+  never produced document navigations — in VT-capable engines (the
+  majority) NO transition fired at all. `NavTransitions.tsx` now
+  converts unmodified left-clicks on internal marketing links into the
+  same full document navigation (native engines navigate at once and
+  let the CSS animate; older engines run the ported 280/320ms fade
+  fallback). Cross-surface paths (the app prefixes that stand in for
+  the real's beta.synaps.app origin, and /docs — a separate origin on
+  the real) navigate immediately, as cross-origin links do there. The
+  consent bar's footer link (#consent-settings) is exempt so the bar's
+  own handler wins, matching the real's effective Chrome behavior.
+- **Two-stage consent bar.** The real consent system (Google Consent
+  Mode v2 shape, two categories): analytics → `synaps_analytics_consent`
+  (+ `_record` v1:granted|denied) and advertising →
+  `synaps_advertising_consent` (v2:…), 1 year, SameSite=Lax, global
+  default granted unless Global Privacy Control. First visit shows the
+  FULL prompt; a visitor who already answered analytics gets only the
+  SHORT prompt ("We'd also like to use advertising cookies…"). Manage
+  reveals the three-row selection (Necessary locked; ads-on forces
+  analytics-on, analytics-off forces ads-off), hides itself and reveals
+  Reject all + Accept; Accept all explicitly grants both; a fresh
+  analytics grant after an explicit denial reloads the page. The
+  footer's "Cookie settings" link reopens the bar with the panel.
+  Static markup + CSS harvested (fixed bottom-left card, radius 4, no
+  shadow, 13px text, 32×18 square-radii toggles, 160ms thumb spring;
+  dark tail flips it #0F0F0E/#FAFAF8/#3D3D3A). The clone's banner was
+  rebuilt to this state machine with the same ids/roles/cookie names
+  (host-only) — the honesty note stays in the panel: no real trackers
+  load, the cookies only record the visitor's own choice.
+- **Creator short links (DEV-825).** `/go/{handle}` → 302 to
+  `/?utm_source={handle}&utm_medium=influencer`; `/go/{campaign}/{handle}`
+  adds `utm_campaign`; `/go`, trailing slashes and 3+ segments → 404;
+  unknown handles still redirect (edge does not validate). The clone
+  ships `/go/[...slug]` with the same semantics.
+- **First-touch attribution.** The real captures landing UTMs (utm_*,
+  gclid/fbclid/gbraid/wbraid/dclid, landing_variant) + referrer +
+  landing_path into a `synaps_attribution` JSON cookie (90 days,
+  first-touch only, omit-empty, <2048 chars) while advertising consent
+  is granted, and clears it on denial. The clone's `Attribution.tsx`
+  writes the same-shaped inert cookie (nothing reads it; consent
+  changes re-sync it live).
+- Footer Legal column corrected to the real's inventory (FAQ, Privacy,
+  Terms, Cookies, Cookie settings, Imprint — the clone had FAQ under
+  Company and no Cookie settings) and the footer "Book a call" CTA now
+  targets the real's cal.com link (the hero already did).
+- The real's `site-analytics-marketing.js` is a consent-gated PostHog
+  A/B experiment on the hero copy (control is what non-consenting
+  visitors see); not mirrored — running it would make the clone LESS
+  similar for the majority. Its 404 has no custom page (empty body →
+  the browser's own error screen); the clone keeps its custom 404.
+- The `/cookies` policy page was updated to describe the new cookie
+  population accurately (same-named consent + attribution cookies,
+  the two-stage bar, the footer Cookie settings re-open, the
+  ads-require-analytics coupling) with the honest clone framing.

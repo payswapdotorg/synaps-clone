@@ -117,7 +117,17 @@ main-domain parity lane is documented in
 The marketing chrome matches the analysed main domain: sticky light
 header with Solutions/Alternative-to dropdowns and the Documentation↗
 link, dark CTA footer with Product/Company/Legal columns, and the
-bottom-left cookie-consent banner (simulated — no real cookies).
+bottom-left cookie-consent banner. Cross-page navigation uses the same
+chrome as the analysed site — native cross-document view transitions
+(header morph + root cross-fade) on new engines, a 280/320ms fade
+fallback on older ones, off on reduced-motion and on ≤900px subpages.
+The consent bar is the analysed two-stage flow (full prompt →
+advertising follow-up, Manage panel with the ads-require-analytics
+coupling, footer "Cookie settings" re-open) writing the same-named
+consent cookies — simulated, no real trackers load. `/go/{handle}`
+creator short links redirect with the analysed UTMs and a first-touch
+`synaps_attribution` cookie is captured (inert, same shape as the
+analysed site's).
 
 ### Reconstructed authenticated app (22)
 
