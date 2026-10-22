@@ -1,25 +1,55 @@
 import type { Metadata } from "next";
 import {
   ArrowCards,
+  FaqList,
   PageHero,
   SectionHead,
 } from "@/components/site/blocks";
+import { JsonLd } from "@/components/site/JsonLd";
 import { altTools } from "@/content/alternatives";
+import { faqPageLd, pageMeta } from "@/lib/seo";
 
 /**
  * Alternative-to hub — per the harvest: positioning copy, comparison
- * cards to each tool, "what Synaps optimises for", pilot guidance.
+ * cards to each tool, "what Synaps optimises for", pilot guidance,
+ * "Before you pilot" FAQ (single-open accordion, JSON-LD FAQPage).
  */
 
-export const metadata: Metadata = {
-  title: "Alternative to",
+const FAQS = [
+  {
+    q: "Which architectural software is Synaps an alternative to?",
+    a: "The 2D drafting slice of Revit, AutoCAD, SketchUp, Archicad, Vectorworks and BricsCAD workflows — not their BIM coordination or 3D modelling depth.",
+  },
+  {
+    q: "Can we keep our current tool and use Synaps?",
+    a: "That is the recommended posture. Draft and present 2D-heavy jobs in Synaps; keep BIM projects where they are; exchange DXF.",
+  },
+  {
+    q: "What if we are mid-project?",
+    a: "Finish the project in the current tool. Start the pilot on the next small job — mid-project migrations test nothing but patience.",
+  },
+  {
+    q: "Do you publish a feature matrix against every tool?",
+    a: "No — feature matrices age badly and reward checkbox counting. Each alternative page states where Synaps wins and where the incumbent stays.",
+  },
+  {
+    q: "Who should run the pilot?",
+    a: "The person who draws most — not the partner who evaluates software. One drafter, one live job, two weeks.",
+  },
+];
+
+export const metadata: Metadata = pageMeta({
+  title: "Synaps Clone as an alternative to Revit, AutoCAD, SketchUp & more",
+  absolute: true,
   description:
     "An alternative to Revit, AutoCAD, and SketchUp — where Synaps fits, and where it doesn't.",
-};
+  path: "/news/alternative-to",
+});
 
 export default function AltHubPage() {
   return (
     <main id="content">
+      <JsonLd data={faqPageLd(FAQS)} />
       <PageHero
         title="An alternative to Revit, AutoCAD, and SketchUp."
         lead="Drafting-first software for studios that issue real drawing sets. Not one more model to feed, not a folder of DWGs to reconcile — the issued set is the job."
@@ -76,40 +106,7 @@ export default function AltHubPage() {
 
           <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
             <SectionHead title="Before you" dim="pilot." />
-            <div className="ms-accordion">
-              {[
-                {
-                  q: "Which architectural software is Synaps an alternative to?",
-                  a: "The 2D drafting slice of Revit, AutoCAD, SketchUp, Archicad, Vectorworks and BricsCAD workflows — not their BIM coordination or 3D modelling depth.",
-                },
-                {
-                  q: "Can we keep our current tool and use Synaps?",
-                  a: "That is the recommended posture. Draft and present 2D-heavy jobs in Synaps; keep BIM projects where they are; exchange DXF.",
-                },
-                {
-                  q: "What if we are mid-project?",
-                  a: "Finish the project in the current tool. Start the pilot on the next small job — mid-project migrations test nothing but patience.",
-                },
-                {
-                  q: "Do you publish a feature matrix against every tool?",
-                  a: "No — feature matrices age badly and reward checkbox counting. Each alternative page states where Synaps wins and where the incumbent stays.",
-                },
-                {
-                  q: "Who should run the pilot?",
-                  a: "The person who draws most — not the partner who evaluates software. One drafter, one live job, two weeks.",
-                },
-              ].map((item) => (
-                <details key={item.q}>
-                  <summary>
-                    <span>{item.q}</span>
-                    <span className="tick" aria-hidden>+</span>
-                  </summary>
-                  <div className="answer">
-                    <p style={{ margin: 0 }}>{item.a}</p>
-                  </div>
-                </details>
-              ))}
-            </div>
+            <FaqList items={FAQS} />
           </div>
         </div>
       </section>

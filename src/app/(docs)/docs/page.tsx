@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { docsPages } from "@/content/docs";
 import { DocsToc } from "@/components/docs/DocsToc";
+import { pageMeta } from "@/lib/seo";
 
 /**
  * Docs home — flowing GitBook landing transcribed from the harvest:
@@ -11,10 +12,11 @@ import { DocsToc } from "@/components/docs/DocsToc";
  * Connecting prose is original and condensed.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Documentation",
   description: "Guides for every Synaps workflow.",
-};
+  path: "/docs",
+});
 
 const H2S = [
   "New to Synaps?",

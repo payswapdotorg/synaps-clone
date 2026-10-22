@@ -5,15 +5,17 @@ import {
   PageHero,
   SectionHead,
 } from "@/components/site/blocks";
+import { pageMeta } from "@/lib/seo";
 
 /**
  * Partners page — "Become a partner", per the harvest outline.
  */
 
-export const metadata: Metadata = {
-  title: "Partners",
+export const metadata: Metadata = pageMeta({
+  title: "Become a partner",
   description: "Become a partner — refer, integrate, teach.",
-};
+  path: "/resources/partners",
+});
 
 const TRACKS = [
   {

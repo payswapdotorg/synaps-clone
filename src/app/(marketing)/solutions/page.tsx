@@ -5,17 +5,20 @@ import {
   SectionHead,
 } from "@/components/site/blocks";
 import { solutionsHub } from "@/content/solutions";
+import { pageMeta } from "@/lib/seo";
 
 /**
  * Solutions hub — "By type" / "By use case" arrow-card groups, per the
  * harvested /solutions/ page.
  */
 
-export const metadata: Metadata = {
-  title: "Solutions",
+export const metadata: Metadata = pageMeta({
+  title: "Solutions, Synaps Clone",
+  absolute: true,
   description:
     "One drawing canvas, every architectural workflow — by type and by use case.",
-};
+  path: "/solutions",
+});
 
 export default function SolutionsHubPage() {
   return (

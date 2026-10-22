@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PageShell } from "@/components/site/blocks";
 import { ChangelogEntryView } from "@/components/site/templates";
 import { changelogEntries } from "@/content/changelog";
+import { changelogArticleLd, organizationLd, pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return changelogEntries.map((e) => ({ date: e.date }));
@@ -15,7 +17,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { date } = await params;
   const entry = changelogEntries.find((e) => e.date === date);
-  return { title: entry?.title ?? "Release notes", description: entry?.summary };
+  return pageMeta({
+    title: entry?.title ?? "Release notes",
+    description: entry?.summary,
+    path: `/news/changelog/${date}`,
+    type: "article",
+    ...(entry ? { publishedTime: entry.date } : {}),
+  });
 }
 
 export default async function ChangelogEntryPage({
@@ -39,6 +47,7 @@ export default async function ChangelogEntryPage({
 
   return (
     <PageShell>
+      <JsonLd data={[organizationLd, changelogArticleLd(entry)]} />
       <ChangelogEntryView data={entry} more={more} />
     </PageShell>
   );

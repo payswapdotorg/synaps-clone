@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PageShell } from "@/components/site/blocks";
 import { BlogPostView } from "@/components/site/templates";
 import { blogPosts } from "@/content/blog";
+import { blogPostingLd, organizationLd, pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));
@@ -15,7 +17,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
-  return { title: post?.title ?? "Blog", description: post?.dek };
+  return pageMeta({
+    title: post?.title ?? "Blog",
+    description: post?.dek,
+    path: `/news/blog/${slug}`,
+    type: "article",
+    ...(post ? { publishedTime: post.date } : {}),
+  });
 }
 
 export default async function BlogPostPage({
@@ -35,6 +43,7 @@ export default async function BlogPostPage({
 
   return (
     <PageShell>
+      <JsonLd data={[organizationLd, blogPostingLd(post)]} />
       <BlogPostView data={post} more={more} />
     </PageShell>
   );

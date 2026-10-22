@@ -6,7 +6,9 @@ import {
   PageHero,
   SectionHead,
 } from "@/components/site/blocks";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PricingCards } from "@/components/site/PricingCards";
+import { faqPageLd, pageMeta, pricingProductLd } from "@/lib/seo";
 
 /**
  * Pricing — content transcribed from the harvest (plan names, prices,
@@ -41,15 +43,18 @@ const FAQS = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "Pricing",
+export const metadata: Metadata = pageMeta({
+  title: "Synaps Clone pricing — Freemium, Pro & Studio plans",
+  absolute: true,
   description:
     "Freemium, Pro & Studio — per active editor, monthly or annual. Free for individuals and students.",
-};
+  path: "/pricing",
+});
 
 export default function PricingPage() {
   return (
     <main id="content">
+      <JsonLd data={[pricingProductLd, faqPageLd(FAQS)]} />
       <PageHero
         title="Pricing, from solo drafter to studio."
         lead="Three plans. Free for individuals, monthly or annual for teams. Switch any time."

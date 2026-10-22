@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { FaqList, PageHero, SectionHead } from "@/components/site/blocks";
+import { JsonLd } from "@/components/site/JsonLd";
+import { faqPageLd, pageMeta } from "@/lib/seo";
 
 /**
  * FAQ — questions transcribed from the harvest; answers condensed and
@@ -42,14 +44,17 @@ const FAQS = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "FAQ",
+export const metadata: Metadata = pageMeta({
+  title: "FAQ, Synaps Clone",
+  absolute: true,
   description: "Questions we hear most often, answered.",
-};
+  path: "/faq",
+});
 
 export default function FaqPage() {
   return (
     <main id="content">
+      <JsonLd data={faqPageLd(FAQS)} />
       <PageHero
         title="Questions we hear most often."
         lead="Short answers on pricing, file compatibility, collaboration, and what the early studios get for free."

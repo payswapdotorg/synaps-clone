@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { AuthRedirect } from "@/components/auth/AuthRedirect";
 import {
   AICardArt,
@@ -6,7 +7,14 @@ import {
   PrecisionCardArt,
 } from "@/components/site/art";
 import { AssetsLibrary } from "@/components/site/AssetsLibrary";
+import { JsonLd } from "@/components/site/JsonLd";
 import { ScrollTiles } from "@/components/site/ScrollTiles";
+import {
+  organizationLd,
+  siteNavLd,
+  softwareAppLd,
+  websiteLd,
+} from "@/lib/seo";
 
 /**
  * Marketing home — rebuilt against the synaps.app main-domain harvest
@@ -40,10 +48,21 @@ const CARDS = [
   },
 ];
 
+export const metadata: Metadata = {
+  title: {
+    absolute: "Synaps Clone — Architectural Practice without the compromise",
+  },
+  alternates: { canonical: "/" },
+};
+
 export default function HomePage() {
   return (
     <main id="content">
       <AuthRedirect />
+
+      {/* Machine-facing head parity: the analysed home ships Organization,
+          WebSite, SoftwareApplication and site-navigation schema blocks. */}
+      <JsonLd data={[organizationLd, websiteLd, softwareAppLd, siteNavLd]} />
 
       {/* ---------------------------------------------------------- Hero */}
       <section className="home-hero">

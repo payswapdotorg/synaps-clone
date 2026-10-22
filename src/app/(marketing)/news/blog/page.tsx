@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CtaBand, PageHero } from "@/components/site/blocks";
+import { PageHero } from "@/components/site/blocks";
 import { blogPosts } from "@/content/blog";
+import { pageMeta } from "@/lib/seo";
 
 /**
  * Blog hub — featured image band + the article list, per the harvest.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Blog",
   description:
     "Guides and references on floor plans, CAD practice and AI in architecture.",
-};
+  path: "/news/blog",
+});
 
 /**
  * Featured-post image — an original AI-generated black-and-white

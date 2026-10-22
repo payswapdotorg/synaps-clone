@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CtaBand, PageHero } from "@/components/site/blocks";
+import { PageHero } from "@/components/site/blocks";
 import { changelogEntries } from "@/content/changelog";
+import { pageMeta } from "@/lib/seo";
 
 /**
  * Release-notes hub — entries grouped by month, per the harvest.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Release notes",
   description: "Weekly product changes, grouped by month.",
-};
+  path: "/news/changelog",
+});
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",

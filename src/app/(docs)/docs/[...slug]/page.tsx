@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { docsPages } from "@/content/docs";
 import { DocsToc } from "@/components/docs/DocsToc";
 import { anchorId } from "@/lib/anchor";
+import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return docsPages
@@ -18,7 +19,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const page = docsPages.find((p) => p.slug === slug.join("/"));
-  return { title: page?.title ?? "Documentation", description: page?.lead };
+  return pageMeta({
+    title: page?.title ?? "Documentation",
+    description: page?.lead,
+    path: `/docs/${slug.join("/")}`,
+  });
 }
 
 export default async function DocsContentPage({

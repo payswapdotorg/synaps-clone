@@ -6,7 +6,9 @@ import {
   PageHero,
   SectionHead,
 } from "@/components/site/blocks";
+import { JsonLd } from "@/components/site/JsonLd";
 import { careers, companyBlocks } from "@/content/company";
+import { aboutPageLd, breadcrumbLd, organizationLd, pageMeta } from "@/lib/seo";
 
 /**
  * About page — section structure per the harvest (what Synaps does /
@@ -14,11 +16,13 @@ import { careers, companyBlocks } from "@/content/company";
  * facts / FAQ / beliefs), plus the careers list.
  */
 
-export const metadata: Metadata = {
-  title: "About Synaps",
+export const metadata: Metadata = pageMeta({
+  title: "About Synaps Clone",
+  absolute: true,
   description:
     "What Synaps does, what makes it different, who uses it and how to get started.",
-};
+  path: "/company",
+});
 
 function Block({
   items,
@@ -48,6 +52,16 @@ function Block({
 export default function CompanyPage() {
   return (
     <main id="content">
+      <JsonLd
+        data={[
+          breadcrumbLd([
+            { name: "Home", path: "/" },
+            { name: "About Synaps", path: "/company" },
+          ]),
+          organizationLd,
+          aboutPageLd,
+        ]}
+      />
       <PageHero
         title="About Synaps"
         lead="Synaps is architectural design software for architects and property developers. Create precise floor plans, explore designs with AI, and turn the same drawing into presentation-ready visuals."
