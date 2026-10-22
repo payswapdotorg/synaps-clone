@@ -660,3 +660,38 @@ dismiss/reveal) · TAIL → 1, with click-to-jump words, 440ms image
 cross-fades, 90ms caption swaps, and a header dark sync
 (`is-section-dark` / `is-tail-dark`). FAQ uses a single-open
 scroll-anchored details accordion (site-enhance.js behavior).
+
+## Machine-facing head parity (Task 39 — live head harvest, 2026-10-22)
+
+The analysed site's machine-facing layer, harvested from live heads of
+synaps.app (10 page classes fetched fresh; structures transcribed,
+identity strings substituted for the clone's own):
+
+- `robots.txt`: allow-all with a small disallow list for non-public
+  prefixes and a sitemap pointer. The clone mirrors the shape
+  (dropping the analysed site's CMS-internal disallow entries that
+  have no equivalent routes here).
+- `sitemap.xml`: 77 marketing URLs (13 static + 10 solutions + 5
+  careers + 29 blog posts + 14 changelog entries + 6 alternative-to
+  pages), every entry lastmod-dated. The clone serves the same 77-path
+  inventory plus its on-domain /docs section (21 URLs) = 98 total,
+  generated from the same content modules that drive the routes.
+- Per-page titles follow two patterns: standalone descriptive titles
+  ("Synaps pricing, Freemium, Pro & Studio plans", "Synaps vs Revit, a
+  drafting-first alternative") and suffix titles ("FAQ, Synaps" /
+  "Interior Designers | Synaps"). The clone mirrors both shapes with
+  its own name ("Synaps Clone") and a `%s | Synaps Clone` template.
+- Open Graph / Twitter: `og:image` default card (per-post CMS images
+  on blog), `og:site_name`, `og:url`, per-page canonicals, twitter
+  `summary_large_image`. The clone ships an original 1200×630 card
+  (composed HTML+CSS, VLM-audited 98/100) and scheme-aware original
+  SVG favicons (S-curve mark, light + dark) + a 180px apple-touch PNG.
+- JSON-LD by page class (clone mirrors structure with its own identity
+  and its own FAQ answers/prices): home → Organization + WebSite +
+  SoftwareApplication (offers 0/59/119 EUR, the clone's displayed
+  monthly prices — the analysed site's own JSON-LD prices 35/75 are
+  stale against its visible page) + ItemList site navigation; company
+  → BreadcrumbList + Organization + AboutPage; careers → BreadcrumbList
+  + JobPosting (TELECOMMUTE); faq/pricing/solutions/alternatives →
+  FAQPage (pricing adds Product + AggregateOffer); blog posts →
+  BlogPosting + Organization; changelog → Article + Organization.
