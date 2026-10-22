@@ -181,13 +181,20 @@ export function CookieBanner() {
   );
 
   /** Footer "Cookie settings": reopen with the panel (event delegation,
-   *  same as the real — the footer link is server-rendered). */
+   *  same as the real — the footer link is server-rendered).
+   *
+   *  Capture phase + stopImmediatePropagation: the App Router also
+   *  intercepts same-origin anchor clicks (soft pushState navigation)
+   *  and would otherwise race this handler — the banner must own the
+   *  link exclusively, exactly like the real multi-page site where the
+   *  delegated preventDefault always wins. */
   useEffect(() => {
     const onDocClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       const link = target?.closest?.("#consent-settings");
       if (!link) return;
       event.preventDefault();
+      event.stopImmediatePropagation();
       setShortPrompt(getStored("analytics") !== null);
       setAnalyticsOn(
         getStored("analytics") === "granted" || getStored("advertising") === "granted",
@@ -196,8 +203,8 @@ export function CookieBanner() {
       setOpen(true);
       setManaging(true);
     };
-    document.addEventListener("click", onDocClick);
-    return () => document.removeEventListener("click", onDocClick);
+    document.addEventListener("click", onDocClick, true);
+    return () => document.removeEventListener("click", onDocClick, true);
   }, []);
 
   if (!open) return null;

@@ -697,6 +697,27 @@
   padding-left: 6px;
 }
 
+/* Button variant of a footer row (e.g. "Cookie settings", which opens
+ * the consent panel instead of navigating): reset UA button chrome so
+ * it renders exactly like the anchor rows around it. */
+button.ms-footer-row {
+  width: 100%;
+  margin: 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--ms-dark-hairline);
+  border-radius: 0;
+  /* Reset only the UA button font chrome; the .ms-footer-row class
+   * keeps supplying size (14.5px) and the footer's family/weight. */
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 .ms-footer-meta {
   display: flex;
   flex-wrap: wrap;

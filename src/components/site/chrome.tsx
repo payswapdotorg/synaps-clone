@@ -320,20 +320,43 @@ export function SiteFooter() {
           <nav aria-label="Footer" className="ms-stack-8">
             {FOOTER_LINKS.map((group) => (
               <div key={group.section}>
-                {group.items.map((item, i) => (
-                  <Link
-                    key={`${item.href}-${item.label}`}
-                    href={item.href}
-                    className="ms-footer-row"
-                    {...(item.id ? { id: item.id } : {})}
-                  >
-                    {i === 0 ? (
-                      <span style={{ color: "#fff" }}>{item.label}</span>
-                    ) : (
-                      item.label
-                    )}
-                  </Link>
-                ))}
+                {group.items.map((item, i) => {
+                  // "Cookie settings" is a BUTTON, not a link: it opens the
+                  // consent bar's manage panel in place (CookieBanner's
+                  // delegated listener). The real site uses a plain <a> +
+                  // delegated preventDefault (multi-page site); in this
+                  // single-origin clone the App Router soft-navigates
+                  // same-origin anchors asynchronously no matter what the
+                  // click handlers do, so a button is the only element
+                  // that reliably reproduces the observed behavior
+                  // (click → panel reopens, page does not change).
+                  if (item.id === "consent-settings") {
+                    return (
+                      <button
+                        key={`${item.href}-${item.label}`}
+                        type="button"
+                        id={item.id}
+                        className="ms-footer-row ms-footer-row--button"
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  }
+                  return (
+                    <Link
+                      key={`${item.href}-${item.label}`}
+                      href={item.href}
+                      className="ms-footer-row"
+                      {...(item.id ? { id: item.id } : {})}
+                    >
+                      {i === 0 ? (
+                        <span style={{ color: "#fff" }}>{item.label}</span>
+                      ) : (
+                        item.label
+                      )}
+                    </Link>
+                  );
+                })}
               </div>
             ))}
           </nav>
