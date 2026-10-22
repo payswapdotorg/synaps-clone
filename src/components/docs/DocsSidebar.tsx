@@ -95,7 +95,8 @@ const GROUP_ORDER = [
   "Reference and troubleshooting",
 ];
 
-export function DocsSidebar() {
+/** The nav body (title + grouped pages), shared by the desktop sidebar and the mobile drawer. */
+export function DocsNavBody({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const current = pathname.replace(/^\/docs\/?/, "");
 
@@ -124,7 +125,7 @@ export function DocsSidebar() {
     userToggled ? open : group === activeGroup;
 
   return (
-    <nav className="docs-sidebar" aria-label="Documentation">
+    <>
       <p className="docs-sidebar-title">
         <span className="docs-sidebar-mark" aria-hidden="true">
           <svg viewBox="0 0 14 14" width="13" height="13"><g {...G}><path d="M7 1v12M2.2 3.75l9.6 6.5M2.2 10.25l9.6-6.5"/></g></svg>
@@ -162,6 +163,7 @@ export function DocsSidebar() {
                       <Link
                         key={slug}
                         href={href}
+                        onClick={onNavigate}
                         className={`docs-sidebar-link${active ? " is-active" : ""}`}
                       >
                         {page.title}
@@ -174,6 +176,14 @@ export function DocsSidebar() {
           );
         })}
       </div>
+    </>
+  );
+}
+
+export function DocsSidebar() {
+  return (
+    <nav className="docs-sidebar" aria-label="Documentation">
+      <DocsNavBody />
     </nav>
   );
 }

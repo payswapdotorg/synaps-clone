@@ -814,3 +814,25 @@ own honest designs and are explicitly NOT claims about the original:
 Everything above was verified at 375×667: full marketing sweep (24
 routes, zero overflow/errors), wizard, team home, account routes,
 and canvas drawing (2-segment wall chain → "Walls 2" derivation).
+
+## Docs mobile surface (Task 47 — transcribed from the live site)
+
+Unlike the authenticated app shell (behind the SSO wall), the docs
+surface is public — its small-screen behaviour was harvested from the
+live docs.synaps.app at 375×667 and transcribed:
+
+- **Header**: below 960px an "Open table of contents" toggle appears
+  left of the brand (live pattern); below 700px the social glyphs
+  collapse into a "More" (⋯) ellipsis menu (the live
+  header-links-ellipsis pattern) and the brand shows its compact form.
+- **Table of contents drawer**: below 960px the w-72 sidebar column is
+  replaced by a full-height left drawer (~300px, 45% scrim, close X,
+  scroll lock, Esc/scrim/navigate-to-close) carrying the identical
+  grouped nav — the pattern observed opening the live site's own
+  "Open table of contents" drawer.
+
+The entire docs surface previously overflowed horizontally at 375px
+(444px document width — the socials + "Open Synaps" row had no
+small-screen handling) and the nav was simply hidden below 960px with
+no replacement, leaving 20 doc pages unreachable except via prev/next
+pagination.

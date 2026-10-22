@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { docsPages } from "@/content/docs";
 import { SiteMark } from "@/components/site/chrome";
+import { DocsNavBody } from "@/components/docs/DocsSidebar";
 
 function SearchGlyph() {
   return (
@@ -68,7 +69,10 @@ const SOCIALS: { label: string; href: string; glyph: React.ReactNode }[] = [
 export function DocsHeader() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [tocOpen, setTocOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -87,20 +91,51 @@ export function DocsHeader() {
     const onDoc = (e: MouseEvent) => {
       if (boxRef.current && !boxRef.current.contains(e.target as Node))
         setOpen(false);
+      if (moreRef.current && !moreRef.current.contains(e.target as Node))
+        setMoreOpen(false);
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
+  // While the table-of-contents drawer is open: lock scrolling, close on Escape.
+  useEffect(() => {
+    if (!tocOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setTocOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [tocOpen]);
+
   return (
     <header className="docs-header">
       <div className="docs-header-inner">
-        <Link href="/docs" className="docs-brand" aria-label="Synaps documentation">
-          <SiteMark />
-          <span className="docs-brand-text">
-            synaps <span className="docs-brand-dim">documentation</span>
-          </span>
-        </Link>
+        <div className="docs-header-left">
+          <button
+            type="button"
+            className="docs-toc-toggle"
+            aria-label="Open table of contents"
+            aria-expanded={tocOpen}
+            aria-controls="docs-toc-drawer"
+            onClick={() => setTocOpen(true)}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h10" />
+            </svg>
+          </button>
+          <Link href="/docs" className="docs-brand" aria-label="Synaps documentation">
+            <SiteMark />
+            <span className="docs-brand-text">
+              synaps <span className="docs-brand-dim">documentation</span>
+            </span>
+          </Link>
+        </div>
 
         <div className="docs-search" ref={boxRef}>
           <button
@@ -157,7 +192,7 @@ export function DocsHeader() {
           ) : null}
         </div>
 
-        <div className="docs-header-right">
+        <div className="docs-header-right" ref={moreRef}>
           <nav className="docs-socials" aria-label="Social profiles (simulated)">
             {SOCIALS.map((s) => (
               <Link key={s.label} href={s.href} aria-label={s.label} title={s.label}>
@@ -169,8 +204,66 @@ export function DocsHeader() {
           <Link href="/login" className="docs-open-app">
             Open Synaps
           </Link>
+
+          <div className="docs-more">
+            <button
+              type="button"
+              className="docs-more-btn"
+              aria-label="More links"
+              aria-haspopup="menu"
+              aria-expanded={moreOpen}
+              onClick={() => setMoreOpen((v) => !v)}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="19" cy="12" r="1.6" />
+              </svg>
+            </button>
+            {moreOpen ? (
+              <div className="docs-more-menu" role="menu" aria-label="Social profiles (simulated)">
+                {SOCIALS.map((s) => (
+                  <Link key={s.label} href={s.href} role="menuitem" className="docs-more-item">
+                    {s.glyph}
+                    <span>{s.label}</span>
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
+
+      {tocOpen ? (
+        <div className="docs-drawer-root">
+          <button
+            type="button"
+            className="docs-drawer-scrim"
+            aria-label="Close table of contents"
+            onClick={() => setTocOpen(false)}
+          />
+          <div
+            id="docs-toc-drawer"
+            className="docs-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Table of contents"
+          >
+            <div className="docs-drawer-head">
+              <span className="docs-drawer-title">Synaps documentation</span>
+              <button
+                type="button"
+                className="docs-drawer-close"
+                aria-label="Close table of contents"
+                onClick={() => setTocOpen(false)}
+              >
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
+                  <path d="M5 5l10 10M15 5L5 15" />
+                </svg>
+              </button>
+            </div>
+            <DocsNavBody onNavigate={() => setTocOpen(false)} />
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }
