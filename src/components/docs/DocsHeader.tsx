@@ -24,10 +24,12 @@ function SearchGlyph() {
   );
 }
 
+// Social hrefs transcribed from the live docs.synaps.app header (same-tab
+// navigation there — plain anchors, no target).
 const SOCIALS: { label: string; href: string; glyph: React.ReactNode }[] = [
   {
     label: "instagram",
-    href: "/docs",
+    href: "https://instagram.com/synaps.app",
     glyph: (
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5" />
@@ -38,7 +40,7 @@ const SOCIALS: { label: string; href: string; glyph: React.ReactNode }[] = [
   },
   {
     label: "x",
-    href: "/docs",
+    href: "https://x.com/getsynaps",
     glyph: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
         <path d="M4 4l16 16M20 4L4 20" />
@@ -47,7 +49,7 @@ const SOCIALS: { label: string; href: string; glyph: React.ReactNode }[] = [
   },
   {
     label: "linkedin",
-    href: "/docs",
+    href: "https://linkedin.com/company/synapsapp/",
     glyph: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="3" />
@@ -57,7 +59,7 @@ const SOCIALS: { label: string; href: string; glyph: React.ReactNode }[] = [
   },
   {
     label: "youtube",
-    href: "/docs",
+    href: "https://youtube.com/@synaps-app",
     glyph: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
         <rect x="2.5" y="5.5" width="19" height="13" rx="3.5" />
@@ -212,11 +214,11 @@ export function DocsHeader() {
         </div>
 
         <div className="docs-header-right" ref={moreRef}>
-          <nav className="docs-socials" aria-label="Social profiles (simulated)">
+          <nav className="docs-socials" aria-label="Social profiles">
             {SOCIALS.map((s) => (
-              <Link key={s.label} href={s.href} aria-label={s.label} title={s.label}>
+              <a key={s.label} href={s.href} aria-label={s.label} title={s.label}>
                 {s.glyph}
-              </Link>
+              </a>
             ))}
           </nav>
 
@@ -238,12 +240,12 @@ export function DocsHeader() {
               </svg>
             </button>
             {moreOpen ? (
-              <div className="docs-more-menu" role="menu" aria-label="Social profiles (simulated)">
+              <div className="docs-more-menu" role="menu" aria-label="Social profiles">
                 {SOCIALS.map((s) => (
-                  <Link key={s.label} href={s.href} role="menuitem" className="docs-more-item">
+                  <a key={s.label} href={s.href} role="menuitem" className="docs-more-item">
                     {s.glyph}
                     <span>{s.label}</span>
-                  </Link>
+                  </a>
                 ))}
               </div>
             ) : null}
