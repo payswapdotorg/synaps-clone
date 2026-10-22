@@ -505,6 +505,236 @@
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Mobile header menu — transcribed from the live synaps.app mobile
+ * header (375px harvest): a 44×44 toggle, full-bleed drawer under the
+ * header bar with details/summary groups, CTA row and utility row.   */
+/* ------------------------------------------------------------------ */
+
+.ms-header-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ms-header-toggle .ms-icon-bars,
+.ms-header-toggle .ms-icon-x {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--ms-ink);
+  transition: transform 0.25s var(--ms-ease), opacity 0.18s linear,
+    background-color 0.2s;
+}
+
+.ms-header-toggle .ms-icon-bars::before,
+.ms-header-toggle .ms-icon-bars::after,
+.ms-header-toggle .ms-icon-x::before,
+.ms-header-toggle .ms-icon-x::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: inherit;
+  transition: transform 0.25s var(--ms-ease);
+}
+
+.ms-header-toggle .ms-icon-bars::before {
+  transform: translateY(-6px);
+}
+
+.ms-header-toggle .ms-icon-bars::after {
+  transform: translateY(6px);
+}
+
+.ms-header-toggle .ms-icon-x {
+  position: absolute;
+  opacity: 0;
+  transform: rotate(-45deg);
+}
+
+.ms-header-toggle[aria-expanded="true"] .ms-icon-bars {
+  opacity: 0;
+  transform: rotate(45deg);
+}
+
+.ms-header-toggle[aria-expanded="true"] .ms-icon-x {
+  opacity: 1;
+  transform: rotate(-45deg);
+}
+
+.ms-header-toggle[aria-expanded="true"] .ms-icon-x::before {
+  transform: rotate(90deg);
+}
+
+.ms-header-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  background: var(--ms-bg);
+  border-bottom: 1px solid var(--ms-border);
+  transition: max-height 0.32s var(--ms-ease), visibility 0s linear 0.32s;
+}
+
+.ms-header-menu.is-open {
+  max-height: 72dvh;
+  overflow-y: auto;
+  visibility: visible;
+  transition: max-height 0.32s var(--ms-ease);
+}
+
+.ms-header-menu-inner {
+  padding: 14px 24px 18px;
+}
+
+.ms-header-menu-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-menu-group > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 27px;
+  line-height: 1.25;
+  font-weight: 400;
+  color: var(--ms-ink);
+  cursor: pointer;
+  list-style: none;
+  border-top: 1px solid var(--ms-border);
+}
+
+.ms-menu-group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ms-menu-group > summary::after {
+  content: "";
+  width: 11px;
+  height: 11px;
+  margin-left: 12px;
+  border-right: 1.5px solid var(--ms-ink-soft);
+  border-bottom: 1.5px solid var(--ms-ink-soft);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.22s var(--ms-ease);
+  flex: none;
+}
+
+.ms-menu-group[open] > summary::after {
+  transform: rotate(225deg) translateY(-2px);
+}
+
+.ms-menu-subgroup {
+  padding-bottom: 6px;
+}
+
+.ms-menu-group-label {
+  display: block;
+  padding: 10px 0 4px;
+  font-size: 10px;
+  font-weight: 550;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ms-ink-soft);
+}
+
+.ms-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 27px;
+  line-height: 1.25;
+  color: var(--ms-ink);
+  text-decoration: none;
+}
+
+.ms-menu-link .ms-nav-icon-slot {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.ms-menu-link .ms-nav-icon-slot svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ms-menu-link .ms-nav-mono {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  flex: none;
+}
+
+.ms-header-menu-nav > .ms-menu-link {
+  border-top: 1px solid var(--ms-border);
+}
+
+.ms-header-menu-nav > .ms-menu-link:first-child {
+  border-top: 0;
+}
+
+.ms-header-menu-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 0 4px;
+}
+
+.ms-header-menu-ctas .ms-btn {
+  justify-content: center;
+}
+
+.ms-header-menu-utility {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 14px 24px 18px;
+  border-top: 1px solid var(--ms-border);
+  font-size: 16px;
+  color: var(--ms-ink);
+}
+
+.ms-header-menu-utility a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ms-ink);
+  text-decoration: none;
+}
+
+.ms-menu-login {
+  margin-left: auto;
+}
+
+@media (min-width: 880px) {
+  .ms-header-toggle,
+  .ms-header-menu {
+    display: none;
+  }
+}
+
 .ms-nav-links a {
   font-size: 14px;
   color: var(--ms-ink-soft);

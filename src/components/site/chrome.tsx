@@ -15,6 +15,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { HeaderActions } from "./HeaderActions";
+import { MobileMenu } from "./MobileMenu";
 
 /* ------------------------------------------------------------------ */
 /* Logo                                                                */
@@ -76,7 +77,7 @@ export function SiteLogo({ dark = false }: { dark?: boolean }) {
    icons, so the structure is transcribed with original artwork). */
 const S = { fill: "none", stroke: "currentColor", strokeWidth: 1.3, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
 
-const SOLUTION_ICONS: Record<string, ReactNode> = {
+export const SOLUTION_ICONS: Record<string, ReactNode> = {
   "Architecture Studio": (
     <svg viewBox="0 0 14 14" width="14" height="14"><g {...S}><path d="M0.5 2.5v10h8v-10a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1z"/><path d="M4.5 12.5v-2"/><path d="M3 8.5v-1M6 8.5v-1M6 5v1M3 5v1"/><path d="M8.5 12.5h5"/><path d="M12 12.5V10"/><path d="M10.5 7a1.5 1.5 0 0 1 3 0v1.5a1.5 1.5 0 0 1-3 0z"/></g></svg>
   ),
@@ -112,7 +113,7 @@ const SOLUTION_ICONS: Record<string, ReactNode> = {
 /* Monogram tiles for the Alternative-to panel (the real panel carries
    the vendors' logo marks; the clone uses original letter tiles in the
    same slot). */
-function ToolMonogram({ label }: { label: string }) {
+export function ToolMonogram({ label }: { label: string }) {
   return (
     <span className="ms-nav-mono" aria-hidden="true">
       {label.slice(0, 1)}
@@ -120,7 +121,7 @@ function ToolMonogram({ label }: { label: string }) {
   );
 }
 
-const NAV: {
+export const NAV: {
   label: string;
   href: string;
   ext?: boolean;
@@ -170,7 +171,7 @@ const NAV: {
   { label: "Pricing", href: "/pricing" },
 ];
 
-function ExternalLinkIcon() {
+export function ExternalLinkIcon() {
   return (
     <svg
       width="13"
@@ -243,6 +244,10 @@ export function SiteHeader() {
         </nav>
         <HeaderActions />
       </div>
+      {/* Mobile navigation (below 880px the desktop links are hidden and
+          this toggle + drawer take over — transcribed from the live
+          synaps.app mobile header). */}
+      <MobileMenu />
     </header>
   );
 }
