@@ -772,3 +772,20 @@ edge behavior of `/go/{handle}` short links (probed live).
   population accurately (same-named consent + attribution cookies,
   the two-stage bar, the footer Cookie settings re-open, the
   ads-require-analytics coupling) with the honest clone framing.
+
+## Final visual drift check (Task 43, post-a54f3c8)
+
+Closing verification against the operator's original Task 35 complaint
+("the sites do not look similar"). Live side-by-side screenshots
+(1280×577, production clone vs live synaps.app) analyzed by an
+independent vision model:
+
+| Page | Similarity | Verdict |
+| --- | --- | --- |
+| Home | 92/100 | same site family — "high-fidelity clone… core visual identity replicated" |
+| Pricing | 92/100 | same site family — "layout grid, typography scale, copy, color palette identical" |
+
+Remaining differences are the deliberate honest-clone decisions:
+original S-curve logo (not the real mark), original architectural hero
+artwork (not the real imagery), and minor consent-bar overlay timing.
+No layout, color, typography or structural drift was reported.
