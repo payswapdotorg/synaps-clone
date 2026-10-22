@@ -6,10 +6,17 @@
  * credits pill) and extended with the account-area links recovered from the
  * production bundle router (members, invitations, notifications, settings,
  * billing, storage, templates, admin, sculpt studio).
+ *
+ * MOBILE NOTE (clone-original design): the real product's authenticated shell
+ * sits behind an SSO wall, so its small-screen behaviour could not be
+ * harvested. The mobile drawer below is therefore this clone's own honest
+ * design — a standard slide-in drawer that keeps every section reachable
+ * below the md breakpoint — and is NOT claimed as parity with the original.
  */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   activeTeam,
   addTeam,
@@ -19,6 +26,31 @@ import {
   updateSession,
   type SimSession,
 } from "@/lib/session";
+
+export type SidebarSection =
+  | "home" | "recent" | "space" | "members" | "invitations" | "notifications"
+  | "settings" | "billing" | "storage" | "templates" | "credits-banners"
+  | "admin" | "sculpt-studio";
+
+/** Map a pathname to the highlighted sidebar section (used by the mobile drawer). */
+function sectionFromPath(pathname: string): SidebarSection {
+  const p = pathname.replace(/\/+$/, "") || "/";
+  if (p === "/recent") return "recent";
+  if (p.startsWith("/t/")) return p.includes("/w/") ? "space" : "home";
+  const direct: Record<string, SidebarSection> = {
+    "/members": "members",
+    "/invitations": "invitations",
+    "/billing": "billing",
+    "/notifications": "notifications",
+    "/settings": "settings",
+    "/storage": "storage",
+    "/templates": "templates",
+    "/credits-banners": "credits-banners",
+    "/admin": "admin",
+    "/sculpt-studio": "sculpt-studio",
+  };
+  return direct[p] ?? "home";
+}
 
 export function useAppSession(): SimSession | null {
   const [session, setSession] = useState<SimSession | null>(null);
@@ -37,7 +69,32 @@ export function TeamSidebar({
   active,
 }: {
   teamId: string;
-  active: "home" | "recent" | "space" | "members" | "invitations" | "notifications" | "settings" | "billing" | "storage" | "templates" | "credits-banners" | "admin" | "sculpt-studio";
+  active: SidebarSection;
+}) {
+  const s = loadSession();
+  if (!s) return null;
+  return (
+    <aside
+      className="hidden w-60 shrink-0 flex-col border-r border-border-solid/10 bg-surface-base px-4 py-5 md:flex"
+      aria-label="Team navigation"
+    >
+      <TeamSidebarNav teamId={teamId} active={active} />
+    </aside>
+  );
+}
+
+/**
+ * The sidebar body — shared by the desktop rail and the mobile drawer.
+ * `onNavigate` fires after any in-app navigation so the drawer can close.
+ */
+function TeamSidebarNav({
+  teamId,
+  active,
+  onNavigate,
+}: {
+  teamId: string;
+  active: SidebarSection;
+  onNavigate?: () => void;
 }) {
   const s = loadSession();
   const [teamMenu, setTeamMenu] = useState(false);
@@ -47,11 +104,12 @@ export function TeamSidebar({
   const team = s.teams.find((t) => t.id === teamId) ?? activeTeam(s);
   const unread = s.notifications.filter((n) => !n.read).length;
 
-  const item = (key: typeof active, href: string, label: string, badge?: number) => (
+  const item = (key: SidebarSection, href: string, label: string, badge?: number) => (
     <Link
       key={key}
       href={href}
       aria-current={active === key ? "page" : undefined}
+      onClick={onNavigate}
       className={
         active === key
           ? "flex items-center justify-between rounded-control bg-surface-raised px-3 py-1.5 text-sm font-medium text-content-primary"
@@ -68,10 +126,7 @@ export function TeamSidebar({
   );
 
   return (
-    <aside
-      className="hidden w-60 shrink-0 flex-col border-r border-border-solid/10 bg-surface-base px-4 py-5 md:flex"
-      aria-label="Team navigation"
-    >
+    <>
       <div className="relative">
         <button
           type="button"
@@ -188,7 +243,7 @@ export function TeamSidebar({
           </div>
         </div>
       )}
-    </aside>
+    </>
   );
 }
 
@@ -196,12 +251,45 @@ export function TeamSidebar({
 export function AppTopBar({ teamId, right }: { teamId: string; right?: React.ReactNode }) {
   const s = loadSession();
   const [open, setOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const pathname = usePathname();
+  const active = sectionFromPath(pathname);
+
+  // While the mobile drawer is open: lock scrolling and close on Escape.
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDrawerOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [drawerOpen]);
+
   if (!s) return null;
   return (
-    <header className="flex items-center justify-between border-b border-border-solid/10 px-6 py-3">
-      <Link href={`/t/${teamId}`} className="text-sm font-semibold tracking-tight text-content-primary">
-        Synaps Clone
-      </Link>
+    <header className="flex items-center justify-between border-b border-border-solid/10 px-3 py-3 md:px-6">
+      <div className="flex min-w-0 items-center gap-1">
+        <button
+          type="button"
+          aria-label="Open team navigation"
+          aria-expanded={drawerOpen}
+          aria-controls="team-nav-drawer"
+          onClick={() => setDrawerOpen(true)}
+          className="mr-1 flex size-9 shrink-0 items-center justify-center rounded-control text-content-secondary hover:bg-surface-raised hover:text-content-primary md:hidden"
+        >
+          <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
+            <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        </button>
+        <Link href={`/t/${teamId}`} className="truncate text-sm font-semibold tracking-tight text-content-primary">
+          Synaps Clone
+        </Link>
+      </div>
       <div className="flex items-center gap-3">
         {right}
         <div className="relative">
@@ -236,6 +324,23 @@ export function AppTopBar({ teamId, right }: { teamId: string; right?: React.Rea
           )}
         </div>
       </div>
+
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Team navigation">
+          <button
+            type="button"
+            aria-label="Close navigation"
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setDrawerOpen(false)}
+          />
+          <div
+            id="team-nav-drawer"
+            className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col overflow-y-auto border-r border-border-solid/15 bg-surface-base px-4 py-5 shadow-2xl"
+          >
+            <TeamSidebarNav teamId={teamId} active={active} onNavigate={() => setDrawerOpen(false)} />
+          </div>
+        </div>
+      )}
     </header>
   );
 }

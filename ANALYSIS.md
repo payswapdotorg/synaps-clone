@@ -789,3 +789,28 @@ Remaining differences are the deliberate honest-clone decisions:
 original S-curve logo (not the real mark), original architectural hero
 artwork (not the real imagery), and minor consent-bar overlay timing.
 No layout, color, typography or structural drift was reported.
+
+## Mobile app-shell behaviour (Task 46 — clone-original, NOT parity)
+
+The real product's authenticated shell sits behind an SSO wall, so its
+small-screen behaviour could not be harvested — unlike the marketing
+surface (whose mobile menu was transcribed from the live site in a
+previous task), the following small-screen patterns are this clone's
+own honest designs and are explicitly NOT claims about the original:
+
+- **Team navigation drawer (<md).** The desktop sidebar rail is
+  hidden below 768px; a hamburger in the app top bar opens a
+  slide-in drawer carrying the identical sidebar body (team
+  switcher, all 13 sections, credits pill), with scrim tap, Esc, and
+  navigate-to-close, and scroll lock while open.
+- **Console docks as overlays.** The CAD console's left Layers/Assets
+  dock (240px) and right Canvas-settings panel (256px) are inline at
+  md/lg respectively; below those breakpoints they default hidden
+  (canvas gets the full viewport width) and open as fixed overlays
+  from two header toggles, each with scrim + close button.
+- **Header economisation.** Present and Phone preview actions hide
+  below sm to keep the console header usable at 375px.
+
+Everything above was verified at 375×667: full marketing sweep (24
+routes, zero overflow/errors), wizard, team home, account routes,
+and canvas drawing (2-segment wall chain → "Walls 2" derivation).

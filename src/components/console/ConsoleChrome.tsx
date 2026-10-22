@@ -182,6 +182,8 @@ export function ConsoleChrome({
   const [tool, setTool] = useState<Tool>("select");
   const [assetSymbol, setAssetSymbol] = useState("sofa");
   const [dockTab, setDockTab] = useState<"layers" | "assets">("layers");
+  const [dockOpen, setDockOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -282,6 +284,34 @@ export function ConsoleChrome({
           </button>
         </div>
         <div className="ml-auto flex items-center gap-2">
+          {/* Mobile dock toggles (clone-original: keep both docks reachable on small screens) */}
+          <button
+            type="button"
+            aria-label="Layers and assets"
+            aria-expanded={dockOpen}
+            aria-controls="console-left-dock"
+            onClick={() => setDockOpen((v) => !v)}
+            className="rounded-control p-1.5 text-content-secondary hover:bg-surface-raised hover:text-content-primary md:hidden"
+          >
+            <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
+              <path d="M3 5.5 10 3l7 2.5L10 8 3 5.5Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+              <path d="M3 10l7 2.5L17 10M3 14.5l7 2.5 7-2.5" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" strokeLinecap="round" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            aria-label="Canvas settings"
+            aria-expanded={settingsOpen}
+            aria-controls="console-settings-panel"
+            onClick={() => setSettingsOpen((v) => !v)}
+            className="rounded-control p-1.5 text-content-secondary hover:bg-surface-raised hover:text-content-primary lg:hidden"
+          >
+            <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
+              <path d="M3 6h14M3 14h14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+              <circle cx="8" cy="6" r="2" stroke="currentColor" strokeWidth="1.4" />
+              <circle cx="12" cy="14" r="2" stroke="currentColor" strokeWidth="1.4" />
+            </svg>
+          </button>
           <button type="button" aria-label="Help" className="rounded-control p-1.5 text-content-secondary hover:bg-surface-raised" title="Educational clone — no help desk">
             ?
           </button>
@@ -292,7 +322,7 @@ export function ConsoleChrome({
             type="button"
             onClick={() => setPresentOpen(true)}
             title="Presentation mode (reveal artifacts)"
-            className="rounded-control border border-border-solid/20 px-3 py-1.5 text-xs text-content-secondary hover:text-content-primary"
+            className="hidden rounded-control border border-border-solid/20 px-3 py-1.5 text-xs text-content-secondary hover:text-content-primary sm:inline-flex"
           >
             Present
           </button>
@@ -300,7 +330,7 @@ export function ConsoleChrome({
             type="button"
             onClick={() => setPhoneOpen(true)}
             title="Open on phone (simulated)"
-            className="rounded-control border border-border-solid/20 px-3 py-1.5 text-xs text-content-secondary hover:text-content-primary"
+            className="hidden rounded-control border border-border-solid/20 px-3 py-1.5 text-xs text-content-secondary hover:text-content-primary sm:inline-flex"
           >
             Phone
           </button>
@@ -341,8 +371,34 @@ export function ConsoleChrome({
       />
 
       <div className="flex min-h-0 flex-1">
-        {/* Left dock (observed) */}
-        <aside className="flex w-60 shrink-0 flex-col border-r border-border-solid/10" aria-label="Models, layers and assets">
+        {/* Mobile scrim behind the left dock (clone-original small-screen pattern) */}
+        {dockOpen && (
+          <button
+            type="button"
+            aria-label="Close layers panel"
+            className="fixed inset-0 z-30 bg-black/50 md:hidden"
+            onClick={() => setDockOpen(false)}
+          />
+        )}
+        {/* Left dock (observed) — inline ≥md, overlay drawer on smaller screens */}
+        <aside
+          id="console-left-dock"
+          className={`${dockOpen ? "fixed inset-y-0 left-0 z-40 flex" : "hidden"} w-60 shrink-0 flex-col border-r border-border-solid/10 bg-surface-base md:static md:z-auto md:flex`}
+          aria-label="Models, layers and assets"
+        >
+          <div className="flex items-center justify-between border-b border-border-solid/10 px-3 py-2 md:hidden">
+            <span className="text-xs font-medium text-content-secondary">Layers &amp; assets</span>
+            <button
+              type="button"
+              aria-label="Close layers panel"
+              onClick={() => setDockOpen(false)}
+              className="rounded-control p-1 text-content-secondary hover:bg-surface-raised hover:text-content-primary"
+            >
+              <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
+                <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
           <div className="flex border-b border-border-solid/10" role="tablist" aria-label="Dock sections">
             <button
               type="button"
@@ -515,8 +571,33 @@ export function ConsoleChrome({
           </div>
         </div>
 
-        {/* Right panel: Canvas settings (observed) */}
-        <aside className="hidden w-64 shrink-0 flex-col overflow-y-auto border-l border-border-solid/10 p-4 lg:flex" aria-label="Canvas settings">
+        {/* Right panel: Canvas settings (observed) — inline ≥lg, overlay drawer on smaller screens */}
+        {settingsOpen && (
+          <button
+            type="button"
+            aria-label="Close canvas settings"
+            className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+            onClick={() => setSettingsOpen(false)}
+          />
+        )}
+        <aside
+          id="console-settings-panel"
+          className={`${settingsOpen ? "fixed inset-y-0 right-0 z-40 flex" : "hidden"} w-64 shrink-0 flex-col overflow-y-auto border-l border-border-solid/10 bg-surface-base p-4 lg:static lg:z-auto lg:flex`}
+          aria-label="Canvas settings"
+        >
+          <div className="-mx-4 -mt-4 mb-2 flex items-center justify-between border-b border-border-solid/10 bg-surface-base px-4 pb-2 pt-3 lg:hidden">
+            <span className="text-xs font-medium text-content-secondary">Canvas settings</span>
+            <button
+              type="button"
+              aria-label="Close canvas settings"
+              onClick={() => setSettingsOpen(false)}
+              className="rounded-control p-1 text-content-secondary hover:bg-surface-raised hover:text-content-primary"
+            >
+              <svg viewBox="0 0 20 20" className="size-4" fill="none" aria-hidden="true">
+                <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
           <h2 className="text-sm font-semibold text-content-primary">Canvas</h2>
 
           <label className="mt-4 block text-xs font-medium text-content-secondary" htmlFor="bg-color">

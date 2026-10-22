@@ -9,13 +9,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { activeTeam, loadSession, type SimSession } from "@/lib/session";
-import { AppTopBar, TeamSidebar } from "@/components/app/TeamSidebar";
+import { AppTopBar, TeamSidebar, type SidebarSection } from "@/components/app/TeamSidebar";
 import type { ReactNode } from "react";
 
-export type AppSection =
-  | "home" | "recent" | "space" | "members" | "invitations" | "notifications"
-  | "settings" | "billing" | "storage" | "templates" | "credits-banners"
-  | "admin" | "sculpt-studio";
+export type AppSection = SidebarSection;
 
 export function AppPage({
   teamId: tid,
