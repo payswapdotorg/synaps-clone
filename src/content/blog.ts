@@ -1,7 +1,7 @@
 import type { BlogPostData } from "./types";
 
 /**
- * Blog content — all 29 posts harvested from /news/blog/… .
+ * Blog content — all 31 posts harvested from /news/blog/… .
  *
  * PROVENANCE:
  *  · Post titles, section h2/h3 headings, FAQ questions, dates, reading
@@ -22,6 +22,218 @@ import type { BlogPostData } from "./types";
  *    (faqs field / more-links), not as prose sections.
  */
 export const blogPosts: BlogPostData[] = [
+  {
+    slug: "revit-vs-autocad",
+    title: "Revit vs AutoCAD: which one your studio needs for each job",
+    dek: "Revit for the model, AutoCAD for the drawings: which jobs suit each tool, how DWG files move between them, what the LT tiers leave out, and the US list prices read on 23 October 2026.",
+    date: "2026-10-23",
+    minutes: 13,
+    sections: [
+      {
+        h2: "Revit vs AutoCAD at a glance",
+        paras: [
+          "Revit holds the building as one model, and AutoCAD holds it as drawings. Autodesk's own Revit vs AutoCAD page calls AutoCAD a general drawing tool with broad applications and Revit a design and documentation solution — every other difference follows from that split.",
+        ],
+        list: [
+          "What you work on — Revit: one building model with walls, doors and windows as elements. AutoCAD: lines, blocks and layers in DWG drawings.",
+          "What changes when you edit — Revit: plans, sections and schedules update together. AutoCAD: each drawing is edited on its own.",
+          "Schedules — Revit: generated from the model's elements. AutoCAD: drawn or exported separately.",
+          "File format — Revit: RVT model, links and exports DWG. AutoCAD: native DWG, exports DXF and more.",
+          "Where it runs — Revit: Windows. AutoCAD: Windows and macOS, with the toolsets tied to Windows.",
+        ],
+      },
+      {
+        h2: "What Revit adds: one model behind every drawing",
+        paras: [
+          "You place building elements once, and plans, schedules and sheets read from them. Walls, doors and windows go in as parametric elements; you add views to project sheets, customise title blocks and manage revisions from the model.",
+          "Change is where the model pays back. Autodesk's comparison FAQ describes a model-based design approach where changes are automatically updated across all views and documentation — move a wall on a modelled job and the plans, sections and room schedule follow it.",
+        ],
+      },
+      {
+        h2: "What AutoCAD covers: drawings, DWG and the toolsets",
+        paras: [
+          "AutoCAD covers precise 2D and 3D drafting, with projects sitting in DWG files, design and modelling with solids, surfaces and mesh objects, and documentation features. It runs on Windows and macOS.",
+          "For architects the toolsets matter more. AutoCAD comes with seven industry-specific toolsets on Windows, and Architecture is one of them — it can automatically generate floor plans, elevations, sections and ceiling grids from the drawing, and carries a library of architectural objects like walls, doors and windows.",
+        ],
+      },
+      {
+        h2: "Which tool for which studio job",
+        paras: [
+          "Put each job where its output lives: drawings that stay 2D go in AutoCAD, and coordinated work goes in Revit. The four jobs an independent studio runs most weeks:",
+        ],
+        subsections: [
+          {
+            h3: "Surveys and existing drawings",
+            paras: [
+              "AutoCAD or AutoCAD LT. Survey drawings usually arrive as DWG, and the record stays 2D.",
+            ],
+          },
+          {
+            h3: "Early options and planning drawings",
+            paras: [
+              "AutoCAD LT or another 2D tool. Options change daily, and a model is setup work for each one. An extension often stays in 2D; a larger scheme benefits from the model.",
+            ],
+          },
+          {
+            h3: "Coordinated documentation and schedules",
+            paras: [
+              "Revit. Schedules, sheets and revisions stay in step with the model, and changes propagate to every view.",
+            ],
+          },
+          {
+            h3: "Details and consultant backgrounds",
+            paras: [
+              "AutoCAD. Details are drawing work, and consultant files arrive as DWG.",
+            ],
+          },
+        ],
+      },
+      {
+        h2: "Moving work between Revit and AutoCAD",
+        paras: [
+          "Revit takes DWG in by linking or importing it, and sends views and sheets out as DWG or DXF. In most cases linking is preferred over importing: linked CAD files update when reloaded, so link any file you expect to change.",
+          "Link the consultant's background once, reload it when a new issue arrives, and export the views the consultant needs as DWG. The import path also lists DGN, SAT, OBJ, 3DM, STEP, SKP, STL and AXM among its CAD formats.",
+        ],
+      },
+      {
+        h2: "What Revit and AutoCAD cost in 2026",
+        paras: [
+          "Autodesk publishes annual US list prices for one user on each product's buy page, read here on 23 October 2026 — prices vary by region and change without notice, so look up your own regional site before setting a budget.",
+          "Monthly terms cost more over a year. Monthly US list prices for one user, read 23 October 2026, are $380 for Revit and $260 for AutoCAD; on the same terms AutoCAD LT and Revit LT cost $70 a month each, and the suite costs $85. These are suggested retail prices, excluding freight, handling and taxes.",
+          "Budget seats against the jobs each person runs. Two Revit seats and four AutoCAD LT seats come to $8,170 a year at these US list prices; swapping the four LT seats for full AutoCAD adds $6,220.",
+        ],
+      },
+      {
+        h2: "Revit LT, AutoCAD LT or the suite",
+        paras: [
+          "Each LT tier keeps the core of its product and leaves out named features; the choice turns on whether you need 3D, the toolsets or a shared model.",
+          "AutoCAD LT is 2D drafting and documentation — no 3D, no third-party connections, no development tools and none of the seven specialised toolsets, so the Architecture toolset needs full AutoCAD on Windows. Revit LT models buildings and produces coordinated drawings in a single-user workflow; full Revit adds multi-user collaboration, worksharing and in-place family editing. The suite bundles AutoCAD plus a specialised toolset.",
+        ],
+      },
+      {
+        h2: "Where Synaps fits: the plan before the model",
+        paras: [
+          "Synaps publishes this article, and the comparison above is research only, from Autodesk's pages read on 23 October 2026 — neither product was tested hands-on.",
+          "Synaps is browser-based architectural drafting for the early plan, before a job needs a model. Bring the existing plan in as a PDF or image, trace it into editable walls, openings and rooms, or import a consultant's DXF. Draw new walls with a typed length and thickness, settle a few layout options, and hand the settled scheme to whichever tool the job calls for next. (Simulated in the clone.)",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Should a new architect learn AutoCAD or Revit first?",
+        a: "Learn the tool your studio's live jobs run in, and learn 2D drafting either way, because consultant DWGs keep arriving. Autodesk's FAQ notes that moving from AutoCAD to Revit takes real adjustment — new terminology and a new user interface — and drawing conventions still matter, since every view Revit produces has to read as a drawing.",
+      },
+      {
+        q: "Can Revit replace AutoCAD in a studio?",
+        a: "Autodesk's own FAQ says Revit cannot fully replace AutoCAD, because the tools serve different but complementary purposes. Even a studio that models every job receives survey and consultant files as DWG — keep at least one AutoCAD LT seat for opening and marking up DWGs that never need to enter the model.",
+      },
+    ],
+  },
+  {
+    slug: "standard-wall-thickness",
+    title: "Standard wall thickness: draw the sum of the layers",
+    dek: "Draw each wall at the sum of its layers: stud and board sizes from PS 20-20 and USG, Approved Document A masonry minimums for England, and which face to dimension.",
+    date: "2026-10-22",
+    minutes: 13,
+    sections: [
+      {
+        h2: "Standard wall thickness at a glance",
+        paras: [
+          "The drawn thickness of a wall is its core plus every layer fixed to it. These sums cover common stud partitions and the masonry minimums for England.",
+        ],
+        list: [
+          "2x4 stud partition, 1/2 in board each side — 4-1/2 in (114 mm). Basis: PS 20-20 and USG sizes.",
+          "2x4 stud partition, 5/8 in board each side — 4-3/4 in (121 mm). Basis: PS 20-20 and USG sizes.",
+          "2x6 stud framing, 1/2 in board each side — 6-1/2 in (165 mm), framing and linings only. Basis: PS 20-20 and USG sizes.",
+          "Cavity wall, England — 230 mm (90 mm leaf + 50 mm cavity + 90 mm leaf). Basis: Approved Document A, Section 2C.",
+        ],
+      },
+      {
+        h2: "Nominal vs actual: why a 2x4 is not 4 inches",
+        paras: [
+          "Under PS 20-20, the American Softwood Lumber Standard, a nominal 2x4 has a minimum dressed dry size of 1-1/2 by 3-1/2 in — so a stud wall starts at 3-1/2 in, not 4. Table 3 of the standard lists nominal sizes beside dressed sizes, in inches and millimetres, and wider nominal sizes lose width the same way.",
+          "The nominal name is a label; the drawing needs the dressed figure.",
+        ],
+      },
+      {
+        h2: "Interior partitions: stud plus board each side",
+        paras: [
+          "USG lists its Sheetrock UltraLight panels at 1/2 in (12.7 mm) for interior walls and ceilings. A 2x4 stud with one panel each side gives 3-1/2 + 1/2 + 1/2 = 4-1/2 in — in millimetres, 89 + 12.7 + 12.7 = 114.4 mm, drawn as 114.",
+          "Board thickness moves that figure. The same maker's Sheetrock Firecode X panels are 5/8 in (15.9 mm) Type X panels complying with ASTM C1396; with one of those each side the same stud gives 4-3/4 in, or 121 mm. The board in the specification decides the partition, not the stud alone.",
+        ],
+      },
+      {
+        h2: "Masonry walls in England: what Approved Document A sets",
+        paras: [
+          "Masonry minimums in England come from guidance, and they apply to a defined group of buildings. Approved Document A is the guidance on the structural elements of buildings in England; its Section 2C applies to residential buildings of not more than three storeys, small single-storey non-residential buildings and small annexes to residential buildings.",
+          "For those buildings, all cavity walls should have leaves at least 90 mm thick and cavities at least 50 mm wide — two minimum leaves and a minimum cavity give 90 + 50 + 90 = 230 mm.",
+        ],
+      },
+      {
+        h2: "Load-bearing walls: the engineer sizes the core",
+        paras: [
+          "For a load-bearing wall, the core thickness comes from the structural engineer, and you draw the linings on top. The stud sizes and masonry minimums above say what materials measure and what guidance sets as a floor — they do not size a wall for its loads, spans or openings.",
+          "Even within Approved Document A, the Section 2C figures hold only for walls that meet that section's conditions; a wall or building outside its scope needs a designed thickness. At early design, draw the load-bearing core at a provisional size and mark it for the engineer's confirmation.",
+        ],
+      },
+      {
+        h2: "How to draw wall thickness on a plan",
+        paras: [
+          "Draw each wall at its build-up, say which face each dimension measures to, and fix one alignment rule per wall type. Those three decisions keep rooms, dimensions and areas in step.",
+        ],
+        subsections: [
+          {
+            h3: "Set the drawn thickness to the build-up",
+            paras: [
+              "Make a short list of the wall types on the job, each with its layers and its total — a 2x4 partition with 1/2 in board, the same stud with 5/8 in board and a blockwork party wall are three types, not one. Draw every wall of a type at its listed total, and put the list in the general notes so consultants read the same figures.",
+            ],
+          },
+          {
+            h3: "Say which face each dimension measures to",
+            paras: [
+              "Write on the drawing whether dimensions run to the structural face, the board face or the finished face — room areas and clear widths change by the thickness of a board either way, and the reader cannot guess which you meant.",
+            ],
+          },
+          {
+            h3: "Set one alignment rule per wall type",
+            paras: [
+              "Fix one thickness and one alignment rule per wall type, so every wall of that type is drawn the same way — core centred on the setting-out line, for instance, or the structural face flush to the grid. Mixed alignments make rooms and dimensions drift.",
+            ],
+          },
+        ],
+      },
+      {
+        h2: "Set up wall build-ups in Synaps",
+        paras: [
+          "Synaps publishes this article. Synaps is browser-based architectural drafting software, and each wall carries its thickness and its build-up in layers — so the fit-out plan shows stud partitions at their real build-up instead of a round 100 mm.",
+          "Draw the partition run with the wall tool — segments in one run join at the corners — entering L for length and A for angle when you have the figures. Select a wall to open its properties and set its thickness and layers; use the same thickness, layers and alignment for every wall of a type. (Simulated in the clone.)",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How thick are exterior walls?",
+        a: "Build an exterior wall from its layers the same way as a partition. A 2x6 frame with 1/2 in board inside is 5-1/2 + 1/2 = 6 in (152 mm), before sheathing, cladding and any insulation outside the frame. In England, a Section 2C cavity wall starts from the 90 + 50 + 90 mm minimums; take every other layer from its data sheet and add it to the sum.",
+      },
+      {
+        q: "Should the plan show each layer of the wall?",
+        a: "Show layers where the scale can carry them. At 1:100, a 114 mm partition is 1.14 mm on paper and each 12.7 mm board is about 0.13 mm — draw the outline and fill the cut at that scale. At 1:50 or larger, show the board as its own layer.",
+      },
+      {
+        q: "How do I draw an existing wall when I can't see its build-up?",
+        a: "Measure the overall thickness where the wall is open, such as at a doorway, and draw that total as a single layer. Note that the build-up is unknown, so nobody reads layers into it — replace it with real layers once a survey opens the wall.",
+      },
+      {
+        q: "Does a thicker wall on the plan mean a stronger wall?",
+        a: "No. Thickness on the plan records what gets built, and strength comes from the engineer's design of the core. Swapping 1/2 in board for 5/8 in board each side makes a partition thicker, and that change says nothing about load. Draw the total from the build-up and the core from the engineer.",
+      },
+      {
+        q: "What sizes should I use for metric plasterboard and metal studs?",
+        a: "Use the sizes on the manufacturer's data sheet for the product you specify. Metric boards and metal studs come in their own ranges, and the US sizes in this guide are not a stand-in for them. Sum the stud width and each board the same way, then write the total into your wall list.",
+      },
+    ],
+  },
+
   {
     slug: "ai-floor-plan-generator",
     title: "AI floor plan generator: what it gives you and what to check",
