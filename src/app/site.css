@@ -1491,6 +1491,12 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
   .ms *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+    /* iteration-count + scroll-behavior complete the carpet to the
+       live contract: infinite animations (marquee loops) stop after
+       one 0.01ms cycle instead of spinning forever, and smooth-scroll
+       jumps become instant. */
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -2571,5 +2577,117 @@ body.is-tail-dark .ms-header .ms-brand-name {
   html.synaps-nav-enter.synaps-nav-enter-active .ms-page-layer {
     opacity: 1;
     transition: opacity 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+}
+
+/* Custom cursor dot (harvest: .cursor-dot + setupCursorDot on the live
+   marketing site). On precise pointers the native cursor is hidden and a
+   fixed white dot (mix-blend-mode: difference) follows the mouse,
+   inflating over interactive elements. Skipped for touch/coarse pointers
+   and reduced-motion users. Scoped to .ms (marketing surface) — the docs
+   surface shares this stylesheet but the real docs.synaps.app (GitBook)
+   has no custom cursor, and the app/console keeps its crosshair. */
+.cursor-dot {
+  display: none; /* enabled below via media query */
+}
+@media (hover: hover) and (pointer: fine) {
+  /* Hide the native cursor across the marketing surface. Universal
+     selector + !important, exactly as the real ships it, because many
+     components set cursor: pointer (or text / grab) on themselves and
+     those declarations would otherwise win and re-render the hand
+     cursor on top of our dot. */
+  .ms,
+  .ms *,
+  .ms *::before,
+  .ms *::after {
+    cursor: none !important;
+  }
+
+  .cursor-dot {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    /* Negative margins center the dot on the pointer regardless of its
+       current size. When the dot scales up on hover, the margins update
+       in lockstep so it stays centered. */
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    background: #ffffff;
+    pointer-events: none;
+    z-index: 100000; /* above the grain (9999) and the header */
+    mix-blend-mode: difference;
+    /* transform is set inline by JS each pointermove (RAF-throttled).
+       width/height/margin animate; transform stays instant so the dot
+       never lags behind the cursor. */
+    transform: translate3d(-100px, -100px, 0);
+    will-change: transform;
+    opacity: 1;
+    transition:
+      width 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      height 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      margin 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 180ms ease;
+  }
+  /* On hover over an interactive element the dot inflates to a soft
+     ring — a clear "this is clickable" signal without needing a
+     separate ring outline element. */
+  .cursor-dot.is-hover {
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+  }
+  /* When the pointer leaves the window entirely, fade the dot. */
+  .cursor-dot.is-hidden {
+    opacity: 0;
+  }
+}
+/* Respect users who explicitly opt out of fancy motion: never show the
+   custom cursor, never hide the native one. Same .ms scoping as the
+   carpet above (placed after it so the later declaration wins). */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot {
+    display: none !important;
+  }
+  .ms,
+  .ms *,
+  .ms *::before,
+  .ms *::after {
+    cursor: auto !important;
+  }
+}
+
+/* Film grain (harvest: body::after on the live marketing site). A fixed
+   full-viewport SVG fractal-noise tile blended soft-light at 0.35 over
+   the page — the subtle texture the real site carries on desktop. It is
+   skipped for reduced-motion users (the high-frequency texture can
+   trigger sensitivities even though it never moves) and disabled on
+   ≤899px viewports, where a full-viewport fixed blend layer forces iOS
+   Safari to recomposite every scroll frame (the live site disabled it
+   for exactly that reason). Scoped with :has(> .ms) so only pages
+   wearing the marketing shell get it — the docs surface, which shares
+   this stylesheet, stays clean like the real GitBook docs. */
+body:has(> .ms)::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+  mix-blend-mode: soft-light;
+  opacity: 0.35;
+}
+@media (prefers-reduced-motion: reduce) {
+  body:has(> .ms)::after {
+    display: none;
+  }
+}
+@media (max-width: 899px) {
+  body:has(> .ms)::after {
+    display: none;
   }
 }

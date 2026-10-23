@@ -874,3 +874,35 @@ search) are non-modal and get Escape-to-close only — no focus trap —
 which is the conventional treatment.
 
 Presentation mode already had Escape and keeps its own handler.
+
+## Custom cursor, film grain & theme-color (Task 51 — transcribed from the live site)
+
+Deep-dive into the live synaps.app CSS revealed three desktop-marketing
+features that screenshots cannot carry and that had therefore never been
+harvested — all now transcribed:
+
+- **Custom cursor dot** (`.cursor-dot` + `setupCursorDot()`): on
+  `hover: hover and pointer: fine` devices the native cursor is hidden
+  across the marketing surface and replaced by a fixed 10px white dot
+  (`mix-blend-mode: difference`, so it inverts over both light and dark
+  sections). The dot inflates to a soft 36px ring over interactive
+  elements (`a[href]`, `button`, inputs, labels, `[role="button"]`,
+  `[data-hoverable]`, `.mode-switch`; opt-out via
+  `[data-cursor-default]`), follows the pointer via RAF-throttled
+  `translate3d`, and fades when the pointer leaves the window. Touch /
+  coarse pointers and `prefers-reduced-motion` users keep their native
+  cursor. Scoped to `.ms` — the docs surface (real: GitBook, no custom
+  cursor) and the app console (crosshair) are untouched.
+- **Film grain** (`body::after`): a fixed full-viewport 240px SVG
+  fractal-noise tile (`feTurbulence`, baseFrequency 0.9, 2 octaves)
+  blended `soft-light` at opacity 0.35. Disabled at ≤899px (a fixed
+  blend layer forces iOS Safari to recomposite every scroll frame —
+  the live site's own rationale) and under reduced-motion. Scoped via
+  `body:has(> .ms)` so only marketing-shell pages wear it.
+- **Scheme-aware `theme-color` pair**: light `#F8F9FB` / dark
+  `#0F0F0E` on the marketing viewport (the browser-chrome tint; the
+  page content itself stays light in both schemes, as the real does).
+
+Additionally, the existing reduced-motion carpet was completed to the
+live contract (`animation-iteration-count: 1` + `scroll-behavior:
+auto` alongside the duration overrides).

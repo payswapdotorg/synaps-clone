@@ -1,6 +1,8 @@
 import "../site.css";
+import type { Viewport } from "next";
 import { Attribution } from "@/components/site/Attribution";
 import { CookieBanner } from "@/components/site/CookieBanner";
+import { CursorDot } from "@/components/site/CursorDot";
 import { NavTransitions } from "@/components/site/NavTransitions";
 import { SiteFooter, SiteHeader } from "@/components/site/chrome";
 import { SiteTail } from "@/components/site/SiteTail";
@@ -20,6 +22,18 @@ import { SiteTail } from "@/components/site/SiteTail";
  * it, mirroring the real's .page-layer > :not(.header) fade target for
  * cross-page navigation transitions (see NavTransitions + site.css).
  */
+export const viewport: Viewport = {
+  /* Scheme-aware browser-chrome color pair, transcribed from the live
+     synaps.app <meta name="theme-color"> set (light #F8F9FB / dark
+     #0F0F0E). The marketing surface itself stays light in both schemes
+     — exactly as the real site does — the pair only tints the mobile
+     browser chrome around it. */
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F8F9FB" },
+    { media: "(prefers-color-scheme: dark)", color: "#0F0F0E" },
+  ],
+};
+
 export default function MarketingLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -34,6 +48,7 @@ export default function MarketingLayout({
         <SiteFooter />
       </div>
       <CookieBanner />
+      <CursorDot />
     </div>
   );
 }
