@@ -141,47 +141,90 @@ export function BlogPostView({
   more,
 }: {
   data: BlogPostData;
-  more: { title: string; href: string }[];
+  more: BlogPostData[];
 }) {
+  /* Hero width variants, transcribed from the live SSR markup: standard
+   * 720px; "wide" (data-illustrated) 1120px with 40px auto margins;
+   * "compact" (data-illustrated + data-size=compact) 560px; "none"
+   * renders no hero figure at all (two live posts ship without one). */
+  const hero = data.heroWidth ?? "standard";
+  const heroStyle =
+    hero === "wide"
+      ? { maxWidth: 1120, margin: "40px auto" }
+      : hero === "compact"
+        ? { maxWidth: 560, margin: "40px auto" }
+        : {
+            maxWidth: 720,
+            marginInline: "auto",
+            marginBottom: "clamp(28px, 3.5svh, 40px)",
+          };
+
   return (
     <>
-      <PageHero
-        title={data.title}
-        meta={
-          <>
-            <time dateTime={data.date}>{formatDisplayDate(data.date)}</time>
-            <br />
-            {data.minutes} min read
-          </>
-        }
-      />
-      <div className="ms-container" style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}>
-        <div className="ms-grid" style={{ display: "grid", gap: 48 }}>
-          <div style={{ gridColumn: "1 / -1" }}>
-            {/* Post hero — the analysed site leads every article with its
-             * per-post CMS image; the clone's own B&W editorial cover
-             * stands in (public/images/blog/covers/{slug}.png). */}
+      {/* Live post heroes carry only the eyebrow + h1 — no meta, no lead:
+       * the date · category · read line lives in the article as the
+       * kicker, under a "← Blog" back link (ds-article-back/kicker). */}
+      <PageHero title={data.title} />
+
+      <div
+        className="ms-container"
+        style={{ paddingBottom: "clamp(40px, 5svh, 56px)" }}
+      >
+        <div style={{ maxWidth: 720, marginInline: "auto" }}>
+          <p className="ms-article-back">
+            <Link href="/news/blog/">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+              </svg>
+              Blog
+            </Link>
+          </p>
+          <p className="ms-article-kicker">
+            {formatDisplayDate(data.date)} · {data.category} · {data.minutes}{" "}
+            min read
+          </p>
+        </div>
+
+        {hero !== "none" ? (
+          <figure style={heroStyle}>
+            {/* The clone's own B&W editorial cover stands in for the live
+             * CMS image (public/images/blog/covers/{slug}.png); live loads
+             * post heroes eagerly with a descriptive alt. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={data.image}
               alt={`${data.title} — cover image`}
               width={1344}
               height={768}
-              style={{ display: "block", width: "100%", height: "auto", borderRadius: 6 }}
-              fetchPriority="high"
+              loading="eager"
+              style={{
+                display: "block",
+                width: "100%",
+                height: "auto",
+                borderRadius: 4,
+                border: "1px solid var(--ms-border)",
+              }}
             />
-          </div>
-          <article
-            className="ms-prose"
-            style={{ maxWidth: "72ch", marginInline: "auto" }}
-          >
-            <p
-              className="ms-lead"
-              style={{ fontSize: 19, color: "var(--ms-ink-soft)" }}
-            >
-              {data.dek}
-            </p>
-            {data.sections.map((section) => (
+          </figure>
+        ) : null}
+
+        <article
+          className="ms-prose"
+          style={{ maxWidth: 720, marginInline: "auto" }}
+        >
+          <p>{data.dek}</p>
+          {data.sections.map((section) => (
               <section key={section.h2}>
                 <h2>{section.h2}</h2>
                 {section.paras?.map((p, i) => (
@@ -220,16 +263,87 @@ export function BlogPostView({
               </section>
             ) : null}
           </article>
-        </div>
       </div>
 
+      {/* "More from the blog" — live serves the next-3-newest posts
+       * (wrapping past the oldest) as hub-style image cards in the
+       * always-2-column grid, between the article and the crosslinks. */}
       {more.length ? (
-        <Section head={<SectionHead title="Continue" dim="reading." />}>
-          <ArrowCards
-            items={more.map((m) => ({ label: m.title, href: m.href }))}
-          />
-        </Section>
+        <section style={{ paddingBlock: "clamp(80px, 14svh, 160px)" }}>
+          <div className="ms-container">
+            <h2
+              className="ms-h2"
+              style={{ margin: "0 0 clamp(28px, 3.5svh, 40px)" }}
+            >
+              More from the blog
+            </h2>
+            <div className="ms-blog-grid">
+              {more.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/news/blog/${post.slug}`}
+                  className="ms-blog-card"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/images/blog/covers/${post.slug}.png`}
+                    alt=""
+                    width={1344}
+                    height={768}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div>
+                    <span className="ms-blog-card-category">
+                      {post.category}
+                    </span>
+                    <span className="ms-blog-card-meta">
+                      {formatDisplayDate(post.date)} · {post.minutes} min read
+                    </span>
+                    <h3 className="ms-blog-card-title">{post.title}</h3>
+                    <p className="ms-blog-card-excerpt">{post.dek}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
       ) : null}
+
+      {/* Crosslinks, transcribed from the live ds-crosslink section:
+       * three job-card tiles (title + meta + arrow) in a 3-column grid.
+       * "Synaps Studio" links the clone's own app entry (/login) where
+       * live links beta.synaps.app. */}
+      <section style={{ paddingBlock: "clamp(80px, 14svh, 160px)" }}>
+        <div className="ms-container">
+          <h2
+            className="ms-h2"
+            style={{ margin: "0 0 clamp(20px, 2.5svh, 28px)" }}
+          >
+            Continue reading
+          </h2>
+          <ArrowCards
+            columns={3}
+            items={[
+              {
+                label: "Release notes",
+                href: "/news/changelog",
+                note: "Terse release notes by version",
+              },
+              {
+                label: "Alternative to",
+                href: "/news/alternative-to",
+                note: "Honest stack comparisons",
+              },
+              {
+                label: "Synaps Studio",
+                href: "/login",
+                note: "Open the app",
+              },
+            ]}
+          />
+        </div>
+      </section>
     </>
   );
 }
@@ -246,10 +360,8 @@ const KIND_STYLE: Record<string, { color: string; bg: string }> = {
 
 export function ChangelogEntryView({
   data,
-  more,
 }: {
   data: ChangelogEntryData;
-  more: { title: string; href: string; date: string }[];
 }) {
   return (
     <>
@@ -295,17 +407,6 @@ export function ChangelogEntryView({
           })}
         </div>
       </div>
-      {more.length ? (
-        <Section head={<SectionHead title="Previous" dim="release notes." />}>
-          <ArrowCards
-            items={more.map((m) => ({
-              label: m.title,
-              href: m.href,
-              note: m.date,
-            }))}
-          />
-        </Section>
-      ) : null}
     </>
   );
 }

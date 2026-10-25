@@ -103,14 +103,57 @@ export { FaqList } from "./FaqList";
 
 export function ArrowCards({
   items,
+  columns,
 }: {
   items: { label: string; href: string; note?: string }[];
+  /** 3 renders the live ds-crosslink-grid (3 columns, tighter gap);
+   *  default keeps the two-column ms-grid-2. */
+  columns?: 3;
 }) {
   return (
-    <div className="ms-grid-2">
+    <div
+      className={columns === 3 ? undefined : "ms-grid-2"}
+      style={
+        columns === 3
+          ? {
+              display: "grid",
+              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+              gap: "clamp(12px, 1.4vw, 16px)",
+            }
+          : undefined
+      }
+    >
       {items.map((item) => (
         <Link key={item.href + item.label} href={item.href} className="ms-arrow-card">
-          <span style={{ fontWeight: 480, fontSize: 18 }}>{item.label}</span>
+          {item.note ? (
+            /* Job-card anatomy (live company-job-card family): stacked
+             * 17px/400 title + 14px meta line. */
+            <span
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+                minWidth: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 17,
+                  fontWeight: 400,
+                  letterSpacing: "-0.014em",
+                  lineHeight: 1.3,
+                  color: "var(--ms-ink)",
+                }}
+              >
+                {item.label}
+              </span>
+              <span style={{ fontSize: 14, color: "var(--ms-muted)" }}>
+                {item.note}
+              </span>
+            </span>
+          ) : (
+            <span style={{ fontWeight: 480, fontSize: 18 }}>{item.label}</span>
+          )}
           <span className="arrow" aria-hidden="true">
             →
           </span>
@@ -130,7 +173,14 @@ export function CtaBand({
   dim?: string;
 }) {
   return (
-    <section className="ms-section" style={{ paddingBottom: "clamp(40px, 6vw, 88px)" }}>
+    /* Site tail keeps its own (previously verified) rhythm, independent of
+     * the transcribed subpage section pad. */
+    <section
+      className="ms-section"
+      style={{
+        paddingBlock: "clamp(44px, 6vw, 84px) clamp(40px, 6vw, 88px)",
+      }}
+    >
       <div className="ms-container">
         <div className="ms-gridlines" style={{ borderRadius: 14, border: "1px solid var(--ms-hairline)" }}>
           <div className="ms-stack-24 px-6 py-14 text-center md:px-16 md:py-20">

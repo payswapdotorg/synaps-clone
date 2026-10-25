@@ -27,8 +27,12 @@
   --ms-dark-ink: rgba(255, 255, 255, 0.78);
   --ms-dark-soft: rgba(255, 255, 255, 0.55);
   --ms-dark-hairline: rgba(255, 255, 255, 0.11);
-  --ms-container: 1320px;
-  --ms-pad: 24px;
+  /* Subpage frame, per the live harvest (26 Oct): section inners and the
+     header bar cap at 1180px (--container-max 1320 is vestigial on the
+     public site); content pad is clamp(24px, 2.35vw, 40px). */
+  --ms-container: 1180px;
+  /* Transcribed from live --content-pad. */
+  --ms-pad: clamp(24px, 2.35vw, 40px);
   --ms-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ms-font:
     "Suisse Int'l", "Suisse Intl", -apple-system, BlinkMacSystemFont,
@@ -41,10 +45,10 @@
   text-rendering: optimizeLegibility;
 }
 
-@media (min-width: 720px) {
-  .ms {
-    --ms-pad: 32px;
-  }
+/* Wide variant for full-bleed home sections that previously relied on the
+   old 1320px container. */
+.ms-container--wide {
+  max-width: 1320px;
 }
 
 /* Layout ------------------------------------------------------------------ */
@@ -55,8 +59,11 @@
   padding-inline: var(--ms-pad);
 }
 
+/* Section vertical rhythm, transcribed from live --ds-section-pad-y
+   (measured 112px at 800h / 84 at 600h / 126 at 900h → this clamp).
+   Exceptions (site tail, home) pin their own values. */
 .ms-section {
-  padding-block: clamp(64px, 9vw, 128px);
+  padding-block: clamp(80px, 14svh, 160px);
 }
 
 .ms-rule {
@@ -75,24 +82,32 @@
   color: var(--ms-muted);
 }
 
+/* Subpage h1, transcribed from live `html.site-subpage .hero h1`:
+   clamp(44px, 5vw, 76px), weight 400 (was 500/88px — systemic fix,
+   26 Oct harvest). max-width shapes the headline to ~22ch. */
 .ms-h1 {
-  font-size: clamp(42px, 6.4vw, 88px);
-  line-height: 1.02;
-  letter-spacing: -0.025em;
-  font-weight: 500;
+  font-size: clamp(44px, 5vw, 76px);
+  line-height: 1.015;
+  letter-spacing: -0.018em;
+  font-weight: 400;
   margin: 0;
+  text-wrap: balance;
+  max-width: min(22ch, 62vw);
 }
 
 .ms-h1 .dim {
   color: var(--ms-ink-faint);
 }
 
+/* Section titles, transcribed from live .type-section-title: same clamp,
+   weight 400 (was 500), ls -0.022em, text-wrap balance. */
 .ms-h2 {
   font-size: clamp(30px, 3.6vw, 52px);
   line-height: 1.06;
-  letter-spacing: -0.02em;
-  font-weight: 500;
+  letter-spacing: -0.022em;
+  font-weight: 400;
   margin: 0;
+  text-wrap: balance;
 }
 
 .ms-h2 .dim {
@@ -237,6 +252,171 @@
   transform: translateY(-3px);
   border-color: var(--ms-border-visible);
   box-shadow: 0 18px 40px rgba(8, 9, 11, 0.08);
+}
+
+/* Blog cards — transcribed from the live ds-blog-card family (26 Oct
+   harvest): always-2-column index grid, inset 3/2 cover images with wire
+   borders, stacked category/meta lines, 3-line-clamped excerpts, and a
+   featured variant with 21/9 hero crop + "Read article" CTA. */
+
+.ms-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.ms-blog-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--ms-ink);
+  border: 1px solid var(--ms-border);
+  border-radius: 4px;
+  background: var(--ms-bg-raise);
+  padding: clamp(22px, 2.4vw, 28px);
+  min-width: 0;
+  transition: border-color 0.16s var(--ms-ease);
+}
+
+.ms-blog-card:hover {
+  color: var(--ms-ink);
+  border-color: var(--ms-border-visible);
+}
+
+.ms-blog-card:focus-visible {
+  outline: 2px solid var(--ms-ink);
+  outline-offset: 2px;
+}
+
+.ms-blog-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--ms-border);
+  margin: 0 0 clamp(16px, 2svh, 20px);
+  background: color-mix(in srgb, var(--ms-ink) 4%, var(--ms-bg));
+}
+
+.ms-blog-card-category {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--ms-muted);
+  margin: 0 0 8px;
+}
+
+.ms-blog-card-meta {
+  display: block;
+  font-size: 13px;
+  color: var(--ms-muted);
+  margin: 0 0 14px;
+}
+
+.ms-blog-card-title {
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.014em;
+  line-height: 1.3;
+  color: var(--ms-ink);
+  margin: 0 0 10px;
+}
+
+.ms-blog-card-excerpt {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ms-ink-soft);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ms-blog-card--featured {
+  width: 100%;
+  margin: 0 0 clamp(28px, 3.5svh, 40px);
+  padding: clamp(36px, 4.5vw, 52px) clamp(28px, 3.2vw, 40px);
+}
+
+.ms-blog-card--featured .ms-blog-card-category {
+  margin-bottom: 10px;
+  color: var(--ms-ink-soft);
+}
+
+.ms-blog-card--featured .ms-blog-card-meta {
+  margin-bottom: clamp(16px, 2svh, 20px);
+}
+
+.ms-blog-card--featured .ms-blog-card-title {
+  margin: 0 0 clamp(14px, 1.8svh, 18px);
+  max-width: 18em;
+  font-size: clamp(30px, 3.6vw, 52px);
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.ms-blog-card--featured .ms-blog-card-excerpt {
+  max-width: 62ch;
+  -webkit-line-clamp: unset;
+  display: block;
+  overflow: visible;
+  margin: 0;
+}
+
+.ms-blog-card--featured img {
+  aspect-ratio: 21 / 9;
+  max-height: 420px;
+  margin-bottom: clamp(24px, 3svh, 32px);
+}
+
+.ms-blog-card-cta {
+  display: inline-block;
+  margin-top: clamp(18px, 2.2svh, 24px);
+  color: var(--ms-ink-soft);
+}
+
+.ms-blog-card:hover .ms-blog-card-cta {
+  color: var(--ms-ink);
+}
+
+/* Article top — back link + kicker, transcribed from the live
+   ds-article-back / ds-article-kicker family. */
+
+.ms-article-back {
+  margin: 0 0 clamp(20px, 2.5svh, 28px);
+  font-size: 13px;
+}
+
+.ms-article-back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ms-ink-soft);
+  text-decoration: none;
+}
+
+.ms-article-back a:hover {
+  color: var(--ms-ink);
+}
+
+.ms-article-back svg {
+  flex-shrink: 0;
+  color: var(--ms-muted);
+}
+
+.ms-article-back a:hover svg {
+  color: var(--ms-ink-soft);
+}
+
+.ms-article-kicker {
+  font-size: 13px;
+  color: var(--ms-muted);
+  margin: 0 0 12px;
 }
 
 /* Arrow link tile (solutions hub, "continue reading") — white tiles on
@@ -1399,15 +1579,18 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
   color: var(--ms-muted);
 }
 
+/* Subpage hero, transcribed from live measurements (26 Oct): hero pads
+   128px top / 40px bottom at 800h; two-column stack/lead split 697/358
+   with a 64px gap. */
 .ms-page-hero {
   display: grid;
-  gap: 26px;
-  padding-block: clamp(40px, 5.2vw, 76px) clamp(34px, 4.2vw, 60px);
+  gap: 64px;
+  padding-block: clamp(96px, 16svh, 128px) 40px;
 }
 
 @media (min-width: 940px) {
   .ms-page-hero {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    grid-template-columns: minmax(0, 66fr) minmax(0, 34fr);
     align-items: center;
   }
 }

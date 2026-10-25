@@ -41,6 +41,11 @@ export type BlogPostData = {
    *  mirroring the live site's per-post CMS image usage: hub card, post
    *  hero, og:image, BlogPosting.image. */
   image: string; // "/images/blog/covers/{slug}.png"
+  /** Post hero width variant, transcribed from the live SSR markup:
+   *  default 720px; "wide" = data-illustrated (1120px);
+   *  "compact" = data-illustrated + data-size=compact (560px);
+   *  "none" = data-illustrated with no hero figure at all. */
+  heroWidth?: "wide" | "compact" | "none";
   /** Standalone SEO title override: one live post (between-autocad-and-bim)
    *  ships a custom title with no "| Synaps" suffix. */
   seoTitle?: string;

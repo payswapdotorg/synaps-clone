@@ -34,22 +34,13 @@ export default async function ChangelogEntryPage({
   const entry = changelogEntries.find((e) => e.date === date);
   if (!entry) notFound();
 
-  const sorted = [...changelogEntries].sort((a, b) => (a.date < b.date ? 1 : -1));
-  const idx = sorted.findIndex((e) => e.date === date);
-  const more = sorted
-    .slice(idx + 1, idx + 3)
-    .map((e) => ({
-      title: e.title,
-      href: `/news/changelog/${e.date}`,
-      date: e.date,
-    }));
-
   return (
     <PageShell>
       {/* Live changelog entries carry exactly one JSON-LD block
        * (Article). */}
       <JsonLd data={changelogArticleLd(entry)} />
-      <ChangelogEntryView data={entry} more={more} />
+      {/* Live changelog entries end after the entry — no "more" section. */}
+      <ChangelogEntryView data={entry} />
     </PageShell>
   );
 }

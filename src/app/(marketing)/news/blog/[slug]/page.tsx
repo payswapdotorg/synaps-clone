@@ -45,9 +45,12 @@ export default async function BlogPostPage({
 
   const sorted = [...blogPosts].sort((a, b) => (a.date < b.date ? 1 : -1));
   const idx = sorted.findIndex((p) => p.slug === slug);
-  const more = sorted
-    .slice(idx + 1, idx + 4)
-    .map((p) => ({ title: p.title, href: `/news/blog/${p.slug}` }));
+  /* Live "More from the blog" rule (verified on the oldest post): the
+   * next-3-newest, wrapping past the end back to the newest posts. */
+  const more = Array.from(
+    { length: Math.min(3, sorted.length - 1) },
+    (_, i) => sorted[(idx + 1 + i) % sorted.length],
+  ).filter((p) => p.slug !== slug);
 
   return (
     <PageShell>

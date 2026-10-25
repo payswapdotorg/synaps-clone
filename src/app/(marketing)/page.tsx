@@ -122,7 +122,7 @@ export default function HomePage() {
       {/* ------------------------------------------- Manifesto + quote */}
       <section className="ms-hatch--soft">
         <div
-          className="ms-container ms-gridlines"
+          className="ms-container ms-container--wide ms-gridlines"
           style={{
             paddingBlock: "clamp(72px, 9vw, 128px)",
             borderTop: "1px solid var(--ms-hairline)",
@@ -167,7 +167,10 @@ export default function HomePage() {
 
       {/* --------------------------- Assets band (cinematic dark tail) */}
       <section className="assets-band" aria-label="Native library">
-        <div className="ms-container ms-section ms-stack-32">
+        <div
+          className="ms-container ms-container--wide ms-section ms-stack-32"
+          style={{ paddingBlock: "clamp(44px, 6vw, 84px)" }}
+        >
           <div className="ms-stack-16">
             <span className="ms-label">Native library</span>
             <h2 className="ms-h2">

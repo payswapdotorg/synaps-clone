@@ -1792,6 +1792,7 @@ export const blogPosts: BlogPostData[] = [
     minutes: 11,
     category: "Studio workflows",
     image: "/images/blog/covers/dwg-vs-dxf.png",
+    heroWidth: "wide",
     sections: [
       {
         h2: "What DWG and DXF are",
@@ -1877,6 +1878,7 @@ export const blogPosts: BlogPostData[] = [
     minutes: 5,
     category: "Studio workflows",
     image: "/images/blog/covers/free-floor-plan-creators.png",
+    heroWidth: "none",
     sections: [
       {
         h2: "What the current free plans include",
@@ -2036,6 +2038,7 @@ export const blogPosts: BlogPostData[] = [
     minutes: 6,
     category: "Studio workflows",
     image: "/images/blog/covers/choose-floor-plan-software.png",
+    heroWidth: "none",
     sections: [
       {
         h2: "Define the deliverable first",
@@ -2097,6 +2100,7 @@ export const blogPosts: BlogPostData[] = [
     minutes: 5,
     category: "Studio workflows",
     image: "/images/blog/covers/between-autocad-and-bim.png",
+    heroWidth: "wide",
     sections: [
       {
         h2: "Start with a drawing you can inspect",
@@ -2143,6 +2147,7 @@ export const blogPosts: BlogPostData[] = [
     minutes: 8,
     category: "Studio workflows",
     image: "/images/blog/covers/scanned-floor-plan-to-editable-drawing.png",
+    heroWidth: "compact",
     sections: [
       {
         h2: "Choose a route that matches the file",
@@ -2215,6 +2220,7 @@ export const blogPosts: BlogPostData[] = [
     minutes: 5,
     category: "Studio workflows",
     image: "/images/blog/covers/generate-floor-plan-within-boundary.png",
+    heroWidth: "compact",
     sections: [
       {
         h2: "Separate fixed conditions from preferences",
@@ -2273,6 +2279,7 @@ export const blogPosts: BlogPostData[] = [
     minutes: 12,
     category: "Studio workflows",
     image: "/images/blog/covers/architectural-post-production-image-editing.png",
+    heroWidth: "wide",
     sections: [
       {
         h2: "What architectural post-production changes",
