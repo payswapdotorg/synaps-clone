@@ -34,6 +34,16 @@ export type BlogPostData = {
   dek: string;
   date: string; // YYYY-MM-DD
   minutes: number; // reading time
+  /** Card label + articleSection, harvested from the live hub:
+   *  Studio workflows ×25, Practice ×3, Essay ×3. */
+  category: "Studio workflows" | "Practice" | "Essay";
+  /** Per-post cover (own AI-generated B&W editorial asset, 1344×768),
+   *  mirroring the live site's per-post CMS image usage: hub card, post
+   *  hero, og:image, BlogPosting.image. */
+  image: string; // "/images/blog/covers/{slug}.png"
+  /** Standalone SEO title override: one live post (between-autocad-and-bim)
+   *  ships a custom title with no "| Synaps" suffix. */
+  seoTitle?: string;
   sections: ProseSection[];
   faqs?: FaqItem[];
 };

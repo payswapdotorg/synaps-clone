@@ -21,6 +21,7 @@ import {
   PageHero,
   SectionHead,
 } from "./blocks";
+import { formatDisplayDate } from "@/lib/seo";
 
 function Section({
   children,
@@ -135,51 +136,6 @@ export function SolutionView({ data }: { data: SolutionData }) {
 /* Blog                                                                */
 /* ------------------------------------------------------------------ */
 
-/** Original article illustration — drafting-blue plan linework on
- *  paper, seeded from the slug so each post gets a variant. */
-function PostArt({ seed }: { seed: string }) {
-  let h = 0;
-  for (const c of seed) h = (h * 31 + c.charCodeAt(0)) % 997;
-  const flip = h % 2 === 0;
-  const rotate = (h % 9) - 4;
-  return (
-    <div
-      style={{
-        height: 230,
-        borderRadius: 10,
-        border: "1px solid var(--ms-hairline)",
-        background: "#f4f2ee",
-        position: "relative",
-        overflow: "hidden",
-      }}
-      aria-hidden
-    >
-      <svg
-        viewBox="0 0 640 230"
-        preserveAspectRatio="xMidYMid slice"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-      >
-        <g
-          transform={`translate(${flip ? 200 : 80} 30) rotate(${rotate})`}
-          stroke="#1060c0"
-          fill="none"
-          strokeWidth="2"
-        >
-          <path d="M0 0h240v170H0z" />
-          <path d={`M${60 + (h % 30)} 0v${90 + (h % 40)}M0 ${80 + (h % 30)}h${100 + (h % 60)}M${150 - (h % 20)} ${90 + (h % 40)}v80`} />
-          <path d={`M${60 + (h % 30)} ${60 + (h % 20)}a34 34 0 0 1 34 34`} strokeWidth="1.3" opacity="0.8" />
-          <rect x={16} y={16} width="52" height="30" rx="3" strokeWidth="1.3" opacity="0.75" />
-          <rect x={170} y={110} width="46" height="40" rx="3" strokeWidth="1.3" opacity="0.75" />
-        </g>
-        <g stroke="rgba(8,9,11,0.10)" strokeWidth="1">
-          <path d="M0 205h640" />
-          <path d="M0 215h640" opacity="0.5" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
 export function BlogPostView({
   data,
   more,
@@ -193,7 +149,7 @@ export function BlogPostView({
         title={data.title}
         meta={
           <>
-            <time dateTime={data.date}>{data.date}</time>
+            <time dateTime={data.date}>{formatDisplayDate(data.date)}</time>
             <br />
             {data.minutes} min read
           </>
@@ -202,7 +158,18 @@ export function BlogPostView({
       <div className="ms-container" style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}>
         <div className="ms-grid" style={{ display: "grid", gap: 48 }}>
           <div style={{ gridColumn: "1 / -1" }}>
-            <PostArt seed={data.slug} />
+            {/* Post hero — the analysed site leads every article with its
+             * per-post CMS image; the clone's own B&W editorial cover
+             * stands in (public/images/blog/covers/{slug}.png). */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={data.image}
+              alt={`${data.title} — cover image`}
+              width={1344}
+              height={768}
+              style={{ display: "block", width: "100%", height: "auto", borderRadius: 6 }}
+              fetchPriority="high"
+            />
           </div>
           <article
             className="ms-prose"
@@ -292,7 +259,7 @@ export function ChangelogEntryView({
         title={data.title}
         meta={
           <>
-            <time dateTime={data.date}>{data.date}</time>
+            <time dateTime={data.date}>{formatDisplayDate(data.date)}</time>
             <br />
             {data.summary}
           </>
@@ -472,7 +439,7 @@ export function CareerView({
         meta={`${data.team} · ${data.location} · ${data.type}`}
         lead={data.lead}
       >
-        <Link href="/company#careers" className="ms-btn">
+        <Link href="/company/#company-careers" className="ms-btn">
           Apply
         </Link>
         <p style={{ fontSize: 12.5, color: "var(--ms-muted)" }}>

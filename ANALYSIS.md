@@ -906,3 +906,49 @@ harvested — all now transcribed:
 Additionally, the existing reduced-motion carpet was completed to the
 live contract (`animation-iteration-count: 1` + `scroll-behavior:
 auto` alongside the duration overrides).
+
+## Machine-surface parity audit (Task 55 — docs/AUDIT-2026-10-25.md)
+
+A full audit of the machine-facing surfaces against the live site (79
+sitemap URLs, per-page-type head probes, JSON-LD sets, title fitting)
+found seventeen findings; all actionable ones are implemented, and the
+provenance decisions are recorded here:
+
+- **Trailing-slash policy**: the live site 308s `/pricing` →
+  `/pricing/` (trailingSlash: true). The clone now matches, and every
+  canonical, og:url, sitemap URL and JSON-LD URL carries the slash —
+  emitted from one choke point (`slashPath` in `src/lib/seo.ts`).
+- **Blog covers**: the live site gives every post a unique CMS image
+  (hub card, post hero, og:image, BlogPosting.image). The clone now
+  ships 31 **original AI-generated black-and-white editorial
+  photographs** (`public/images/blog/covers/{slug}.png`, 1344×768,
+  topic-matched per post) — no live asset is copied, mirroring the
+  studio-table precedent. The hub renders the live card anatomy
+  (image → category · date/read → title → excerpt) and the retired
+  `rolled-drawings.png` / `studio-table.png` / `apple-touch-icon.png`
+  are deleted.
+- **Sitemap/robots**: priorities (1.0/0.9/0.8/0.7/0.6) and real
+  per-page lastmods transcribed from the live file; blog lastmod
+  follows the live CMS rule (newest post date on every blog URL); the
+  four-line robots disallow list is verbatim.
+- **Title truncation rule**: the live site cuts the final title at the
+  last word boundary within 69 chars + "…" (14 of 31 posts; og:title
+  identical). The rule is fitted and applied against the live-suffix
+  string so cut points match byte-for-byte; non-truncated titles keep
+  the identity-adjusted "%s | Synaps Clone" template.
+- **JSON-LD shape parity**: per-page block sets now match live exactly
+  (BlogPosting/Article pages carry a single block; company mounts the
+  rich Organization variant — legalName "synaps GmbH", Vienna, 2023,
+  office@synaps.app — with harvested facts kept verbatim and only
+  `name` identity-adjusted; JobPosting gains datePosted 2026-07-06 and
+  drops applicantLocationRequirements; BlogPosting gains
+  articleSection + inline author).
+- **Small transcriptions**: viewport-fit=cover; apple-touch-icon →
+  the SVG favicon (a live quirk); bare og:image without width/height
+  sub-tags; no article:published_time; long-form date display
+  ("23 October 2026") inside `<time datetime>`;
+  `/company/#company-careers` breadcrumb anchor; pricing title comma.
+- **Reference quirks kept out deliberately** (see the audit's F17):
+  the live home JSON-LD's stale prices (€35/€75 vs the page's €59/€119
+  — the clone stays self-consistent with displayed prices), the empty
+  200 stub at /company/careers/, and the live site's empty 404 shell.

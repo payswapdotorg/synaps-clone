@@ -2,10 +2,11 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 
 /**
- * robots — mirrors the analysed site's file shape (allow-all with a small
- * disallow list for non-public path prefixes and a sitemap pointer). The
- * analysed site's CMS-internal disallow entries have no equivalent routes
- * here, so only the generic prefixes are kept.
+ * robots — verbatim transcription of the analysed site's file
+ * (harvested 2026-10-25): allow-all with a four-entry disallow list and
+ * a sitemap pointer. The two CMS-internal disallow entries are carried
+ * even though the clone has no such routes — the file is a public
+ * artifact and Disallow entries for non-existent paths are inert.
  */
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -13,7 +14,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dev/", "/preview/"],
+        disallow: [
+          "/company/team-variants/",
+          "/company/careers/careers-grid-",
+          "/dev/",
+          "/preview/",
+        ],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

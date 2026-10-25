@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Trailing-slash policy transcribed from the live site: synaps.app 308s
+  // `/pricing` → `/pricing/` (trailingSlash: true). Next's default (false)
+  // redirects the opposite way, so the config must be explicit. Canonicals,
+  // og:urls, sitemap URLs and JSON-LD URLs all carry the slash.
+  trailingSlash: true,
   // The clone is educational and self-contained; no remote image hosts or
   // rewrites are needed yet. Milestone 6 adds the production build profile.
   async headers() {

@@ -40,7 +40,9 @@ export const metadata: Metadata = {
         media: "(prefers-color-scheme: dark)",
       },
     ],
-    apple: [{ url: "/images/apple-touch-icon.png", sizes: "180x180" }],
+    // Transcribed quirk: the analysed site points apple-touch-icon at the
+    // SVG favicon, not a PNG.
+    apple: [{ url: "/favicon.svg" }],
   },
   openGraph: {
     title: "Synaps Clone — Architectural Practice without the compromise",
@@ -49,7 +51,9 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE_NAME,
     url: "/",
-    images: [{ url: OG_DEFAULT, width: 1200, height: 630, alt: "Synaps Clone — Architectural Practice without the compromise" }],
+    // Bare string — the analysed site emits a single og:image meta with no
+    // width/height/alt sub-tags.
+    images: [OG_DEFAULT],
   },
   twitter: {
     card: "summary_large_image",
@@ -62,6 +66,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: THEME_COLOR,
+  // Transcribed: the analysed site ships viewport-fit=cover.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

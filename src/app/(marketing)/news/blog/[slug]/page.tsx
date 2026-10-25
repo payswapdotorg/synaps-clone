@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { PageShell } from "@/components/site/blocks";
 import { BlogPostView } from "@/components/site/templates";
 import { blogPosts } from "@/content/blog";
-import { blogPostingLd, organizationLd, pageMeta } from "@/lib/seo";
+import { blogPostingLd, pageMeta, truncatedLiveTitle } from "@/lib/seo";
 
 export function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));
@@ -17,12 +17,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
+  // Live title rule: the final title (post title + " | Synaps") is cut at
+  // the last word boundary within 69 chars with a trailing "…"; og:title
+  // truncates identically. One post (between-autocad-and-bim) ships a
+  // standalone SEO title instead (seoTitle). Non-truncated titles flow
+  // through the "%s | Synaps Clone" template.
+  const truncated = post?.seoTitle ? null : post ? truncatedLiveTitle(post.title) : null;
+  const standalone = post?.seoTitle ?? truncated;
   return pageMeta({
-    title: post?.title ?? "Blog",
+    title: standalone ?? post?.title ?? "Blog",
+    ...(standalone ? { absolute: true } : {}),
     description: post?.dek,
     path: `/news/blog/${slug}`,
     type: "article",
-    ...(post ? { publishedTime: post.date } : {}),
+    ...(post ? { image: post.image } : {}),
   });
 }
 
@@ -43,7 +51,8 @@ export default async function BlogPostPage({
 
   return (
     <PageShell>
-      <JsonLd data={[organizationLd, blogPostingLd(post)]} />
+      {/* Live post pages carry exactly one JSON-LD block (BlogPosting). */}
+      <JsonLd data={blogPostingLd(post)} />
       <BlogPostView data={post} more={more} />
     </PageShell>
   );

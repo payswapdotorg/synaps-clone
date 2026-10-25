@@ -44,7 +44,9 @@ const FAQS = [
 ];
 
 export const metadata: Metadata = pageMeta({
-  title: "Synaps Clone pricing — Freemium, Pro & Studio plans",
+  // Comma form transcribed from the live title ("Synaps pricing,
+  // Freemium, Pro & Studio plans").
+  title: "Synaps Clone pricing, Freemium, Pro & Studio plans",
   absolute: true,
   description:
     "Freemium, Pro & Studio — per active editor, monthly or annual. Free for individuals and students.",

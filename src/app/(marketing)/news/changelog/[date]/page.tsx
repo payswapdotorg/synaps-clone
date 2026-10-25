@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { PageShell } from "@/components/site/blocks";
 import { ChangelogEntryView } from "@/components/site/templates";
 import { changelogEntries } from "@/content/changelog";
-import { changelogArticleLd, organizationLd, pageMeta } from "@/lib/seo";
+import { changelogArticleLd, pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return changelogEntries.map((e) => ({ date: e.date }));
@@ -22,7 +22,6 @@ export async function generateMetadata({
     description: entry?.summary,
     path: `/news/changelog/${date}`,
     type: "article",
-    ...(entry ? { publishedTime: entry.date } : {}),
   });
 }
 
@@ -47,7 +46,9 @@ export default async function ChangelogEntryPage({
 
   return (
     <PageShell>
-      <JsonLd data={[organizationLd, changelogArticleLd(entry)]} />
+      {/* Live changelog entries carry exactly one JSON-LD block
+       * (Article). */}
+      <JsonLd data={changelogArticleLd(entry)} />
       <ChangelogEntryView data={entry} more={more} />
     </PageShell>
   );

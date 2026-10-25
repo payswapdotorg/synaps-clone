@@ -8,7 +8,12 @@ import {
 } from "@/components/site/blocks";
 import { JsonLd } from "@/components/site/JsonLd";
 import { careers, companyBlocks } from "@/content/company";
-import { aboutPageLd, breadcrumbLd, organizationLd, pageMeta } from "@/lib/seo";
+import {
+  aboutPageLd,
+  breadcrumbLd,
+  companyOrganizationLd,
+  pageMeta,
+} from "@/lib/seo";
 
 /**
  * About page — section structure per the harvest (what Synaps does /
@@ -58,7 +63,10 @@ export default function CompanyPage() {
             { name: "Home", path: "/" },
             { name: "About Synaps", path: "/company" },
           ]),
-          organizationLd,
+          // Live /company/ mounts the RICH Organization variant
+          // (legalName, foundingDate, PostalAddress, email, 2-entry
+          // sameAs) — distinct from the home page's thin one.
+          companyOrganizationLd,
           aboutPageLd,
         ]}
       />
@@ -149,8 +157,9 @@ export default function CompanyPage() {
             />
           </div>
 
-          {/* Careers */}
-          <div id="careers" className="ms-stack-24">
+          {/* Live /company/ anchors its careers section as
+           * #company-careers (referenced by the role-page breadcrumbs). */}
+          <div id="company-careers" className="ms-stack-24">
             <SectionHead
               title="Open"
               dim="roles."

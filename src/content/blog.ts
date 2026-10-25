@@ -28,6 +28,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Revit for the model, AutoCAD for the drawings: which jobs suit each tool, how DWG files move between them, what the LT tiers leave out, and the US list prices read on 23 October 2026.",
     date: "2026-10-23",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/revit-vs-autocad.png",
     sections: [
       {
         h2: "Revit vs AutoCAD at a glance",
@@ -135,6 +137,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Draw each wall at the sum of its layers: stud and board sizes from PS 20-20 and USG, Approved Document A masonry minimums for England, and which face to dimension.",
     date: "2026-10-22",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/standard-wall-thickness.png",
     sections: [
       {
         h2: "Standard wall thickness at a glance",
@@ -240,6 +244,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A generated plan is a starting draft, not a stamped drawing. Here is what the generator actually produces, and the ten-point check to run before anyone builds from it.",
     date: "2026-10-05",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/ai-floor-plan-generator.png",
     sections: [
       {
         h2: "What an AI floor plan generator gives you",
@@ -318,6 +324,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "ISO A sheets, US ARCH and ANSI series, and the drawing space each one leaves after borders and a title block. How to pick one sheet size for the whole set — and which half-size prints keep a true scale.",
     date: "2026-10-21",
     minutes: 12,
+    category: "Studio workflows",
+    image: "/images/blog/covers/architectural-paper-sizes.png",
     sections: [
       {
         h2: "ISO A sizes and the drawing space ISO 5457 leaves",
@@ -404,6 +412,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A bubble diagram maps spaces, sizes and relationships before any wall exists. Draw it area-true, group it into zones, test it, then square it up into a scaled first plan.",
     date: "2026-10-20",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/bubble-diagram-architecture.png",
     sections: [
       {
         h2: "What a bubble diagram shows, and what it leaves out",
@@ -503,6 +513,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "AI earns its place at the start and the edges of a project — briefs, massing, layouts, traces — while the checks and sign-off stay with a named architect. What comes back at each stage, and the studio rules to write down first.",
     date: "2026-10-19",
     minutes: 13,
+    category: "Practice",
+    image: "/images/blog/covers/ai-in-architecture.png",
     sections: [
       {
         h2: "Where architects use AI today",
@@ -567,6 +579,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Turn the brief into a room schedule, test it against a space standard, read the adjacencies as zones, measure the circulation and furnish every room — all before the walls are fixed.",
     date: "2026-10-16",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/space-planning.png",
     sections: [
       {
         h2: "Start with a room schedule, not a sketch",
@@ -642,6 +656,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Door swings, window lines, section marks and grid bubbles are a plan's shorthand — and the legend decides what each one means. What the symbols say, who standardises them, and how to keep one standard across a practice.",
     date: "2026-10-15",
     minutes: 14,
+    category: "Studio workflows",
+    image: "/images/blog/covers/floor-plan-symbols.png",
     sections: [
       {
         h2: "Walls, openings and the line weights that carry them",
@@ -740,6 +756,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A redline round works when every markup has an owner, a log entry and a closure against a numbered revision. How to mark up, how to run the comment log — and the four ways rounds break down.",
     date: "2026-10-14",
     minutes: 14,
+    category: "Studio workflows",
+    image: "/images/blog/covers/redline-drawings.png",
     sections: [
       {
         h2: "What a redline drawing is and who makes one",
@@ -839,6 +857,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Before a studio moves drafting to the browser, one live job has to prove the consultant round trip, the printed scale, the oldest machine in the office and the way out. The checklist, question by question.",
     date: "2026-10-12",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/web-based-cad.png",
     sections: [
       {
         h2: "Files in and out: test the consultant round trip",
@@ -933,6 +953,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A plan-based render carries the geometry you drew and invents what you left open. What to prepare on the plan, where to put the camera, and how to read the image honestly against the drawing.",
     date: "2026-10-11",
     minutes: 12,
+    category: "Studio workflows",
+    image: "/images/blog/covers/ai-architecture-render.png",
     sections: [
       {
         h2: "What an AI render from a plan carries and what it invents",
@@ -1022,6 +1044,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A JPG of a plan holds pixels, not geometry — and nothing in the file says how big the building is. Rebuild the geometry by tracing, vectorising or drawing over an underlay, then set the scale from a dimension you trust.",
     date: "2026-10-10",
     minutes: 14,
+    category: "Studio workflows",
+    image: "/images/blog/covers/image-to-cad.png",
     sections: [
       {
         h2: "What a JPG or photo of a plan gives you",
@@ -1125,6 +1149,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Project, sheet title and number, date, revision, and the names behind the sheet. What a title block must carry, where it sits on the sheet, and how to set it up once as an office standard.",
     date: "2026-10-09",
     minutes: 12,
+    category: "Studio workflows",
+    image: "/images/blog/covers/architectural-title-block.png",
     sections: [
       {
         h2: "What a title block must carry",
@@ -1198,6 +1224,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Dimensions tell a builder where every wall, opening and column goes, measured from points they can find on site. Strings, faces, units and tolerances — and how to check the strings add up before issue.",
     date: "2026-10-08",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/floor-plan-dimensions.png",
     sections: [
       {
         h2: "What a dimensioned floor plan must let a builder do",
@@ -1299,6 +1327,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "The phase where an agreed brief becomes a preliminary design the client can approve. What schematic design produces, seven steps to run it in a small practice, and the failure modes to avoid.",
     date: "2026-10-07",
     minutes: 14,
+    category: "Practice",
+    image: "/images/blog/covers/schematic-design.png",
     sections: [
       {
         h2: "What schematic design is",
@@ -1391,6 +1421,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "As-builts record what was actually built or what stands now — not what was designed. The three things the term covers, a six-step production workflow, and how to check a set you receive.",
     date: "2026-10-06",
     minutes: 14,
+    category: "Studio workflows",
+    image: "/images/blog/covers/as-built-drawings.png",
     sections: [
       {
         h2: "What as-built drawings are",
@@ -1492,6 +1524,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "DWG to edit in AutoCAD, DXF to move between programs, IFC to exchange a model, PDF to review and keep a record. What each format carries, its limits, and how to write a file request.",
     date: "2026-10-04",
     minutes: 13,
+    category: "Studio workflows",
+    image: "/images/blog/covers/cad-file-formats.png",
     sections: [
       {
         h2: "CAD file formats at a glance",
@@ -1593,6 +1627,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A scale is a ratio — at 1:50, one millimetre on the sheet is fifty in the building. What two UK councils list for each drawing type, and how to keep the written scale true once it reaches paper.",
     date: "2026-10-03",
     minutes: 8,
+    category: "Studio workflows",
+    image: "/images/blog/covers/architectural-drawing-scales.png",
     sections: [
       {
         h2: "What a drawing scale means",
@@ -1670,6 +1706,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A vector PDF holds lines, curves and text that AutoCAD can import as objects; a scanned PDF holds a picture that has to be traced or redrawn. How to tell them apart, and what changes in the conversion.",
     date: "2026-10-02",
     minutes: 11,
+    category: "Studio workflows",
+    image: "/images/blog/covers/pdf-to-dwg.png",
     sections: [
       {
         h2: "Vector PDF or scan: check before you convert",
@@ -1752,6 +1790,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "DWG is AutoCAD's native format; DXF is its documented exchange partner. Which one to send to whom, why files fail to open across releases, and the checks to run before anything leaves your desk.",
     date: "2026-10-01",
     minutes: 11,
+    category: "Studio workflows",
+    image: "/images/blog/covers/dwg-vs-dxf.png",
     sections: [
       {
         h2: "What DWG and DXF are",
@@ -1835,6 +1875,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Free access to drawing does not establish free generation, recognition or CAD export. What the current free plans of five tools actually include — and a completion sheet to test the task you have.",
     date: "2026-09-29",
     minutes: 5,
+    category: "Studio workflows",
+    image: "/images/blog/covers/free-floor-plan-creators.png",
     sections: [
       {
         h2: "What the current free plans include",
@@ -1883,6 +1925,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Eight AI tools grouped by what they return — editable geometry or images — plus the AI already inside Archicad, Revit and SketchUp. What each one outputs, what it costs, and the five-step test to run on a live job.",
     date: "2026-09-29",
     minutes: 14,
+    category: "Studio workflows",
+    image: "/images/blog/covers/ai-tools-for-architects.png",
     sections: [
       {
         h2: "Why AI adoption figures range from 6% to 98%",
@@ -1990,6 +2034,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Choose by the drawing you must deliver and the changes you must make before delivery — not by how the demo looks. Deliverables, precision tests, one evaluation card, and a decision made from the record.",
     date: "2026-09-29",
     minutes: 6,
+    category: "Studio workflows",
+    image: "/images/blog/covers/choose-floor-plan-software.png",
     sections: [
       {
         h2: "Define the deliverable first",
@@ -2043,9 +2089,14 @@ export const blogPosts: BlogPostData[] = [
   {
     slug: "between-autocad-and-bim",
     title: "Synaps: The AI architectural platform for drafting and design",
+    // Standalone SEO title, transcribed verbatim: the live post ships this
+    // custom title with no "| Synaps" suffix (and therefore no truncation).
+    seoTitle: "Synaps: The AI architectural platform for drafting and design",
     dek: "Start from the material you have and the decision you need to make: a scan to reconstruct, a brief to develop into options, an image to discuss finishes. A working method for drafting with AI — and a worksheet to keep the decisions honest.",
     date: "2026-09-21",
     minutes: 5,
+    category: "Studio workflows",
+    image: "/images/blog/covers/between-autocad-and-bim.png",
     sections: [
       {
         h2: "Start with a drawing you can inspect",
@@ -2090,6 +2141,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Reconstruct the geometry, check it against known dimensions, correct the result, then test the file you will actually deliver. A workflow for tracing scans — and a buyer's checklist for comparing tools.",
     date: "2026-09-14",
     minutes: 8,
+    category: "Studio workflows",
+    image: "/images/blog/covers/scanned-floor-plan-to-editable-drawing.png",
     sections: [
       {
         h2: "Choose a route that matches the file",
@@ -2160,6 +2213,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Draw a closed outline over 20 m², attach it, describe the rooms and their relationships, and generate one editable plan inside it. What stays editable, what to check before refining, and when to revise the brief instead.",
     date: "2026-09-07",
     minutes: 5,
+    category: "Studio workflows",
+    image: "/images/blog/covers/generate-floor-plan-within-boundary.png",
     sections: [
       {
         h2: "Separate fixed conditions from preferences",
@@ -2216,6 +2271,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "A warmer floor, different upholstery, a wider composition — most design conversations continue after the first interior image. Seven editing moves, from prompts to resolution, and how to sequence them for a client review.",
     date: "2026-08-31",
     minutes: 12,
+    category: "Studio workflows",
+    image: "/images/blog/covers/architectural-post-production-image-editing.png",
     sections: [
       {
         h2: "What architectural post-production changes",
@@ -2330,6 +2387,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "An a16z article about software \"built in 1997\" resonated with us as a team building in AEC. Our answer to the question it raises: compete where the incumbents are weak — the fluid, early phase — not where they are strong.",
     date: "2026-03-31",
     minutes: 5,
+    category: "Essay",
+    image: "/images/blog/covers/why-were-not-trying-to-replace-revit.png",
     sections: [
       {
         h2: "Where existing tools are actually very good",
@@ -2400,6 +2459,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Feature counts no longer win products on their own — care does. A short note on the \"Experience Era\" and why attention to detail is the differentiation that lasts.",
     date: "2024-08-12",
     minutes: 2,
+    category: "Practice",
+    image: "/images/blog/covers/prioritizing-design-craft.png",
     sections: [
       {
         h2: "Well… in recent years we have witnessed a major shift in the product value hierarchy. We entered the “Experience Era”!",
@@ -2423,6 +2484,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "Young architects arrive full of creativity and drown in complicated software. The research behind Synaps — 1,200 inventoried tools, 30 architects, 56 survivors — and the case for speed through simplicity.",
     date: "2024-07-09",
     minutes: 3,
+    category: "Essay",
+    image: "/images/blog/covers/fast-is-more.png",
     sections: [
       {
         h2: "The promise and the reality",
@@ -2454,6 +2517,8 @@ export const blogPosts: BlogPostData[] = [
     dek: "From caves to agriculture to the industrial revolution, architecture has always shaped the spaces we inhabit — yet the tools architects collaborate with lag behind other industries. A short essay on where collaborative tech takes the profession next.",
     date: "2023-09-28",
     minutes: 5,
+    category: "Essay",
+    image: "/images/blog/covers/the-blueprint-of-architecture.png",
     sections: [
       {
         h2: "The Evolution of Human Architecture",

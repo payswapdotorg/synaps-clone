@@ -2,10 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/site/blocks";
 import { blogPosts } from "@/content/blog";
-import { pageMeta } from "@/lib/seo";
+import { formatDisplayDate, pageMeta } from "@/lib/seo";
 
 /**
- * Blog hub — featured image band + the article list, per the harvest.
+ * Blog hub — featured card + image-card grid, per the harvest: the
+ * analysed hub renders every post as a card (image → category ·
+ * date/read → title → excerpt) with a featured variant for the newest.
+ * Covers are the clone's own AI-generated B&W editorial assets
+ * (public/images/blog/covers/{slug}.png) — no served asset is copied.
  */
 
 export const metadata: Metadata = pageMeta({
@@ -15,21 +19,24 @@ export const metadata: Metadata = pageMeta({
   path: "/news/blog",
 });
 
-/**
- * Featured-post image — an original AI-generated black-and-white
- * studio photograph (public/images/blog/studio-table.png) standing in
- * for the analysed hub's hero photograph; no served asset is copied.
- */
-function BlogHeroArt() {
+function CoverArt({
+  slug,
+  alt,
+  eager,
+}: {
+  slug: string;
+  alt: string;
+  eager?: boolean;
+}) {
   return (
     /* eslint-disable-next-line @next/next/no-img-element */
     <img
-      src="/images/blog/studio-table.png"
-      alt="Printed floor plan drawings and drafting tools on a studio worktable"
+      src={`/images/blog/covers/${slug}.png`}
+      alt={alt}
       width={1344}
       height={768}
       style={{ display: "block", width: "100%", height: "auto" }}
-      decoding="async"
+      {...(eager ? { fetchPriority: "high" as const } : { decoding: "async" })}
     />
   );
 }
@@ -57,15 +64,20 @@ export default function BlogHubPage() {
               className="ms-card ms-card--hover block no-underline"
               style={{ borderRadius: 6, overflow: "hidden", color: "inherit" }}
             >
-              <BlogHeroArt />
+              <CoverArt
+                slug={featured.slug}
+                alt={`${featured.title} — cover image`}
+                eager
+              />
               <div style={{ padding: "22px 26px 26px" }}>
                 <div
                   className="flex items-baseline justify-between gap-4"
                   style={{ marginBottom: 10 }}
                 >
-                  <span className="ms-label">Studio workflows</span>
+                  <span className="ms-label">{featured.category}</span>
                   <span style={{ fontSize: 12.5, color: "var(--ms-muted)" }}>
-                    {featured.date} · {featured.minutes} min read
+                    {formatDisplayDate(featured.date)} · {featured.minutes} min
+                    read
                   </span>
                 </div>
                 <h2 className="ms-h3">{featured.title}</h2>
@@ -76,37 +88,53 @@ export default function BlogHubPage() {
             </Link>
           ) : null}
 
-          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          <ul
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: 24,
+            }}
+          >
             {rest.map((post) => (
-              <li key={post.slug} style={{ borderTop: "1px solid var(--ms-hairline)" }}>
+              <li key={post.slug}>
                 <Link
                   href={`/news/blog/${post.slug}`}
-                  className="ms-arrow-card"
+                  className="ms-card ms-card--hover block no-underline"
                   style={{
-                    background: "transparent",
-                    border: 0,
-                    borderRadius: 0,
-                    padding: "20px 2px",
+                    borderRadius: 6,
+                    overflow: "hidden",
+                    color: "inherit",
+                    height: "100%",
                   }}
                 >
-                  <span>
-                    <span style={{ fontWeight: 550, fontSize: 17.5 }}>
+                  <CoverArt slug={post.slug} alt={`${post.title} — cover image`} />
+                  <div style={{ padding: "18px 20px 22px" }}>
+                    <div
+                      className="flex items-baseline justify-between gap-4"
+                      style={{ marginBottom: 8 }}
+                    >
+                      <span className="ms-label">{post.category}</span>
+                      <span style={{ fontSize: 12.5, color: "var(--ms-muted)" }}>
+                        {formatDisplayDate(post.date)} · {post.minutes} min read
+                      </span>
+                    </div>
+                    <h3 className="ms-h3" style={{ fontSize: 19 }}>
                       {post.title}
-                    </span>
-                    <span
+                    </h3>
+                    <p
+                      className="ms-body"
                       style={{
-                        display: "block",
-                        marginTop: 5,
-                        fontSize: 13.5,
+                        margin: "8px 0 0",
+                        fontSize: 14,
                         color: "var(--ms-muted)",
                       }}
                     >
-                      {post.date} · {post.minutes} min read
-                    </span>
-                  </span>
-                  <span className="arrow" aria-hidden>
-                    →
-                  </span>
+                      {post.dek}
+                    </p>
+                  </div>
                 </Link>
               </li>
             ))}

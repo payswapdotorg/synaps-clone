@@ -44,7 +44,9 @@ export default async function CareerPage({
           breadcrumbLd([
             { name: "Home", path: "/" },
             { name: "Company", path: "/company" },
-            { name: "Careers", path: "/company#careers" },
+            // Live breadcrumb targets the careers section anchor on
+            // /company/ (id="company-careers").
+            { name: "Careers", path: "/company/#company-careers" },
             { name: data.title, path: `/company/careers/${slug}` },
           ]),
           jobPostingLd(data),
