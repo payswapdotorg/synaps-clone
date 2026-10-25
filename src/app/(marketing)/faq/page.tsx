@@ -67,6 +67,7 @@ export default function FaqPage() {
           <SectionHead
             title="Questions we hear"
             dim="most often."
+            tier="mid"
             lead="Everything else — plans, formats, teams, support — in one place."
           />
           <FaqList items={FAQS} />

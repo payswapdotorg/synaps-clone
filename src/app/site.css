@@ -99,10 +99,11 @@
   color: var(--ms-ink-faint);
 }
 
-/* Section titles, transcribed from live .type-section-title: same clamp,
-   weight 400 (was 500), ls -0.022em, text-wrap balance. */
+/* Section titles, transcribed from live .type-section-title: weight 400,
+   ls -0.022em, text-wrap balance. Cap 51.84px = 3.6vw @1440 (live's own
+   vw-coefficient system, verified 27 Oct at 375/1440). */
 .ms-h2 {
-  font-size: clamp(30px, 3.6vw, 52px);
+  font-size: clamp(30px, 3.6vw, 51.84px);
   line-height: 1.06;
   letter-spacing: -0.022em;
   font-weight: 400;
@@ -110,7 +111,34 @@
   text-wrap: balance;
 }
 
-.ms-h2 .dim {
+/* Mid section tier, transcribed from live (27 Oct): 37.44px @1440 =
+   2.6vw, lh 1.12, ls -0.02em. Used for embedded FAQ blocks ("Pricing
+   questions we hear", "Before you pilot", "Frequently asked questions"). */
+.ms-h2-mid {
+  font-size: clamp(28px, 2.6vw, 37.44px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Compact section tier, transcribed from live (27 Oct): 34px @1440 =
+   2.36vw, lh 1.15, ls -0.02em. Used for solutions "By type/By use case"
+   and company tail sections ("What we believe", "Open positions",
+   "Keep up to date"). */
+.ms-h2-compact {
+  font-size: clamp(24px, 2.3612vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.ms-h2 .dim,
+.ms-h2-mid .dim,
+.ms-h2-compact .dim {
   color: var(--ms-ink-faint);
 }
 
@@ -122,10 +150,15 @@
   margin: 0;
 }
 
+/* Hero sub (the aside paragraph), transcribed from live .hero-sub
+   (27 Oct): 16.56px @1440 = 1.15vw, lh 1.48, muted grey, max-width on a
+   two-point linear clamp (256.3px @375 → 312.9px @1440). */
 .ms-lead {
-  font-size: clamp(16px, 1.35vw, 19px);
-  line-height: 1.55;
-  color: var(--ms-ink-soft);
+  font-size: clamp(15.375px, 1.15vw, 16.56px);
+  line-height: 1.48;
+  color: #565a60;
+  max-width: clamp(256.3px, calc(236.3px + 5.32vw), 312.9px);
+  margin: 0;
 }
 
 .ms-body {
@@ -1579,32 +1612,227 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
   color: var(--ms-muted);
 }
 
-/* Subpage hero, transcribed from live measurements (26 Oct): hero pads
-   128px top / 40px bottom at 800h; two-column stack/lead split 697/358
-   with a 64px gap. */
+/* Subpage hero, transcribed from live .hero/.hero-inner (27 Oct harvest,
+   re-verified at 375 + 1440): pads clamp(94px,10vw,144px) top /
+   clamp(28px,3.125vw,45px) bottom; inner grid 1fr 380px gap 72 with the
+   aside bottom-aligned (align-items:end); single column + 20px gap under
+   940px. The previous 16svh/128px formula was a @1280-viewport mid-read. */
 .ms-page-hero {
   display: grid;
-  gap: 64px;
-  padding-block: clamp(96px, 16svh, 128px) 40px;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 72px;
+  align-items: end;
+  padding-block: clamp(94px, 10vw, 144px) clamp(28px, 3.125vw, 45px);
 }
 
-@media (min-width: 940px) {
+@media (max-width: 939px) {
   .ms-page-hero {
-    grid-template-columns: minmax(0, 66fr) minmax(0, 34fr);
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
 }
 
+/* Hero eyebrow, transcribed from live .hero-eyebrow (27 Oct):
+   clamp(15px,1.25vw,18px) — 18px @1440 = 1.25vw — lh 1.35, ls -0.014em,
+   weight 400, muted grey #565a60, 13.5px margin to the h1. */
 .ms-eyebrow {
-  margin: 0 0 18px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ms-ink);
-  font-weight: 480;
+  margin: 0 0 13.5px;
+  font-size: clamp(15px, 1.25vw, 18px);
+  line-height: 1.35;
+  letter-spacing: -0.014em;
+  color: #565a60;
+  font-weight: 400;
 }
 
 .ms-eyebrow .light {
-  color: var(--ms-muted);
+  color: #686d74; /* live .hero-eyebrow .light = rgb(104,109,116) */
+}
+
+/* Partners enquiry form, transcribed from live .company-job-apply-form
+   (27 Oct): two-column 517px fields grid (gap 16/20), inputs 44.5px tall
+   with 1px rgba(8,9,11,.086) border on #F8F9FB, radius 4; labels 13px
+   ink with 6px margin; the partner-type select is a button-triggered
+   menu (40px, space-between); textarea ~135px; actions stack full-width
+   with a 10px gap; consent checkbox 13px with inline Privacy link. */
+.ms-apply-form {
+  margin: 0;
+}
+
+.ms-apply-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+}
+
+@media (max-width: 719px) {
+  .ms-apply-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ms-apply-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-apply-field--full {
+  grid-column: 1 / -1;
+}
+
+.ms-apply-field > label {
+  margin: 0 0 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ms-ink);
+}
+
+.ms-apply-input {
+  height: 44.5px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 9, 11, 0.086);
+  border-radius: 4px;
+  background: #f8f9fb;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ms-ink);
+  outline: none;
+}
+
+.ms-apply-input:focus-visible {
+  border-color: var(--ms-ink);
+}
+
+textarea.ms-apply-input {
+  height: 135px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.ms-apply-select {
+  position: relative;
+}
+
+.ms-apply-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 9, 11, 0.086);
+  border-radius: 4px;
+  background: #f8f9fb;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ms-ink);
+  cursor: pointer;
+}
+
+.ms-apply-select-trigger[aria-expanded="true"] {
+  border-color: var(--ms-ink);
+}
+
+.ms-apply-select-trigger .chev {
+  transition: transform 0.15s ease;
+}
+
+.ms-apply-select-trigger[aria-expanded="true"] .chev {
+  transform: rotate(180deg);
+}
+
+.ms-apply-select-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  border: 1px solid rgba(8, 9, 11, 0.086);
+  border-radius: 4px;
+  background: var(--ms-surface, #fff);
+  box-shadow: 0 12px 32px rgba(8, 9, 11, 0.1);
+}
+
+.ms-apply-select-option {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  color: var(--ms-ink);
+  cursor: pointer;
+}
+
+.ms-apply-select-option:hover,
+.ms-apply-select-option:focus-visible {
+  background: rgba(8, 9, 11, 0.05);
+  outline: none;
+}
+
+.ms-apply-consent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ms-ink);
+}
+
+.ms-apply-consent input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--ms-ink);
+  flex: none;
+}
+
+.ms-apply-consent a {
+  color: var(--ms-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Company keep-up wire divider, transcribed from live
+   .company-wire-divider (27 Oct): 1px rgba(8,9,11,.086), no margins. */
+.ms-wire {
+  border: 0;
+  border-top: 1px solid rgba(8, 9, 11, 0.086);
+  margin: 0;
+}
+
+.ms-apply-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 0;
+}
+
+.ms-apply-actions .ms-btn,
+.ms-apply-actions .ms-btn--outline {
+  width: 100%;
+}
+
+.ms-apply-success {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid rgba(8, 9, 11, 0.086);
+  border-radius: 4px;
+  background: #f8f9fb;
+}
+
+.ms-apply-success strong {
+  font-weight: 550;
+  color: var(--ms-ink);
 }
 
 /* Marquee (assets band) ------------------------------------------------------ */

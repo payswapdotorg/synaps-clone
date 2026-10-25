@@ -132,7 +132,7 @@ export default function PricingPage() {
 
       <section className="ms-container ms-section">
         <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <SectionHead title="Pricing questions" dim="we hear." />
+          <SectionHead title="Pricing questions" dim="we hear." tier="mid" />
           <FaqList items={FAQS} />
         </div>
       </section>

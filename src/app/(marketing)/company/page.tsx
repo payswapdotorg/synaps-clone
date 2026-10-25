@@ -120,7 +120,7 @@ export default function CompanyPage() {
           </div>
 
           <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-            <SectionHead title="Frequently asked" dim="questions." />
+            <SectionHead title="Frequently asked" dim="questions." tier="mid" />
             <FaqList
               items={[
                 {
@@ -148,7 +148,7 @@ export default function CompanyPage() {
           </div>
 
           <div className="ms-stack-24">
-            <SectionHead title="What we" dim="believe." />
+            <SectionHead title="What we" dim="believe." tier="compact" />
             <Block
               items={companyBlocks.beliefs.map((b) => ({
                 title: b.split(" — ")[0],
@@ -162,8 +162,9 @@ export default function CompanyPage() {
           <div id="company-careers" className="ms-stack-24">
             <SectionHead
               title="Open"
-              dim="roles."
-              lead="Small team, weekly ship cadence — the release notes are the culture document."
+              dim="positions."
+              tier="compact"
+              lead="Open roles when we have a real seat, otherwise we still read thoughtful general applications."
             />
             <ArrowCards
               items={careers.map((role) => ({
@@ -178,6 +179,48 @@ export default function CompanyPage() {
             Historical note: the analysed site once carried a careers grid
             experiment and team-page variants, since retired from public URLs.
           </p>
+        </div>
+      </section>
+
+      {/* "Keep up to date" — transcribed from live
+       * .company-section-inner--keep-up (27 Oct): wire divider, compact
+       * head, and a 4-card follow grid. */}
+      <section
+        className="ms-container"
+        style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}
+      >
+        <hr className="ms-wire" />
+        <div className="ms-stack-24">
+          <SectionHead
+            title="Keep up"
+            dim="to date."
+            tier="compact"
+            lead="Get the latest updates on what we’re building."
+          />
+          <ArrowCards
+            items={[
+              {
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/company/synapsapp",
+                note: "Keep up to date with what the team is building.",
+              },
+              {
+                label: "Instagram",
+                href: "https://www.instagram.com/synaps.app/",
+                note: "Follow along with what we’re working on.",
+              },
+              {
+                label: "Blog",
+                href: "/news/blog",
+                note: "Be the first to get new Synaps updates.",
+              },
+              {
+                label: "Release notes",
+                href: "/news/changelog",
+                note: "Stay on top of all releases and new features.",
+              },
+            ]}
+          />
         </div>
       </section>
     </main>

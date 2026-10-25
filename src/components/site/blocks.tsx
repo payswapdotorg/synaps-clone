@@ -54,10 +54,12 @@ export function PageHero({
           <h1 className="ms-h1">{title}</h1>
           {meta ? <p className="ms-hero-meta">{meta}</p> : null}
         </div>
-        <div className="ms-stack-16">
-          {lead ? <p className="ms-lead">{lead}</p> : null}
-          {children}
-        </div>
+        {lead || children ? (
+          <aside className="ms-stack-16">
+            {lead ? <p className="ms-lead">{lead}</p> : null}
+            {children}
+          </aside>
+        ) : null}
       </div>
     </div>
   );
@@ -70,16 +72,23 @@ export function SectionHead({
   title,
   dim,
   lead,
+  tier,
 }: {
   eyebrow?: string;
   title: string;
   dim?: string;
   lead?: string;
+  /** Section-title tier, transcribed from live (27 Oct): "mid" =
+   * 37.44px tier (embedded FAQ blocks), "compact" = 34px tier
+   * (solutions grouping + company tail); default = 51.84px tier. */
+  tier?: "mid" | "compact";
 }) {
+  const h2Cls =
+    tier === "mid" ? "ms-h2-mid" : tier === "compact" ? "ms-h2-compact" : "ms-h2";
   return (
     <div className="ms-stack-16" style={{ maxWidth: "44ch" }}>
       {eyebrow ? <span className="ms-label">{eyebrow}</span> : null}
-      <h2 className="ms-h2">
+      <h2 className={h2Cls}>
         {title}
         {dim ? (
           <>

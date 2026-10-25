@@ -33,11 +33,11 @@ export default function SolutionsHubPage() {
       >
         <div className="ms-stack-40">
           <div className="ms-stack-24">
-            <SectionHead title="By type" />
+            <SectionHead title="By type" tier="compact" />
             <ArrowCards items={solutionsHub.byType} />
           </div>
           <div className="ms-stack-24">
-            <SectionHead title="By use case" />
+            <SectionHead title="By use case" tier="compact" />
             <ArrowCards items={solutionsHub.byUseCase} />
           </div>
         </div>

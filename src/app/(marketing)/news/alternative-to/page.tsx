@@ -52,7 +52,7 @@ export default function AltHubPage() {
       <JsonLd data={faqPageLd(FAQS)} />
       <PageHero
         title="An alternative to Revit, AutoCAD, and SketchUp."
-        lead="Drafting-first software for studios that issue real drawing sets. Not one more model to feed, not a folder of DWGs to reconcile — the issued set is the job."
+        lead="Drafting-first software for studios that issue real drawing sets. Not one more model to feed, not a folder of DWGs to reconcile — the issued set is the job. Side-by-side comparisons, honest tradeoffs, and a two-week pilot path."
       />
 
       <section
@@ -105,9 +105,36 @@ export default function AltHubPage() {
           </div>
 
           <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-            <SectionHead title="Before you" dim="pilot." />
+            <SectionHead title="Before you" dim="pilot." tier="mid" />
             <FaqList items={FAQS} />
           </div>
+        </div>
+      </section>
+
+      {/* Crosslinks, transcribed from live .ds-section--crosslinks
+       * (27 Oct): "Continue reading" + Pricing / Release notes / Partners. */}
+      <section className="ms-container" style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}>
+        <div className="ms-stack-24">
+          <SectionHead title="Continue" dim="reading." />
+          <ArrowCards
+            items={[
+              {
+                label: "Pricing",
+                href: "/pricing",
+                note: "Studio, Enterprise & Education plans",
+              },
+              {
+                label: "Release notes",
+                href: "/news/changelog",
+                note: "What shipped recently",
+              },
+              {
+                label: "Partners",
+                href: "/resources/partners",
+                note: "Integrations and rollout programs",
+              },
+            ]}
+          />
         </div>
       </section>
     </main>

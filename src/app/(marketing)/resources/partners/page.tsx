@@ -1,86 +1,72 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   ArrowCards,
   PageHero,
   SectionHead,
 } from "@/components/site/blocks";
+import { PartnersForm } from "@/components/site/PartnersForm";
+import { VideoStage } from "@/components/site/VideoStage";
 import { pageMeta } from "@/lib/seo";
 
 /**
- * Partners page — "Become a partner", per the harvest outline.
+ * Partners page — "Become a partner", transcribed from the live site
+ * (27 Oct harvest): hero + enquiry form (name / organisation / email /
+ * website / partner-type menu / message / consent), crosslinks, and the
+ * pre-footer video stage. The live form posts to #enquiry; the clone
+ * renders a success state (disclosed clone-original behavior).
  */
 
 export const metadata: Metadata = pageMeta({
   title: "Become a partner",
-  description: "Become a partner — refer, integrate, teach.",
+  description:
+    "Become a partner — technology and materials integrations, studio rollout programs, and the influencers and personalities who help architects find better tools.",
   path: "/resources/partners",
 });
-
-const TRACKS = [
-  {
-    title: "Referral partners",
-    body: "Practices and consultants who introduce Synaps to clients keep a share of the first year on referred subscriptions.",
-  },
-  {
-    title: "Integration partners",
-    body: "Tools that touch the plan — survey capture, specification, printing — plug into the import/export surface.",
-  },
-  {
-    title: "Education partners",
-    body: "Schools and programmes teach on Freemium and get preferential Pro terms for staff and studios.",
-  },
-];
 
 export default function PartnersPage() {
   return (
     <main id="content">
       <PageHero
         title="Become a partner"
-        lead="We work with a small number of partners, by application: technology and materials integrations, studio rollout programs, and the influencers and personalities who help architects find better tools."
-      >
-        <Link href="/faq" className="ms-btn">
-          Book a call
-        </Link>
-      </PageHero>
+        lead="We work with a small number of partners, by application: technology and materials integrations, studio rollout programs, and the influencers and personalities who help architects find better tools. Tell us what you build or the audience you reach, and we reply when there is a clear fit. EU-first, selective intake."
+      />
 
       <section
         className="ms-container"
-        style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}
+        style={{ paddingBlock: "clamp(112px, 8.75vw, 126px)" }}
       >
-        <div className="ms-stack-40">
-          <div className="ms-stack-24">
-            <SectionHead title="Partner" dim="tracks." />
-            <div className="ms-grid-3">
-              {TRACKS.map((track) => (
-                <article
-                  key={track.title}
-                  className="ms-card ms-card--hover"
-                  style={{ padding: "24px 26px" }}
-                >
-                  <h3 className="ms-h3" style={{ fontSize: 18.5 }}>
-                    {track.title}
-                  </h3>
-                  <p className="ms-body" style={{ margin: "10px 0 0" }}>
-                    {track.body}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
+        <PartnersForm />
+      </section>
 
-          <div className="ms-stack-24">
-            <SectionHead title="Continue" dim="reading." />
-            <ArrowCards
-              items={[
-                { label: "Pricing", href: "/pricing", note: "Freemium, Pro & Studio" },
-                { label: "Solutions", href: "/solutions", note: "By type and by use case" },
-                { label: "Documentation", href: "/docs", note: "Guides for every workflow" },
-              ]}
-            />
-          </div>
+      <section
+        className="ms-container"
+        style={{ paddingBlock: "clamp(112px, 8.75vw, 126px)" }}
+      >
+        <div className="ms-stack-24">
+          <SectionHead title="Continue" dim="reading." />
+          <ArrowCards
+            items={[
+              {
+                label: "Company",
+                href: "/company",
+                note: "Team, manifesto, and open roles",
+              },
+              {
+                label: "Blog",
+                href: "/news/blog",
+                note: "Longer reads on product and practice",
+              },
+              {
+                label: "Documentation",
+                href: "https://docs.synaps.app",
+                note: "API and product reference",
+              },
+            ]}
+          />
         </div>
       </section>
+
+      <VideoStage />
     </main>
   );
 }
