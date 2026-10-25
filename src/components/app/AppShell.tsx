@@ -25,7 +25,7 @@ export function AppShell({
   children: ReactNode;
 }) {
   return (
-    <main id="main" className="mx-auto w-full max-w-7xl px-6 py-8 md:py-10">
+    <main id="main" className="mx-auto w-full max-w-7xl px-6 pb-8 pt-[calc(59px+2rem)] md:pb-10 md:pt-[calc(65px+2.5rem)]">
       <div className="flex flex-col gap-8 md:flex-row">
         <aside className="md:w-56 md:shrink-0">
           <div className="md:sticky md:top-24">

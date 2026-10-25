@@ -20,6 +20,7 @@ export function PageHero({
   eyebrow = true,
   meta,
   back,
+  stacked,
   children,
 }: {
   title: string;
@@ -27,6 +28,10 @@ export function PageHero({
   /** Universal two-line eyebrow; pass false for the pages the harvest
    *  shows without it (changelog hub/entries, careers). */
   eyebrow?: boolean;
+  /** Stacked hero (live changelog hub, 28 Oct): no aside — the lede
+   *  sits under the h1 and an empty 72px grid row follows, matching
+   *  live's .hero-inner (195px inner @900 → h1 at 168). */
+  stacked?: boolean;
   /** Meta line under the h1 (dates, coverage, role meta). */
   meta?: ReactNode;
   /** Optional back-link above the h1 (changelog entries). */
@@ -35,7 +40,7 @@ export function PageHero({
 }) {
   return (
     <div className="ms-container">
-      <div className="ms-page-hero">
+      <div className={stacked ? "ms-page-hero ms-page-hero--stacked" : "ms-page-hero"}>
         <div>
           {eyebrow ? (
             <p className="ms-eyebrow">
@@ -53,8 +58,13 @@ export function PageHero({
           ) : null}
           <h1 className="ms-h1">{title}</h1>
           {meta ? <p className="ms-hero-meta">{meta}</p> : null}
+          {stacked && lead ? (
+            <p className="ms-lead" style={{ marginTop: 24 }}>
+              {lead}
+            </p>
+          ) : null}
         </div>
-        {lead || children ? (
+        {!stacked && (lead || children) ? (
           <aside className="ms-stack-16">
             {lead ? <p className="ms-lead">{lead}</p> : null}
             {children}
@@ -161,7 +171,18 @@ export function ArrowCards({
               </span>
             </span>
           ) : (
-            <span style={{ fontWeight: 480, fontSize: 18 }}>{item.label}</span>
+            /* Live .solution-related-card-title (28 Oct): 17px/400,
+             * -0.014em — title + arrow only, no note. */
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: 17,
+                letterSpacing: "-0.014em",
+                lineHeight: 1.3,
+              }}
+            >
+              {item.label}
+            </span>
           )}
           <span className="arrow" aria-hidden="true">
             →

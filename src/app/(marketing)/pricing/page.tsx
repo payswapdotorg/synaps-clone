@@ -62,16 +62,31 @@ export default function PricingPage() {
         lead="Three plans. Free for individuals, monthly or annual for teams. Switch any time."
       />
 
-      <section
-        className="ms-container"
-        style={{ paddingBottom: "clamp(56px, 7vw, 96px)" }}
-      >
+      <section className="ms-container ms-section">
         <PricingCards />
       </section>
 
-      <section className="ms-container ms-section" style={{ paddingTop: 0 }}>
+      {/* Proof strip, transcribed from live .ds-section--pricing-proof
+       * (28 Oct): single centered line, inner clamp(28px,3.5svh,44px). */}
+      <section className="ms-container ms-proof-block" aria-label="Customer proof">
+        <p
+          style={{
+            margin: 0,
+            textAlign: "center",
+            fontSize: 17,
+            fontWeight: 400,
+            lineHeight: "25.5px",
+            letterSpacing: "-0.085px",
+            color: "var(--ms-ink)",
+          }}
+        >
+          Trusted by 80,000 architects worldwide.
+        </p>
+      </section>
+
+      <section className="ms-container ms-section">
         <div className="ms-stack-32">
-          <SectionHead title="Compare" dim="plans." />
+          <SectionHead title="Compare" dim="plans" />
           <p className="ms-body">
             Everything in Freemium is in Pro. Everything in Pro is in Studio.
           </p>
@@ -95,11 +110,11 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="ms-hatch--soft" style={{ borderTop: "1px solid var(--ms-hairline)" }}>
-        <div className="ms-container ms-section ms-stack-32">
+      <section className="ms-container ms-section">
+        <div className="ms-stack-32">
           <SectionHead
             title="Synaps vs. legacy CAD"
-            dim="licensing."
+            dim="licensing"
             lead="Revit and AutoCAD stopped selling perpetual licenses in 2016. Archicad ends them after 2026. The market now rents per named user on annual terms. Synaps prices the seats you actually use, and you can leave at renewal."
           />
           <CompareTable
@@ -130,16 +145,20 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="ms-container ms-section">
-        <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <SectionHead title="Pricing questions" dim="we hear." tier="mid" />
-          <FaqList items={FAQS} />
+      {/* FAQ band, transcribed from live .ds-faq (28 Oct): full-bleed
+       * #F8F9FB tint with the collapsed faq rhythm (8svh/6svh). */}
+      <section className="ms-faq-band">
+        <div className="ms-container ms-faq-block">
+          <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+            <SectionHead title="Pricing questions" dim="we hear" tier="mid" />
+            <FaqList items={FAQS} />
+          </div>
         </div>
       </section>
 
-      <section className="ms-container" style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}>
+      <section className="ms-container ms-section">
         <div className="ms-stack-24">
-          <SectionHead title="Continue" dim="reading." />
+          <SectionHead title="Continue" dim="reading" />
           <ArrowCards
             items={[
               { label: "An alternative to Revit, AutoCAD, and SketchUp", href: "/news/alternative-to" },

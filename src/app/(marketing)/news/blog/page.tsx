@@ -100,10 +100,13 @@ export default function BlogHubPage() {
        * beta.synaps.app disclosure). */}
       <section
         className="ms-container"
-        style={{ paddingBlock: "clamp(112px, 8.75vw, 126px)" }}
+        style={{
+          paddingTop: "clamp(80px, 14svh, 160px)",
+          paddingBottom: "clamp(80px, 14svh, 160px)",
+        }}
       >
         <div className="ms-stack-24">
-          <SectionHead title="Continue" dim="reading." />
+          <SectionHead title="Continue" dim="reading" />
           <ArrowCards
             items={[
               {

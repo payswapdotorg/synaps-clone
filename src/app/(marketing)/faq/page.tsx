@@ -59,18 +59,19 @@ export default function FaqPage() {
         title="Questions we hear most often."
         lead="Short answers on pricing, file compatibility, collaboration, and what the early studios get for free."
       />
-      <section
-        className="ms-container"
-        style={{ paddingBottom: "clamp(56px, 7vw, 100px)" }}
-      >
-        <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <SectionHead
-            title="Questions we hear"
-            dim="most often."
-            tier="mid"
-            lead="Everything else — plans, formats, teams, support — in one place."
-          />
-          <FaqList items={FAQS} />
+      {/* FAQ band, transcribed from live .ds-faq (28 Oct): full-bleed
+       * #F8F9FB tint with the collapsed faq rhythm (8svh/6svh). */}
+      <section className="ms-faq-band">
+        <div className="ms-container ms-faq-block">
+          <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+            <SectionHead
+              title="Questions we hear"
+              dim="most often."
+              tier="mid"
+              lead="Everything else — plans, formats, teams, support — in one place."
+            />
+            <FaqList items={FAQS} />
+          </div>
         </div>
       </section>
     </main>

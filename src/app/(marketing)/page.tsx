@@ -109,7 +109,7 @@ export default function HomePage() {
               <div className="home-feature-visual">{card.art}</div>
               <div className="home-feature-body">
                 <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="ms-h3">{card.title}</h3>
+                  <h2 className="ms-h3">{card.title}</h2>
                   <span className="home-feature-index">{card.idx}</span>
                 </div>
                 <p className="ms-body">{card.body}</p>
@@ -120,15 +120,8 @@ export default function HomePage() {
       </section>
 
       {/* ------------------------------------------- Manifesto + quote */}
-      <section className="ms-hatch--soft">
-        <div
-          className="ms-container ms-container--wide ms-gridlines"
-          style={{
-            paddingBlock: "clamp(72px, 9vw, 128px)",
-            borderTop: "1px solid var(--ms-hairline)",
-            borderBottom: "1px solid var(--ms-hairline)",
-          }}
-        >
+      <section className="home-quote-bridge">
+        <div className="ms-container ms-container--wide ms-gridlines">
           <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
             <blockquote style={{ margin: 0 }}>
               <p
@@ -162,15 +155,20 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Hatch divider (live .section-divider-hatch #1: 6svh strip,
+          12×12 diagonal-line mask tinted 5.5% ink, 86px side insets). */}
+      <div className="section-divider-hatch" aria-hidden="true" />
+
       {/* --------------------------- Capabilities scrollytelling (600svh) */}
       <ScrollTiles />
 
+      {/* Light→dark transition divider (live .section-divider-hatch #2:
+          2× 6svh on the assets bg, white hatch + wire bracket marks). */}
+      <div className="section-divider-hatch section-divider-hatch--dark" aria-hidden="true" />
+
       {/* --------------------------- Assets band (cinematic dark tail) */}
       <section className="assets-band" aria-label="Native library">
-        <div
-          className="ms-container ms-container--wide ms-section ms-stack-32"
-          style={{ paddingBlock: "clamp(44px, 6vw, 84px)" }}
-        >
+        <div className="ms-container ms-container--wide ms-stack-32">
           <div className="ms-stack-16">
             <span className="ms-label">Native library</span>
             <h2 className="ms-h2">

@@ -55,24 +55,24 @@ export default function AltHubPage() {
         lead="Drafting-first software for studios that issue real drawing sets. Not one more model to feed, not a folder of DWGs to reconcile — the issued set is the job. Side-by-side comparisons, honest tradeoffs, and a two-week pilot path."
       />
 
-      <section
-        className="ms-container"
-        style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}
-      >
-        <div className="ms-stack-40">
-          <div className="ms-stack-24">
-            <SectionHead title="Compare Synaps to" dim="your current tool." />
-            <ArrowCards
-              items={altTools.map((t) => ({
-                label: t.tool,
-                href: `/news/alternative-to/${t.slug}`,
-                note: `Synaps vs ${t.tool}`,
-              }))}
-            />
-          </div>
+      {/* Sections, transcribed from live alt-hub/alt-why/alt-pilot
+       * ds-sections (28 Oct): each its own var/var section. */}
+      <section className="ms-container ms-section">
+        <div className="ms-stack-24">
+          <SectionHead title="Compare Synaps to" dim="your current tool" />
+          <ArrowCards
+            items={altTools.map((t) => ({
+              label: t.tool,
+              href: `/news/alternative-to/${t.slug}`,
+              note: `Synaps vs ${t.tool}`,
+            }))}
+          />
+        </div>
+      </section>
 
-          <div className="ms-stack-24">
-            <SectionHead title="What Synaps" dim="optimises for." />
+      <section className="ms-container ms-section">
+        <div className="ms-stack-24">
+          <SectionHead title="What Synaps" dim="optimises for" />
             <div className="ms-grid-3">
               {[
                 {
@@ -95,17 +95,22 @@ export default function AltHubPage() {
               ))}
             </div>
           </div>
+      </section>
 
-          <div className="ms-stack-24">
-            <SectionHead
-              title="Evaluate with a live job,"
-              dim="not a sandbox."
-              lead="Sandbox trials flatter every tool. Run one real project — a small extension, an interior fit-out — and compare the hours."
-            />
-          </div>
+      <section className="ms-container ms-section">
+        <SectionHead
+          title="Evaluate with a live job,"
+          dim="not a sandbox"
+          lead="Sandbox trials flatter every tool. Run one real project — a small extension, an interior fit-out — and compare the hours."
+        />
+      </section>
 
+      {/* FAQ band, transcribed from live .ds-faq (28 Oct): full-bleed
+       * #F8F9FB tint with the collapsed faq rhythm (8svh/6svh). */}
+      <section className="ms-faq-band">
+        <div className="ms-container ms-faq-block">
           <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-            <SectionHead title="Before you" dim="pilot." tier="mid" />
+            <SectionHead title="Before you" dim="pilot" tier="mid" />
             <FaqList items={FAQS} />
           </div>
         </div>
@@ -113,9 +118,9 @@ export default function AltHubPage() {
 
       {/* Crosslinks, transcribed from live .ds-section--crosslinks
        * (27 Oct): "Continue reading" + Pricing / Release notes / Partners. */}
-      <section className="ms-container" style={{ paddingBottom: "clamp(48px, 6vw, 88px)" }}>
+      <section className="ms-container ms-section">
         <div className="ms-stack-24">
-          <SectionHead title="Continue" dim="reading." />
+          <SectionHead title="Continue" dim="reading" />
           <ArrowCards
             items={[
               {

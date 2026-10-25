@@ -66,6 +66,28 @@
   padding-block: clamp(80px, 14svh, 160px);
 }
 
+/* FAQ block rhythm, transcribed from live .ds-faq + .ds-faq-inner
+   (28 Oct multi-height harvest): outer pb clamp(40px,6svh,72px) +
+   inner pt clamp(52px,8svh,88px), collapsed onto one container.
+   Measured points: 52/40 @600h, 56/42 @700, 64/48 @800, 72/54 @900,
+   80/60 @1000, 88/66 @1100, 88/72 @1200+ (both caps). */
+.ms-faq-block {
+  padding-block: clamp(52px, 8svh, 88px) clamp(40px, 6svh, 72px);
+}
+
+/* FAQ full-bleed band — live .ds-faq carries the raised tint
+   (rgb(248,249,251), live-measured 28 Oct) across the full width. */
+.ms-faq-band {
+  background: #f8f9fb;
+}
+
+/* Pricing proof strip, transcribed from live .ds-section--pricing-proof
+   inner (28 Oct): clamp(28px,3.5svh,44px) — 28 @700-800h, 31.5 @900,
+   35 @1000, 42 @1200, 44 @1300 (cap). */
+.ms-proof-block {
+  padding-block: clamp(28px, 3.5svh, 44px);
+}
+
 .ms-rule {
   border: 0;
   border-top: 1px solid var(--ms-hairline);
@@ -689,8 +711,13 @@
 /* Header ---------------------------------------------------------------------- */
 
 .ms-header {
-  position: sticky;
+  /* Fixed, like live (28 Oct harvest: live .header position:fixed,
+     bar 65px desktop / 59px mobile; content flows under the blurred
+     bar and every hero's pads clear it by design). */
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 40;
   background: color-mix(in srgb, var(--ms-bg) 88%, transparent);
   backdrop-filter: blur(14px);
@@ -704,6 +731,22 @@
   justify-content: space-between;
   gap: 28px;
   height: 64px;
+}
+
+@media (max-width: 879px) {
+  .ms-header-inner {
+    height: 58px;
+  }
+  /* Live mobile bar (375px harvest + 28 Oct re-measure): logo + 44px
+     toggle only — the drawer carries Login and the CTAs. */
+  .ms-header-actions {
+    display: none;
+  }
+}
+
+/* Anchored targets clear the fixed bar when deep-linked. */
+main [id] {
+  scroll-margin-top: 84px;
 }
 
 .ms-nav-links {
@@ -725,12 +768,14 @@
 /* ------------------------------------------------------------------ */
 
 .ms-header-toggle {
+  position: absolute;
+  top: 7px;
+  right: max(16px, var(--ms-pad));
   display: flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
-  margin-right: -10px;
   padding: 0;
   background: none;
   border: 0;
@@ -1415,11 +1460,20 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
    ≥1050 clamp(44,4.4vw,68) (63.36px at 1440). */
 
 .home-hero {
-  /* The real hero padding (clamp 132–176) includes its fixed header;
-   * this clone's header is sticky/in-flow (~65px at desktop), so the
-   * hero subtracts it to land the eyebrow at the measured 158px. */
-  padding: 60px 0 44px;
+  /* Live home hero pads (28 Oct multi-height harvest, width ladder
+   * 375–1700): W≤600 fixed 116/48; W>600 clamp(132px,11vw,176px) top /
+   * clamp(72px,7vw,112px) bottom — width-driven (height-independent,
+   * verified @600h and @1200h, caps confirmed @W1700). With the header
+   * now fixed like live, the pads are transcribed verbatim. */
+  padding: 116px 0 48px;
   position: relative;
+}
+
+@media (min-width: 601px) {
+  .home-hero {
+    padding-top: 132px;
+    padding-bottom: 72px;
+  }
 }
 
 .home-hero-inner {
@@ -1523,8 +1577,7 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
 
 @media (min-width: 1050px) {
   .home-hero {
-    padding: max(28px, calc(clamp(132px, 11vw, 176px) - 65px)) 0
-      clamp(72px, 7vw, 112px);
+    padding: clamp(132px, 11vw, 176px) 0 clamp(72px, 7vw, 112px);
   }
   .home-hero-inner {
     grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr);
@@ -1552,13 +1605,30 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
 
 /* Home features — the wireframe table: full-bleed section, 3 columns
    with shared hairline borders (no gaps), 4/3 visuals (harvest +
-   live-measured: cards 423px wide at 1440, 86px inline padding). */
+   live-measured: cards 423px wide at 1440, 86px inline padding).
+   Under 900w live ships a horizontal snap carousel instead of the
+   stack (28 Oct harvest: features-inner flex, overflow-x auto,
+   scroll-snap x mandatory, pad 0 10px, cards flex 0 0 86%, visual
+   aspect 5/4 → 305×244 cards @375). */
 
 .home-features-inner {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
   padding-inline: clamp(36px, 6vw, 86px);
+}
+
+@media (max-width: 899px) {
+  .home-features-inner {
+    display: flex;
+    padding-inline: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .home-features-inner::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (min-width: 900px) {
@@ -1578,6 +1648,8 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
 
 @media (max-width: 899px) {
   .home-feature {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
     border-left: 0;
     border-top: 1px solid rgba(8, 9, 11, 0.135);
   }
@@ -1588,7 +1660,9 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
 
 .home-feature-visual {
   position: relative;
-  aspect-ratio: 4 / 3;
+  /* Live visual aspect (28 Oct): 5/4 at every width (423×338 desktop,
+     305×244 mobile — both exactly 1.25). */
+  aspect-ratio: 5 / 4;
   overflow: hidden;
   border-bottom: 1px solid rgba(8, 9, 11, 0.135);
   display: flex;
@@ -1606,23 +1680,63 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
   gap: 8px;
 }
 
+/* Live mobile feature body (28 Oct @375): pad 14px 29.5px 22px, gap 6,
+   title 16px/500 lh 18.56, text 13px lh 18.85 #565A60; the index is
+   hidden. */
+@media (max-width: 899px) {
+  .home-feature-body {
+    padding: 14px 29.5px 22px;
+    gap: 6px;
+  }
+  .home-feature-body h2 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18.56px;
+    letter-spacing: -0.014em;
+  }
+  .home-feature-body p {
+    font-size: 13px;
+    line-height: 18.85px;
+    color: #565a60;
+  }
+  .home-feature-index {
+    display: none;
+  }
+}
+
 .home-feature-index {
   font-family: ui-monospace, "Fira Mono", monospace;
   font-size: 11px;
   color: var(--ms-muted);
 }
 
-/* Subpage hero, transcribed from live .hero/.hero-inner (27 Oct harvest,
-   re-verified at 375 + 1440): pads clamp(94px,10vw,144px) top /
-   clamp(28px,3.125vw,45px) bottom; inner grid 1fr 380px gap 72 with the
-   aside bottom-aligned (align-items:end); single column + 20px gap under
-   940px. The previous 16svh/128px formula was a @1280-viewport mid-read. */
+/* Subpage hero, transcribed from live .hero/.hero-inner (28 Oct multi-
+   height harvest, disambiguating geometries 600–1300h × 375–1700w): the
+   pads are a two-tier system. Desktop (≥900w): clamp(120px,16svh,168px)
+   top / clamp(32px,5svh,64px) bottom — viewport-HEIGHT driven; the
+   earlier 10vw/3.125vw reading only coincided on 16:10 probes (10vw ≡
+   16svh at 1440×900). Mid/mobile (<900w): clamp(94px,14vw,112px) /
+   clamp(28px,6vw,40px). Inner grid 1fr 380px gap 72 with the aside
+   bottom-aligned (align-items:end); single column + 20px gap under
+   940px (grid breakpoint is independent of the pad breakpoint). */
 .ms-page-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 380px;
   gap: 72px;
   align-items: end;
-  padding-block: clamp(94px, 10vw, 144px) clamp(28px, 3.125vw, 45px);
+  padding-block: clamp(94px, 14vw, 112px) clamp(28px, 6vw, 40px);
+}
+
+@media (min-width: 900px) {
+  .ms-page-hero {
+    padding-block: clamp(120px, 16svh, 168px) clamp(32px, 5svh, 64px);
+    /* Live .hero anatomy (28 Oct): display:flex + min-height 48svh with
+       the inner grid vertically centered between the pads (336 @700h,
+       432 @900h, 576 @1200h — 48svh exactly; 0 below 900w). Verified:
+       pricing inner 208 centers at 144+17.5, company 135 at 144+54. */
+    min-height: 48svh;
+    align-content: center;
+  }
 }
 
 @media (max-width: 939px) {
@@ -1630,6 +1744,23 @@ html[data-theme="dark"] .consent-toggle[aria-checked="true"] .consent-toggle-thu
     grid-template-columns: minmax(0, 1fr);
     gap: 20px;
   }
+}
+
+/* Stacked hero (live changelog hub, 28 Oct): no aside — the lede sits
+   under the h1 (mt 24) and an empty 72px grid row follows, replicating
+   live's .hero-inner two-row grid (195px inner @900 → h1 at 168). */
+.ms-page-hero--stacked {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.ms-page-hero--stacked .ms-lead {
+  max-width: none;
+}
+
+.ms-page-hero--stacked::after {
+  content: "";
+  height: 72px;
 }
 
 /* Hero eyebrow, transcribed from live .hero-eyebrow (27 Oct):
@@ -1806,6 +1937,219 @@ textarea.ms-apply-input {
   border: 0;
   border-top: 1px solid rgba(8, 9, 11, 0.086);
   margin: 0;
+}
+
+/* Company keep-up cards, transcribed from live .company-keep-up-grid +
+   .company-job-card.company-keep-up-card (28 Oct): 4-column grid,
+   16px gap (266px cards @1180 container); cards are job-card anatomy —
+   16/18 pad, 4px radius, white bg, transparent 1px border that
+   surfaces on hover, flex row with a 20px icon box (18px svg) and a
+   title/meta stack (15px/-0.21px ls + 13px #686D74). */
+.company-keep-up-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .company-keep-up-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.company-keep-up-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.company-keep-up-card:hover,
+.company-keep-up-card:focus-visible {
+  border-color: rgba(8, 9, 11, 0.16);
+}
+
+.company-keep-up-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: var(--ms-ink);
+}
+
+.company-keep-up-card-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.company-keep-up-card-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.21px;
+  line-height: 18.75px;
+  color: var(--ms-ink);
+}
+
+.company-keep-up-card-meta {
+  display: block;
+  font-size: 13px;
+  line-height: 17.55px;
+  color: #686d74;
+}
+
+/* Company manifesto scroller, transcribed from live
+   .company-section--manifesto (28 Oct): horizontal snap deck of 7
+   belief cards. Scroller: overflow-x auto, snap x mandatory, pad
+   12/0/32; track flex 16px gap; cards 300px basis (303 measured incl.
+   border rounding) snap-start; paper = #F2F4F7 with a dot-grid +
+   white-sheen texture; inner 26px pad; title 34px/400 lh 1.1 mb 12;
+   body 14px/21 #565A60; foot pt 16 with 12px index + 10px stamp at
+   28% ink. Section rhythm: pt clamp(40px,5svh,60px) / pb 6svh. */
+.company-manifesto-scroller {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 12px 0 32px;
+  outline: none;
+}
+
+.company-manifesto-track {
+  display: flex;
+  gap: 16px;
+  padding: 4px clamp(31px, 8.33vw, 120px) 8px;
+}
+
+.company-manifesto-card {
+  position: relative;
+  flex: 0 0 300px;
+  scroll-snap-align: start;
+}
+
+.company-manifesto-card-paper {
+  position: absolute;
+  inset: 0;
+  background-color: #f2f4f7;
+  background-image:
+    radial-gradient(circle, rgba(18, 24, 36, 0.1) 0.5px, rgba(0, 0, 0, 0) 0.5px),
+    linear-gradient(rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.42));
+  background-size:
+    12px 12px,
+    100% 100%;
+}
+
+.company-manifesto-card-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 362px;
+  padding: 26px;
+}
+
+.company-manifesto-card-title {
+  margin: 0 0 12px;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 37.4px;
+  letter-spacing: normal;
+  color: var(--ms-ink);
+}
+
+.company-manifesto-card-body {
+  margin: 0;
+}
+
+.company-manifesto-card-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: #565a60;
+}
+
+.company-manifesto-card-body p + p {
+  margin-top: 8px;
+}
+
+.company-manifesto-card-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.company-manifesto-card-index {
+  font-size: 12px;
+  color: var(--ms-ink);
+}
+
+.company-manifesto-card-stamp {
+  font-size: 10px;
+  color: rgba(8, 9, 11, 0.28);
+}
+
+/* Changelog hub list column, transcribed from live .ds-article-prose
+   (28 Oct): the release list sits in a 720px centered prose column
+   (336px wide at 375, x=20). */
+.ms-chg-list {
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+/* Changelog hub entry anatomy, transcribed from live
+   .ds-changelog-release entries (28 Oct): meta 13px/400 lh 22.1
+   #686D74 with 18px mb (two lines: date + covers range); h3 17px/600
+   lh 22.1 ls -0.17px with a 12px mb and an underlined ink link; body
+   15px lh 22.5 ink, full width. */
+.ms-chg-meta {
+  margin: 0 0 18px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22.1px;
+  color: #686d74;
+}
+
+.ms-chg-title {
+  margin: 0 0 12px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 22.1px;
+  letter-spacing: -0.17px;
+}
+
+.ms-chg-title a {
+  color: var(--ms-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ms-chg-body {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 22.5px;
+  color: var(--ms-ink);
+}
+
+/* Live entry read link (28 Oct): 15px/22.5 ink, underlined, after the
+   body's 18px margin. */
+.ms-chg-read {
+  margin: 0;
+  font-size: 15px;
+  line-height: 22.5px;
+}
+
+.ms-chg-read a {
+  color: var(--ms-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* Release-history block, transcribed from live .ds-changelog-release
@@ -2036,7 +2380,9 @@ textarea.ms-apply-input {
 
 /* Video stage — universal pre-footer showcase (harvest: .video-stage on
    every synaps.app page; dark band, sticky expanding frame, 8s clip
-   cycle). Implementation is original; geometry is measured. */
+   cycle). Implementation is original; geometry is measured. Rhythm
+   (28 Oct multi-height harvest): 9svh / 14svh with 54/96px floors and
+   112/168px caps; under 900w the pads pin to fixed 80/120. */
 .video-stage {
   position: relative;
   z-index: 5;
@@ -2045,9 +2391,15 @@ textarea.ms-apply-input {
   /* Frame inset at rest — approximates the harvest's
      wire-edge + content-pad collapsed margin (86px at 1440). */
   --vs-inset: clamp(24px, 6vw, 86px);
-  padding: clamp(48px, 9svh, 112px) 0 clamp(96px, 14svh, 168px);
+  padding: clamp(54px, 9svh, 112px) 0 clamp(96px, 14svh, 168px);
   background: #0f0f0e;
   color: #fafaf8;
+}
+
+@media (max-width: 899px) {
+  .video-stage {
+    padding: 80px 0 120px;
+  }
 }
 
 .video-stage-inner {
@@ -2842,10 +3194,92 @@ body.is-tail-dark .ms-header .ms-brand-name {
    .assets-library-rows, tracks pan in opposite directions with
    --assets-progress). Cards alternate material crops (rendered as
    contained, grayscale-muted swatches) and plan-view CAD blocks. */
+/* Home section rhythm, transcribed 28 Oct (multi-height harvest, live
+   home @600–1200h × 375–1600w). The home page is its own scale —
+   width-driven hero, svh-driven tail sections:
+   · quote-bridge: 26svh both pads (156 @600h … 280 @1200h cap), fixed
+     180/180 under 900w. Live bg transparent, no borders.
+   · assets-library: 18svh / 14svh (108/84 @600h … 200/160 caps), fixed
+     110/96 under 900w.
+   · section-divider-hatch: 6svh hatch strips (40–72px), hidden < 900w.
+     Variant --dark sits on the assets bg and carries the light→dark
+     transition bracket (1px white wire marks at the 86px insets). */
+.home-quote-bridge {
+  padding-block: clamp(130px, 26svh, 280px);
+}
+
+@media (max-width: 899px) {
+  .home-quote-bridge {
+    padding-block: 180px;
+  }
+}
+
+.assets-band .ms-container {
+  padding-block: clamp(108px, 18svh, 200px) clamp(84px, 14svh, 160px);
+}
+
+@media (max-width: 899px) {
+  .assets-band .ms-container {
+    padding-block: 110px 96px;
+  }
+}
+
+.section-divider-hatch {
+  position: relative;
+  height: clamp(40px, 6svh, 72px);
+}
+
+.section-divider-hatch::before {
+  content: "";
+  position: absolute;
+  inset: 1px 86px;
+  background: rgba(8, 9, 11, 0.055);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath d='M-3 3L3 -3M0 12L12 0M9 15L15 9' fill='none' stroke='%23000'/%3E%3C/svg%3E")
+    repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath d='M-3 3L3 -3M0 12L12 0M9 15L15 9' fill='none' stroke='%23000'/%3E%3C/svg%3E")
+    repeat;
+}
+
+.section-divider-hatch--dark {
+  height: calc(2 * clamp(40px, 6svh, 72px));
+  padding-top: clamp(40px, 6svh, 72px);
+  background: #0f0f0e;
+}
+
+.section-divider-hatch--dark::before {
+  inset: calc(clamp(40px, 6svh, 72px) + 0.5px) 86px 0.5px;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.section-divider-hatch--dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)),
+    linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)),
+    linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16));
+  background-size:
+    1px 100%,
+    1px 100%,
+    100% 1px;
+  background-position:
+    86px 0,
+    calc(100% - 86px) 0,
+    0 calc(clamp(40px, 6svh, 72px) - 1px);
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 899px) {
+  .section-divider-hatch {
+    display: none;
+  }
+}
+
 .assets-band {
   background: #0f0f0e;
   color: #fafaf8;
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .assets-band .ms-label {

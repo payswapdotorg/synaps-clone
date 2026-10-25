@@ -24,7 +24,7 @@ const banner =
  */
 export default function DemoPage() {
   return (
-    <main id="main" className="mx-auto w-full max-w-6xl px-6 py-12">
+    <main id="main" className="mx-auto w-full max-w-6xl px-6 pb-12 pt-[107px] md:pt-[113px]">
       <header className="mb-8">
         <p className="eyebrow-index mb-3">[DEMO] INTERACTIVE FLOW</p>
         <h1 className="text-3xl font-semibold tracking-tight text-content-primary sm:text-4xl">
