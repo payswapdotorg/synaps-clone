@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/site/blocks";
+import { ArrowCards, PageHero, SectionHead } from "@/components/site/blocks";
 import { blogPosts } from "@/content/blog";
 import { formatDisplayDate, pageMeta } from "@/lib/seo";
 
@@ -91,6 +91,38 @@ export default function BlogHubPage() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Crosslinks, transcribed from live hub .ds-section--crosslinks
+       * (27 Oct): "Continue reading" + Release notes / Alternative to /
+       * Synaps Studio (mapped to the clone's app entry per the standing
+       * beta.synaps.app disclosure). */}
+      <section
+        className="ms-container"
+        style={{ paddingBlock: "clamp(112px, 8.75vw, 126px)" }}
+      >
+        <div className="ms-stack-24">
+          <SectionHead title="Continue" dim="reading." />
+          <ArrowCards
+            items={[
+              {
+                label: "Release notes",
+                href: "/news/changelog",
+                note: "Terse release notes by version",
+              },
+              {
+                label: "Alternative to",
+                href: "/news/alternative-to",
+                note: "Honest stack comparisons",
+              },
+              {
+                label: "Synaps Studio",
+                href: "/login",
+                note: "Open the app",
+              },
+            ]}
+          />
         </div>
       </section>
     </main>

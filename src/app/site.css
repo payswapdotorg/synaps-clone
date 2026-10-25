@@ -1808,6 +1808,58 @@ textarea.ms-apply-input {
   margin: 0;
 }
 
+/* Release-history block, transcribed from live .ds-changelog-release
+   (27 Oct): pill (1px hairline, 6/12 pad, radius 4, 13px) + 13px grey
+   date on a 20px-gap baseline head with 20px mb; "New" tag 13px at 72%
+   ink with 8px mb; 17px #565a60 list items with an 18px indent. */
+.ms-release-head {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin: 0 0 20px;
+}
+
+.ms-release-pill {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid rgba(8, 9, 11, 0.086);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ms-ink);
+}
+
+.ms-release-date {
+  font-size: 13px;
+  color: #686d74;
+}
+
+.ms-release-tag {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: -0.065px;
+  color: rgba(8, 9, 11, 0.72);
+}
+
+.ms-release-list {
+  margin: 0;
+  padding: 0 0 0 18px;
+  list-style: disc;
+}
+
+.ms-release-list li {
+  font-size: 17px;
+  line-height: 1.55;
+  color: #565a60;
+  margin: 0 0 6px;
+}
+
+.ms-release-list li:last-child {
+  margin-bottom: 0;
+}
+
 .ms-apply-actions {
   display: flex;
   flex-direction: column;

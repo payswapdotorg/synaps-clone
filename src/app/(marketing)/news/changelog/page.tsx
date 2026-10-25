@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/site/blocks";
+import { ArrowCards, PageHero, SectionHead } from "@/components/site/blocks";
 import { changelogEntries } from "@/content/changelog";
 import { pageMeta } from "@/lib/seo";
 
@@ -51,7 +51,7 @@ export default function ChangelogHubPage() {
         <div className="ms-stack-40">
           {groups.map((group) => (
             <div key={group.label} className="ms-stack-24">
-              <h2 className="ms-h3">{group.label}</h2>
+              <h2 className="ms-h2">{group.label}</h2>
               <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
                 {group.entries.map((entry) => (
                   <li
@@ -92,6 +92,85 @@ export default function ChangelogHubPage() {
               </ul>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* "Release history" — transcribed from live .ds-section--changelog
+       * (27 Oct): semantic-version block with a pill + date head, a "New"
+       * tag group, and a 5-item list. */}
+      <section
+        className="ms-container"
+        style={{ paddingBlock: "clamp(112px, 8.75vw, 126px)" }}
+      >
+        <div className="ms-stack-24">
+          <SectionHead
+            title="Release"
+            dim="history."
+            lead="Semantic versions for the studio app. Breaking API changes are called out explicitly."
+          />
+          <article className="ms-release">
+            <header className="ms-release-head">
+              <span className="ms-release-pill">v1.5</span>
+              <time className="ms-release-date">June 2026</time>
+            </header>
+            <div>
+              <span className="ms-release-tag">New</span>
+              <ul className="ms-release-list">
+                <li>
+                  Initial public release of Synaps, the collaborative drafting
+                  environment for architects.
+                </li>
+                <li>
+                  Real-time multiplayer editing, draw plans, sections, and
+                  details together in the browser.
+                </li>
+                <li>
+                  Architectural tools for walls, doors, windows, stairs, and
+                  columns with minimal parametric input.
+                </li>
+                <li>
+                  Sheet sets with a live index, automatic numbering, and PDF
+                  export tuned for issued documentation.
+                </li>
+                <li>
+                  Office libraries for shared components, with DWG and IFC
+                  round-trip to existing CAD and BIM tools.
+                </li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {/* Crosslinks, transcribed from live changelog hub
+       * .ds-section--crosslinks (27 Oct): Blog / Documentation /
+       * Synaps Studio (mapped to the clone's app entry per the standing
+       * beta.synaps.app disclosure). */}
+      <section
+        className="ms-container"
+        style={{ paddingBlock: "clamp(112px, 8.75vw, 126px)" }}
+      >
+        <div className="ms-stack-24">
+          <SectionHead title="Continue" dim="reading." />
+          <ArrowCards
+            items={[
+              {
+                label: "Blog",
+                href: "/news/blog",
+                note: "Longer reads on product decisions",
+              },
+              {
+                label: "Documentation",
+                href: "https://docs.synaps.app",
+                note: "API and product reference",
+              },
+              {
+                label: "Synaps Studio",
+                href: "/login",
+                note: "Try the latest build",
+              },
+            ]}
+          />
         </div>
       </section>
     </main>
